@@ -8,10 +8,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
+app.use(express.json());
 
 // MongoDB connection
-const connectToDatabse = async () => {
+const connectToDatabase = async () => {
   const MONGO_URI = process.env.MONGO_URI;
 
   if (!MONGO_URI) {
@@ -26,13 +28,24 @@ const connectToDatabse = async () => {
     console.error("Error connecting to MongoDB", err);
   }
 };
+connectToDatabase();
 
-connectToDatabse();
-
+// Home Page Route
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
+// Routes
+import projectRoutes from "./routes/projectRoutes.js";
+app.use("/api/projects", projectRoutes);
+
+import skillRoutes from "./routes/skillRoute.js";
+app.use("/api/skills", skillRoutes);
+
+import adminConfigRoutes from "./routes/adminConfigRoutes.js";
+app.use("/api/admin-config", adminConfigRoutes);
+
+// Listening to port
 app.listen(PORT, () => {
   console.log(`Server is live on http://localhost:${PORT}`);
 });
