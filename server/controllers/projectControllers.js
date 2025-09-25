@@ -17,4 +17,9 @@ const editProject = async (req, res) => {
   res.json({ message: "Edit project route is working!" });
 };
 
-export { getProjects, addProject, editProject };
+const deleteProject = async (req, res) => {
+  const id = req.params.id;
+  res.json({ message: "Delete project route is working!" });
+};
+
+export { getProjects, addProject, editProject, deleteProject };

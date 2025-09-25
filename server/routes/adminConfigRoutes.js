@@ -7,6 +7,6 @@ import {
 const router = express.Router();
 
 router.get("/", getAdminConfig);
-router.put("/", editAdminConfig);
+router.put("/:id", editAdminConfig);
 
 export default router;

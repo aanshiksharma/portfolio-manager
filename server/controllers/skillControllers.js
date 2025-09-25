@@ -51,7 +51,45 @@ const addSkill = async (req, res) => {
 
 // Edit an existing skill
 const editSkill = async (req, res) => {
-  res.json({ message: "Edit skill route is working!" });
+  const id = req.params.id;
+  const { skillName, categoryName } = req.body;
+
+  const skill = await Skill.findById({ _id: id });
+  skill.name = skillName;
+
+  const category = await Category.findOne({ name: categoryName });
+
+  if (!category) {
+    const newCategory = new Category({ name: categoryName });
+    await newCategory.save();
+
+    skill.category = newCategory._id;
+    await skill.save();
+
+    return res.status(200).json({ message: "Skill Updated!" });
+  }
+
+  skill.category = category._id;
+  await skill.save();
+
+  res.status(200).json({ message: "Skill Updated!" });
 };
 
-export { getSkills, addSkill, editSkill };
+// Delete a skill
+const deleteSkill = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const skill = await Skill.findById({ _id: id });
+
+    if (!skill) return res.status(404).json({ message: "Skill not found" });
+
+    await skill.deleteOne();
+
+    res.status(200).json({ message: "Skill Deleted!" });
+  } catch (err) {
+    res.status(500).json({ message: `Error deleting skill ${err}` });
+  }
+};
+
+export { getSkills, addSkill, editSkill, deleteSkill };

@@ -3,12 +3,14 @@ import {
   getSkills,
   addSkill,
   editSkill,
+  deleteSkill,
 } from "../controllers/skillControllers.js";
 
 const router = express.Router();
 
 router.get("/", getSkills);
-router.post("/add", addSkill);
-router.post("/edit", editSkill);
+router.post("/", addSkill);
+router.put("/:id", editSkill);
+router.delete("/:id", deleteSkill);
 
 export default router;
