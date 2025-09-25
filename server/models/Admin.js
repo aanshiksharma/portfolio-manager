@@ -18,7 +18,7 @@ const adminImageSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const adminConfigSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -27,11 +27,11 @@ const adminConfigSchema = new mongoose.Schema({
 
   resumeLink: { type: String },
 
-  about: { type: [String] },
+  about: { type: [String], default: [] },
 
   profileImage: { type: adminImageSchema },
-  socialMediaLinks: { type: [socialMediaLinkSchema] },
+  socialMediaLinks: { type: [socialMediaLinkSchema], default: [] },
 });
 
-const AdminConfig = mongoose.model("AdminConfig", adminConfigSchema);
-export default AdminConfig;
+const Admin = mongoose.model("Admin", adminSchema);
+export default Admin;

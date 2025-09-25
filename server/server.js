@@ -42,8 +42,8 @@ app.use("/api/projects", projectRoutes);
 import skillRoutes from "./routes/skillRoute.js";
 app.use("/api/skills", skillRoutes);
 
-import adminConfigRoutes from "./routes/adminConfigRoutes.js";
-app.use("/api/admin", adminConfigRoutes);
+import adminRoutes from "./routes/adminRoutes.js";
+app.use("/api/admin", adminRoutes);
 
 // Listening to port
 app.listen(PORT, () => {
