@@ -12,6 +12,7 @@ const getSkills = async (req, res) => {
 };
 
 // Add a new skill
+// Password protected route
 const addSkill = async (req, res) => {
   const { skillName, categoryName } = req.body;
 
@@ -50,6 +51,7 @@ const addSkill = async (req, res) => {
 };
 
 // Edit an existing skill
+// Password protected route
 const editSkill = async (req, res) => {
   const id = req.params.id;
   const { skillName, categoryName } = req.body;
@@ -76,6 +78,7 @@ const editSkill = async (req, res) => {
 };
 
 // Delete a skill
+// Password protected route
 const deleteSkill = async (req, res) => {
   const id = req.params.id;
 

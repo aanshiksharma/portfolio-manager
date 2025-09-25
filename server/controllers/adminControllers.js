@@ -11,6 +11,8 @@ const getAdmin = async (req, res) => {
   res.status(200).json(admin);
 };
 
+// Add a new admin
+// Password protected route
 const addAdmin = async (req, res) => {
   const {
     name,
@@ -50,6 +52,8 @@ const addAdmin = async (req, res) => {
     .json({ message: "Admin added successfully", admin: newAdmin });
 };
 
+// Update an existing admin
+// Password protected route
 const updateAdmin = async (req, res) => {
   const id = req.params.id;
   const {
@@ -92,4 +96,25 @@ const updateAdmin = async (req, res) => {
   res.status(200).json({ message: "Admin updated successfully", admin });
 };
 
-export { getAdmin, updateAdmin, addAdmin };
+// Change admin password
+// Password protected route
+const changePassword = async (req, res) => {
+  const id = req.params.id;
+
+  const { oldPassword, newPassword } = req.body;
+
+  const admin = await Admin.findById(id);
+  if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+  const isOldPasswordValid = await bcrypt.compare(oldPassword, admin.password);
+  if (!isOldPasswordValid)
+    return res.status(401).json({ message: "Old password is invalid" });
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  admin.password = hashedNewPassword;
+  await admin.save();
+
+  res.status(200).json({ message: "Password changed successfully" });
+};
+
+export { getAdmin, updateAdmin, addAdmin, changePassword };
