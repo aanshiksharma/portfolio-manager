@@ -45,6 +45,9 @@ app.use("/api/skills", skillRoutes);
 import adminRoutes from "./routes/adminRoutes.js";
 app.use("/api/admin", adminRoutes);
 
+import authRoutes from "./routes/authRoutes.js";
+app.use("/api/auth", authRoutes);
+
 // Listening to port
 app.listen(PORT, () => {
   console.log(`Server is live on http://localhost:${PORT}`);

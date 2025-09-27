@@ -11,49 +11,19 @@ const getAdmin = async (req, res) => {
   res.status(200).json(admin);
 };
 
-// Add a new admin
-// Password protected route
-const addAdmin = async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    mobile,
-    portfolioLink,
-    about,
-    socialMediaLinks,
-  } = req.body;
+const getAdminById = async (req, res) => {
+  const id = req.params.id;
+  const admin = await Admin.findById(id);
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  if (!admin)
+    return res.status(404).json({
+      message: "Admin not found",
+    });
 
-  const newAdmin = new Admin({
-    name,
-    email,
-    password: hashedPassword,
-    mobile,
-    portfolioLink,
-    about,
-
-    // Needs to be replaced with actual default file details
-    resumeLink: "https://example.com/default-resume.pdf",
-
-    profileImage: {
-      fileName: "default-profile.png",
-      firebasePath: "profiles/default-profile.png",
-      url: "https://example.com/default-profile.png",
-      uploadedAt: new Date(),
-    },
-    socialMediaLinks: socialMediaLinks,
-  });
-  await newAdmin.save();
-
-  res
-    .status(201)
-    .json({ message: "Admin added successfully", admin: newAdmin });
+  res.status(200).json(admin);
 };
 
 // Update an existing admin
-// Password protected route
 const updateAdmin = async (req, res) => {
   const id = req.params.id;
   const {
@@ -97,10 +67,8 @@ const updateAdmin = async (req, res) => {
 };
 
 // Change admin password
-// Password protected route
 const changePassword = async (req, res) => {
   const id = req.params.id;
-
   const { oldPassword, newPassword } = req.body;
 
   const admin = await Admin.findById(id);
@@ -117,4 +85,4 @@ const changePassword = async (req, res) => {
   res.status(200).json({ message: "Password changed successfully" });
 };
 
-export { getAdmin, updateAdmin, addAdmin, changePassword };
+export { getAdmin, getAdminById, updateAdmin, addAdmin, changePassword };

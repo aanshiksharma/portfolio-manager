@@ -6,11 +6,13 @@ import {
   deleteSkill,
 } from "../controllers/skillControllers.js";
 
+import authenticateToken from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 router.get("/", getSkills);
-router.post("/", addSkill);
-router.put("/:id", editSkill);
-router.delete("/:id", deleteSkill);
+router.post("/", authenticateToken, addSkill);
+router.put("/:id", authenticateToken, editSkill);
+router.delete("/:id", authenticateToken, deleteSkill);
 
 export default router;

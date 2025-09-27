@@ -3,55 +3,50 @@ import Category from "../models/Category.js";
 
 // Get all skills
 const getSkills = async (req, res) => {
-  try {
-    const skills = await Skill.find();
-    res.status(200).json(skills);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching skills" });
-  }
+  const skills = await Skill.find();
+  if (skills.length === 0)
+    return res.status(404).json({
+      message: "No skills found",
+    });
+
+  res.status(200).json(skills);
 };
 
 // Add a new skill
-// Password protected route
 const addSkill = async (req, res) => {
   const { skillName, categoryName } = req.body;
 
-  try {
-    const existingCategory = await Category.findOne({ name: categoryName });
+  const existingCategory = await Category.findOne({ name: categoryName });
 
-    if (!existingCategory) {
-      const newCategory = new Category({ name: categoryName });
-      await newCategory.save();
-
-      const newSkill = new Skill({
-        name: skillName,
-        category: newCategory._id,
-      });
-      await newSkill.save();
-
-      return res.status(201).json({ message: "Skill Created!" });
-    }
-
-    const existingSkill = await Skill.findOne({ name: skillName });
-
-    if (existingSkill) {
-      return res.status(400).json({ message: "Skill already exists!" });
-    }
+  if (!existingCategory) {
+    const newCategory = new Category({ name: categoryName });
+    await newCategory.save();
 
     const newSkill = new Skill({
       name: skillName,
-      category: existingCategory._id,
+      category: newCategory._id,
     });
     await newSkill.save();
 
     return res.status(201).json({ message: "Skill Created!" });
-  } catch (err) {
-    res.status(500).json({ message: "Error creating skill" + err.message });
   }
+
+  const existingSkill = await Skill.findOne({ name: skillName });
+
+  if (existingSkill) {
+    return res.status(400).json({ message: "Skill already exists!" });
+  }
+
+  const newSkill = new Skill({
+    name: skillName,
+    category: existingCategory._id,
+  });
+  await newSkill.save();
+
+  return res.status(201).json({ message: "Skill Created!" });
 };
 
 // Edit an existing skill
-// Password protected route
 const editSkill = async (req, res) => {
   const id = req.params.id;
   const { skillName, categoryName } = req.body;
@@ -78,21 +73,18 @@ const editSkill = async (req, res) => {
 };
 
 // Delete a skill
-// Password protected route
 const deleteSkill = async (req, res) => {
   const id = req.params.id;
 
-  try {
-    const skill = await Skill.findById({ _id: id });
+  const skill = await Skill.findById({ _id: id });
+  if (!skill)
+    return res.status(404).json({
+      message: "Skill not found",
+    });
 
-    if (!skill) return res.status(404).json({ message: "Skill not found" });
+  await skill.deleteOne();
 
-    await skill.deleteOne();
-
-    res.status(200).json({ message: "Skill Deleted!" });
-  } catch (err) {
-    res.status(500).json({ message: `Error deleting skill ${err}` });
-  }
+  res.status(200).json({ message: "Skill Deleted!" });
 };
 
 export { getSkills, addSkill, editSkill, deleteSkill };
