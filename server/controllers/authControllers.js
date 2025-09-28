@@ -107,11 +107,16 @@ const recruiterLogin = async (req, res) => {
 
   try {
     const existingRecruiter = await Guest.findOne({ name, role: "recruiter" });
-    if (existingRecruiter)
+    if (existingRecruiter) {
+      existingRecruiter.noOfVisits += 1;
+      existingRecruiter.lastVisitedAt = new Date();
+      await existingRecruiter.save();
+
       return res.status(200).json({
         message: "Logged in as Recruiter.",
-        existingRecruiter,
+        recruiter: existingRecruiter,
       });
+    }
 
     const newRecruiter = new Guest({
       name: name,
@@ -121,7 +126,7 @@ const recruiterLogin = async (req, res) => {
 
     res.status(201).json({
       message: "Logged in as Recruiter.",
-      newRecruiter,
+      recruiter: newRecruiter,
     });
   } catch (error) {
     res.status(500).json({
@@ -136,11 +141,16 @@ const visitorLogin = async (req, res) => {
 
   try {
     const existingVisitor = await Guest.findOne({ name, role: "visitor" });
-    if (existingVisitor)
+    if (existingVisitor) {
+      existingVisitor.noOfVisits += 1;
+      existingVisitor.lastVisitedAt = new Date();
+      await existingVisitor.save();
+
       return res.status(200).json({
         message: "Logged in as Visitor.",
-        existingVisitor,
+        visitor: existingVisitor,
       });
+    }
 
     const newVisitor = new Guest({
       name: name,
@@ -150,7 +160,7 @@ const visitorLogin = async (req, res) => {
 
     res.status(201).json({
       message: "Logged in as Visitor.",
-      newVisitor,
+      visitor: newVisitor,
     });
   } catch (error) {
     res.status(500).json({
