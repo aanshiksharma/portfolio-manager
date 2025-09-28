@@ -79,7 +79,16 @@ const adminLogin = async (req, res) => {
       });
 
     const tokenKey = process.env.TOKEN_KEY;
-    const token = jwt.sign(admin, tokenKey, { expiresIn: "1h" });
+    const token = jwt.sign(
+      {
+        _id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        mobile: admin.mobile,
+      },
+      tokenKey,
+      { expiresIn: "1h" }
+    );
 
     res.status(200).json({
       message: "Login Successful",
@@ -97,9 +106,9 @@ const recruiterLogin = async (req, res) => {
   const { name } = req.body;
 
   try {
-    const existingRecruiter = Guest.findOne({ name, role: "recruiter" });
+    const existingRecruiter = await Guest.findOne({ name, role: "recruiter" });
     if (existingRecruiter)
-      res.status(200).json({
+      return res.status(200).json({
         message: "Logged in as Recruiter.",
         existingRecruiter,
       });
@@ -117,6 +126,7 @@ const recruiterLogin = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Some error occurred while logging you in.",
+      error: error.message,
     });
   }
 };
@@ -125,9 +135,9 @@ const visitorLogin = async (req, res) => {
   const { name } = req.body;
 
   try {
-    const existingVisitor = Guest.findOne({ name, role: "visitor" });
+    const existingVisitor = await Guest.findOne({ name, role: "visitor" });
     if (existingVisitor)
-      res.status(200).json({
+      return res.status(200).json({
         message: "Logged in as Visitor.",
         existingVisitor,
       });

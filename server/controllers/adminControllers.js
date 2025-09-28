@@ -85,4 +85,4 @@ const changePassword = async (req, res) => {
   res.status(200).json({ message: "Password changed successfully" });
 };
 
-export { getAdmin, getAdminById, updateAdmin, addAdmin, changePassword };
+export { getAdmin, getAdminById, updateAdmin, changePassword };

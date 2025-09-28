@@ -5,7 +5,7 @@ import {
   updateAdmin,
   changePassword,
 } from "../controllers/adminControllers.js";
-import authenticateToken from "../middleware/authMiddleware.js";
+import authenticateToken from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
