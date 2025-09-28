@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@layer {
+  * {
+    @apply leading-[1.5];
+  }
+
+  body {
+    @apply font-['Poppins'];
+    @apply bg-neutral-950;
+  }
+
+  .input-group {
+    @apply flex flex-col gap-2;
+  }
+
+  input {
+    @apply p-2 rounded-sm transition ease-out duration-200 text-neutral-50 font-normal;
+    @apply outline-2 outline-transparent border-1 border-neutral-700;
+    @apply placeholder:text-neutral-50/50;
+    @apply focus:outline-orange-600 focus:border-transparent;
+  }
+}
