@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 
 function EditSkill() {
   const location = useLocation();
@@ -6,9 +7,12 @@ function EditSkill() {
   const skill = pathname[pathname.length - 1];
 
   return (
-    <section className="h-screen flex items-center justify-center">
-      Edit {skill}
-    </section>
+    <>
+      <Navbar />
+      <section className="h-screen flex items-center justify-center">
+        Edit {skill}
+      </section>
+    </>
   );
 }
 

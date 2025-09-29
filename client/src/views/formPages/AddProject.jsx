@@ -1,10 +1,14 @@
 import React from "react";
+import Navbar from "../../components/Navbar";
 
 function AddProject() {
   return (
-    <section className="h-screen flex items-center justify-center">
-      Add Project
-    </section>
+    <>
+      <Navbar />
+      <section className="h-screen flex items-center justify-center">
+        Add Project
+      </section>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 
 function ProjectPage() {
   const location = useLocation();
@@ -7,6 +8,7 @@ function ProjectPage() {
 
   return (
     <>
+      <Navbar />
       <section className="h-screen flex items-center justify-center">
         Project {project}
       </section>

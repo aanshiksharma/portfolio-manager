@@ -50,13 +50,13 @@ function App() {
 
           {/* FORM PAGES ROUTES */}
           {/* ADD */}
-          <Route path="/project/add" element={<AddProject />} />
-          <Route path="/skill/add" element={<AddSkill />} />
+          <Route path="/projects/add" element={<AddProject />} />
+          <Route path="/skills/add" element={<AddSkill />} />
 
           {/* EDIT */}
           <Route path="/personal/edit" element={<EditPersonal />} />
           <Route path="/projects/edit/*" element={<EditProject />} />
-          <Route path="/skill/edit/*" element={<EditSkill />} />
+          <Route path="/skills/edit/*" element={<EditSkill />} />
         </Routes>
       </Router>
     </>
