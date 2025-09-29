@@ -27,6 +27,10 @@
     @apply bg-bg-base;
   }
 
+  .container {
+    @apply min-h-screen;
+  }
+
   .input-group {
     @apply flex flex-col gap-2;
   }

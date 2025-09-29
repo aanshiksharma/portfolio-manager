@@ -5,6 +5,7 @@ import Login from "./views/auth/Login";
 import Register from "./views/auth/Register";
 
 // Pages Routes
+import NotFound from "./views/NotFound";
 import Dashboard from "./views/Dashboard";
 import Projects from "./views/pages/Projects";
 import ProjectPage from "./views/pages/ProjectPage";
@@ -57,6 +58,9 @@ function App() {
           <Route path="/personal/edit" element={<EditPersonal />} />
           <Route path="/projects/edit/*" element={<EditProject />} />
           <Route path="/skills/edit/*" element={<EditSkill />} />
+
+          {/* NOT FOUND PAGE ROUTE */}
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>
     </>
