@@ -3,10 +3,10 @@ function Button({ label, icon, type, variant, onClick }) {
     base: `py-2 rounded-lg min-w-15 text-xs font-semibold transition ease-out cursor-pointer ${
       icon ? "px-2 flex align-center justify-center gap-2" : "px-3"
     }`,
-    primary: "bg-neutral-900/50 text-neutral-50 hover:bg-neutral-900",
+    primary: "bg-bg-surface-dark/50 text-text-primary hover:bg-bg-surface-dark",
     secondary:
-      "bg-transparent text-neutral-400 hover:bg-neutral-900/50 hover:text-neutral-50",
-    accent: "bg-orange-600 text-neutral-50 hover:bg-orange-600/80",
+      "bg-transparent text-text-muted hover:bg-bg-surface-dark/50 hover:text-text-primary",
+    accent: "bg-accent text-text-primary hover:bg-accent/80",
   };
 
   if (icon) {

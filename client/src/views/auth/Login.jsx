@@ -73,8 +73,8 @@ function Login({ role }) {
           className={`
             left 
             p-4
-            bg-neutral-200
-            font-medium text-neutral-950
+            bg-text-secondary
+            font-medium text-bg-base
             flex-1 flex flex-col gap-4 align-center justify-center
           `}
         >
@@ -94,7 +94,7 @@ function Login({ role }) {
           className={`
             right
             p-4
-            font-medium text-neutral-50
+            font-medium text-text-primary
             flex-1 flex flex-col gap-6 align-center justify-center
             `}
         >
@@ -116,7 +116,7 @@ function Login({ role }) {
           >
             <>
               <div className="input-group">
-                <span className="font-semibold text-xs text-neutral-400">
+                <span className="font-semibold text-xs text-text-muted">
                   {role === "admin"
                     ? "Enter your password"
                     : "Please enter your name"}
@@ -145,7 +145,7 @@ function Login({ role }) {
                   />
                 )}
 
-                <span className="font-semibold text-xs text-red-500">
+                <span className="font-semibold text-xs text-error">
                   {errors.password && errors.password.message}
                   {errors[`${role}Name`] && errors[`${role}Name`].message}
                 </span>

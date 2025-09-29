@@ -1,13 +1,30 @@
 @import "tailwindcss";
 
+@theme {
+  --color-text-primary: var(--color-neutral-50);
+  --color-text-secondary: var(--color-neutral-200);
+  --color-text-muted: var(--color-neutral-400);
+
+  --color-bg-base: var(--color-neutral-950);
+  --color-bg-surface-dark: var(--color-neutral-900);
+  --color-bg-surface-light: var(--color-neutral-800);
+
+  --color-accent: var(--color-orange-600);
+
+  --color-border: var(--color-neutral-700);
+
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-green-500);
+}
+
 @layer {
   * {
     @apply leading-[1.5];
   }
 
   body {
-    @apply font-['Poppins'];
-    @apply bg-neutral-950;
+    @apply font-['Poppins'] text-text-muted;
+    @apply bg-bg-base;
   }
 
   .input-group {
@@ -15,9 +32,9 @@
   }
 
   input {
-    @apply p-2 rounded-sm transition ease-out duration-200 text-neutral-50 font-normal;
-    @apply outline-2 outline-transparent border-1 border-neutral-700;
-    @apply placeholder:text-neutral-50/50;
-    @apply focus:outline-orange-600 focus:border-transparent;
+    @apply p-2 rounded-sm transition ease-out duration-200 text-text-primary font-normal;
+    @apply outline-2 outline-transparent border-1 border-border;
+    @apply placeholder:text-text-primary/50;
+    @apply focus:outline-accent focus:border-transparent;
   }
 }

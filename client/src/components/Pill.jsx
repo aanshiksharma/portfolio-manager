@@ -5,9 +5,9 @@ function Pill({ label, icon, to }) {
     base: `p-2 rounded-lg text-xs font-semibold transition ease-out cursor-pointer ${
       icon ? "flex align-center justify-center gap-2" : ""
     }`,
-    selected: "bg-neutral-900 text-neutral-50 text-semibold",
-    unSelected: "bg-transparent text-neutral-400 hover:bg-neutral-900/50",
-    hover: "hover:bg-neutral-900/50",
+    selected: "bg-bg-surface-dark text-ry text-semibold",
+    unSelected: "bg-transparent text-text-muted hover:bg-bg-surface-dark/50",
+    hover: "hover:bg-bg-surface-dark/50",
   };
 
   return (
