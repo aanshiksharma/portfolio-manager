@@ -28,17 +28,25 @@
   }
 
   .container {
-    @apply min-h-screen;
+    @apply min-h-screen max-w-270 mx-auto pt-[58.8px] flex flex-col items-start;
   }
 
   .input-group {
     @apply flex flex-col gap-2;
+
+    .label {
+      @apply font-semibold text-xs text-text-muted;
+    }
+
+    .error-message {
+      @apply font-semibold text-xs text-error;
+    }
   }
 
   input {
-    @apply p-2 rounded-sm transition ease-out duration-200 text-text-primary font-normal;
+    @apply p-2 max-w-110 w-full rounded-sm transition ease-out duration-200 bg-bg-surface-dark/60;
     @apply outline-2 outline-transparent border-1 border-border;
-    @apply placeholder:text-text-primary/50;
+    @apply placeholder:text-text-primary/50 text-text-primary font-normal;
     @apply focus:outline-accent focus:border-transparent;
   }
 }

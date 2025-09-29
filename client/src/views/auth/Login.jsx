@@ -82,7 +82,7 @@ function Login({ role }) {
             Welcome!
           </h2>
 
-          <div className="container max-w-lg mx-auto flex flex-col gap-3">
+          <div className="max-w-lg mx-auto flex flex-col gap-3">
             {welcomeText.map((text, index) => (
               <p key={index}>{text}</p>
             ))}
@@ -98,7 +98,7 @@ function Login({ role }) {
             flex-1 flex flex-col gap-6 align-center justify-center
             `}
         >
-          <div className="container max-w-md mx-auto flex flex-col gap-4">
+          <div className="max-w-md mx-auto w-full flex flex-col gap-4">
             <h2 className="w-full text-2xl font-semibold">
               Login to continue!
             </h2>
@@ -112,11 +112,11 @@ function Login({ role }) {
           {/* LOGIN FORM */}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="container max-w-md mx-auto flex flex-col gap-4"
+            className="max-w-md mx-auto w-full flex flex-col gap-4"
           >
             <>
               <div className="input-group">
-                <span className="font-semibold text-xs text-text-muted">
+                <span className="label">
                   {role === "admin"
                     ? "Enter your password"
                     : "Please enter your name"}
@@ -145,7 +145,7 @@ function Login({ role }) {
                   />
                 )}
 
-                <span className="font-semibold text-xs text-error">
+                <span className="error-message">
                   {errors.password && errors.password.message}
                   {errors[`${role}Name`] && errors[`${role}Name`].message}
                 </span>
