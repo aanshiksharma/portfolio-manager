@@ -1,7 +1,13 @@
 import React from "react";
 
 function Dashboard() {
-  return <div className="text-white">Dashboard</div>;
+  return (
+    <>
+      <section className="h-screen flex items-center justify-center">
+        Dashboard
+      </section>
+    </>
+  );
 }
 
 export default Dashboard;

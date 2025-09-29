@@ -1,13 +1,13 @@
 import React from "react";
 
-function Register() {
+function Projects() {
   return (
     <>
       <section className="h-screen flex items-center justify-center">
-        Register
+        Projects
       </section>
     </>
   );
 }
 
-export default Register;
+export default Projects;
