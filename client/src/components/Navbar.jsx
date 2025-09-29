@@ -10,7 +10,7 @@ function Navbar() {
 
   return (
     <>
-      <header className="border-b-1 border-border px-4 py-3">
+      <header className="border-b-1 border-border px-4 py-3 sticky top-0">
         <nav className="flex gap-4 items-center">
           {links.map((link) => {
             return (
