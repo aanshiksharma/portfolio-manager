@@ -19,6 +19,7 @@ import AddProject from "./views/formPages/AddProject";
 import EditPersonal from "./views/formPages/EditPersonal";
 import EditSkill from "./views/formPages/EditSkill";
 import EditProject from "./views/formPages/EditProject";
+import Admin from "./views/pages/Admin";
 
 function App() {
   return (
@@ -26,8 +27,8 @@ function App() {
       <Router>
         <Routes>
           {/* AUTH ROUTES */}
-          <Route path="/auth/login" element={<Login role="admin" />} />
           <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/login" element={<Login role="admin" />} />
           <Route
             path="/auth/recruiter-login"
             element={<Login role="recruiter" />}
@@ -45,16 +46,17 @@ function App() {
           <Route path="/projects/*" element={<ProjectPage />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
+          <Route path="/personal" element={<Admin />} />
 
           {/* FORM PAGES ROUTES */}
           {/* ADD */}
-          <Route path="/add/project" element={<AddProject />} />
-          <Route path="/add/skill" element={<AddSkill />} />
+          <Route path="/project/add" element={<AddProject />} />
+          <Route path="/skill/add" element={<AddSkill />} />
 
           {/* EDIT */}
-          <Route path="/edit/personal" element={<EditPersonal />} />
-          <Route path="/edit/project/*" element={<EditProject />} />
-          <Route path="/edit/skill/*" element={<EditSkill />} />
+          <Route path="/personal/edit" element={<EditPersonal />} />
+          <Route path="/projects/edit/*" element={<EditProject />} />
+          <Route path="/skill/edit/*" element={<EditSkill />} />
         </Routes>
       </Router>
     </>
