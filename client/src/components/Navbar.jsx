@@ -15,6 +15,7 @@ function Navbar() {
           {links.map((link) => {
             return (
               <Pill
+                key={link.path}
                 to={link.path}
                 label={link.label}
                 icon={{ link: link.icon, size: 16 }}

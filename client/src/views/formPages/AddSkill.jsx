@@ -21,14 +21,13 @@ function AddSkill() {
     await promise;
     reset();
   };
+
   return (
     <>
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4">
-          <h1 className="text-[2rem] text-text-primary font-medium">
-            Add a new skill
-          </h1>
+          <h1 className="form-heading">Add a new skill</h1>
         </div>
 
         <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
