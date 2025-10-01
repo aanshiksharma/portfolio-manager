@@ -46,21 +46,13 @@
       @apply font-semibold text-xs text-text-muted;
     }
 
-    input:not([type="file"]),
-    textarea {
-      @apply p-2 max-w-110 w-full h-full rounded-sm transition ease-out duration-200 bg-bg-surface-dark/60;
-      @apply outline-2 outline-transparent border-1 border-border;
-      @apply placeholder:text-text-primary/50 text-text-primary font-normal;
-      @apply focus:outline-accent focus:border-transparent;
-    }
-
     textarea {
       @apply max-w-none min-h-[3lh] box-content;
     }
 
     input[type="checkbox"] {
       @apply w-4 h-4 p-0 bg-transparent appearance-none cursor-pointer;
-      @apply outline-0 border-2 border-text-primary;
+      @apply outline-0 border-2 border-text-primary focus:border-accent;
 
       &:checked {
         @apply border-accent bg-accent;
@@ -76,5 +68,13 @@
     .error-message {
       @apply font-semibold text-xs text-error;
     }
+  }
+
+  input:not([type="file"]),
+  textarea {
+    @apply p-2 max-w-110 w-full h-full rounded-sm transition ease-out duration-200 bg-bg-surface-dark/60;
+    @apply outline-2 outline-transparent border-1 border-border;
+    @apply placeholder:text-text-primary/50 text-text-primary font-normal;
+    @apply focus:outline-accent focus:border-transparent;
   }
 }

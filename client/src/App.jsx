@@ -7,20 +7,21 @@ import Register from "./views/auth/Register";
 // Pages Routes
 import NotFound from "./views/NotFound";
 import Dashboard from "./views/Dashboard";
-import Projects from "./views/pages/Projects";
-import ProjectPage from "./views/pages/ProjectPage";
-import Skills from "./views/pages/Skills";
 
-// Form Pages Routes
-// Add
-import AddSkill from "./views/formPages/AddSkill";
-import AddProject from "./views/formPages/AddProject";
+// Projects
+import Projects from "./views/projects/Projects";
+import ProjectPage from "./views/projects/ProjectPage";
+import AddProject from "./views/projects/AddProject";
+import EditProject from "./views/projects/EditProject";
 
-// Edit
-import EditPersonal from "./views/formPages/EditPersonal";
-import EditSkill from "./views/formPages/EditSkill";
-import EditProject from "./views/formPages/EditProject";
-import Admin from "./views/pages/Admin";
+// Skills
+import Skills from "./views/skills/Skills";
+import AddSkill from "./views/skills/AddSkill";
+import EditSkill from "./views/skills/EditSkill";
+
+// Personal
+import Admin from "./views/admin/Admin";
+import EditPersonal from "./views/admin/EditPersonal";
 
 function App() {
   return (
@@ -43,21 +44,20 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/" element={<Dashboard />} />
 
-          {/* PAGES ROUTES */}
-          <Route path="/projects/*" element={<ProjectPage />} />
+          {/* PROJECTS ROUTES */}
           <Route path="/projects" element={<Projects />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/personal" element={<Admin />} />
-
-          {/* FORM PAGES ROUTES */}
-          {/* ADD */}
+          <Route path="/projects/*" element={<ProjectPage />} />
           <Route path="/projects/add" element={<AddProject />} />
-          <Route path="/skills/add" element={<AddSkill />} />
-
-          {/* EDIT */}
-          <Route path="/personal/edit" element={<EditPersonal />} />
           <Route path="/projects/edit/*" element={<EditProject />} />
+
+          {/* SKILLS ROUTES */}
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/skills/add" element={<AddSkill />} />
           <Route path="/skills/edit/*" element={<EditSkill />} />
+
+          {/* ADMIN ROUTES */}
+          <Route path="/personal" element={<Admin />} />
+          <Route path="/personal/edit" element={<EditPersonal />} />
 
           {/* NOT FOUND PAGE ROUTE */}
           <Route path="/*" element={<NotFound />} />
