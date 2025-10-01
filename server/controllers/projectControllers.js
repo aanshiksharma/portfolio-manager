@@ -26,6 +26,16 @@ const addProject = async (req, res) => {
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
 
+  if (!req.file)
+    res.status(400).json({ message: "A cover image is required." });
+
+  const imageFile = req.file;
+  const coverImage = {
+    fileName: imageFile.originalname,
+    url: imageFile.path,
+    uplaodedAt: new Date(),
+  };
+
   const newProject = new Project({
     title,
     skills,
@@ -34,13 +44,8 @@ const addProject = async (req, res) => {
     projectLink,
     githubLink,
 
-    // Cover image and other images will be handled with file upload logic later
-    coverImage: {
-      fileName: "default-cover.png",
-      firebasePath: "projects/default-cover.png",
-      url: "https://example.com/default-cover.png",
-      uploadedAt: new Date(),
-    },
+    // Other images will be handled with file upload logic later
+    coverImage,
     otherImages: [],
   });
   await newProject.save();
