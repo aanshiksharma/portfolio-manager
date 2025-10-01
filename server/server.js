@@ -42,6 +42,9 @@ app.use("/api/projects", projectRoutes);
 import skillRoutes from "./routes/skillRoute.js";
 app.use("/api/skills", skillRoutes);
 
+import categoryRoutes from "./routes/categoryRoutes.js";
+app.use("/api/categories", categoryRoutes);
+
 import adminRoutes from "./routes/adminRoutes.js";
 app.use("/api/admin", adminRoutes);
 
