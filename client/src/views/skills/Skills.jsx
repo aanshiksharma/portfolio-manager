@@ -35,39 +35,49 @@ function Skills() {
     loadData();
   }, []);
 
-  if (loading)
-    return (
-      <>
-        <LoadingPage />
-      </>
-    );
-  else
-    return (
-      <>
-        <Navbar />
-        <div className="container">
-          <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-200 mx-auto">
-            <section className="flex items-center justify-between">
-              <h1 className="text-[2rem] text-text-primary">Skills</h1>
+  if (loading) return <LoadingPage />;
+
+  return (
+    <>
+      <Navbar />
+      <div className="container">
+        <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-200 mx-auto">
+          <section className="flex items-center justify-between">
+            <h1 className="text-[2rem] text-text-primary">Skills</h1>
+            <Button
+              label={"Add a skill"}
+              icon={{ icon: "plus", size: 18 }}
+              variant={"accent"}
+              onClick={() => {
+                navigate("/skills/add");
+              }}
+            />
+          </section>
+
+          <form className="searchbar flex items-center justify-center gap-4">
+            <input
+              type="text"
+              name="search-skills"
+              placeholder="Search skills"
+            />
+          </form>
+
+          {categories.length === 0 ? (
+            <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
+              <h2 className="text-text-primary text-2xl text-center">
+                No skills found.
+              </h2>
               <Button
-                label={"Add a skill"}
-                icon={{ icon: "plus", size: 18 }}
                 variant={"accent"}
+                label={"Add one right now"}
+                icon={{ icon: "plus", size: 20 }}
                 onClick={() => {
                   navigate("/skills/add");
                 }}
               />
             </section>
-
-            <form className="searchbar flex items-center justify-center gap-4">
-              <input
-                type="text"
-                name="search-skills"
-                placeholder="Search skills"
-              />
-            </form>
-
-            {categories.map((category) => {
+          ) : (
+            categories.map((category) => {
               return (
                 <section
                   key={category._id}
@@ -89,11 +99,12 @@ function Skills() {
                   </ul>
                 </section>
               );
-            })}
-          </div>
+            })
+          )}
         </div>
-      </>
-    );
+      </div>
+    </>
+  );
 }
 
 export default Skills;
