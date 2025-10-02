@@ -20,12 +20,12 @@ function AddProject() {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("skills", data.skills);
+    formData.append("skills", data.skills.split(","));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
-    formData.append("projectLink", data["project-link"]);
-    formData.append("githubLink", data["github-link"]);
-    formData.append("coverImage", data["cover-image"][0]);
+    formData.append("projectLink", data.projectLink);
+    formData.append("githubLink", data.githubLink);
+    formData.append("coverImage", data.coverImage[0]);
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/projects/`, {
@@ -125,7 +125,7 @@ function AddProject() {
                 <span className="label">Project Link</span>
                 <input
                   placeholder="Project's live link"
-                  {...register("project-link")}
+                  {...register("projectLink")}
                 />
               </div>
 
@@ -133,7 +133,7 @@ function AddProject() {
                 <span className="label">GitHub Link</span>
                 <input
                   placeholder="Project's github link"
-                  {...register("github-link")}
+                  {...register("githubLink")}
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ function AddProject() {
                 <span className="label">Main Cover Image*</span>
                 <input
                   type="file"
-                  {...register("cover-image", {
+                  {...register("coverImage", {
                     required: {
                       value: true,
                       message: "Please upload a cover image.",
@@ -163,14 +163,13 @@ function AddProject() {
                   })}
                 />
                 <span className="error-message">
-                  {errors["main-cover-photo"] &&
-                    errors["main-cover-photo"].message}
+                  {errors.coverImage && errors.coverImage.message}
                 </span>
               </div>
 
               <div className="input-group">
                 <span className="label">Other Photos</span>
-                <input type="file" {...register("other-photos")} />
+                <input type="file" {...register("otherPhotos")} />
               </div>
             </div>
           </div>

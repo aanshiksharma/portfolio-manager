@@ -22,6 +22,7 @@ import EditSkill from "./views/skills/EditSkill";
 // Personal
 import Admin from "./views/admin/Admin";
 import EditPersonal from "./views/admin/EditPersonal";
+import ViewHandler from "./views/ViewHandler";
 
 function App() {
   return (
@@ -42,7 +43,7 @@ function App() {
 
           {/* DASHBOARD ROUTES */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<ViewHandler />} />
 
           {/* PROJECTS ROUTES */}
           <Route path="/projects" element={<Projects />} />

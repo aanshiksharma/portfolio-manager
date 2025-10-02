@@ -53,7 +53,7 @@ function Login({ role }) {
 
         if (!res.ok) return;
       }
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -126,6 +126,7 @@ function Login({ role }) {
                   <input
                     type="password"
                     placeholder="********"
+                    autoComplete="password"
                     {...register("password", {
                       required: {
                         value: true,
@@ -136,6 +137,7 @@ function Login({ role }) {
                 ) : (
                   <input
                     placeholder="John Doe"
+                    autoComplete="name"
                     {...register(`${role}Name`, {
                       required: {
                         value: true,
