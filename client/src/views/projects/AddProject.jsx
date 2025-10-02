@@ -39,8 +39,7 @@ function AddProject() {
       const response = res.ok ? await res.json() : "Server error";
       console.log(response);
     } catch (err) {
-      return console.log("SERVER ERROR", err);
-      setUploading(false);
+      console.log("SERVER ERROR", err);
     } finally {
       setUploading(false);
     }
@@ -48,7 +47,7 @@ function AddProject() {
 
   return (
     <>
-      {!uploading && <UploadingOverlay />}
+      {uploading && <UploadingOverlay />}
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4">

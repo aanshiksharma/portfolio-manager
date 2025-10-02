@@ -26,7 +26,6 @@ function Skills() {
         setSkills(skills);
       } catch (err) {
         console.error("Error fetching data.", err);
-        setLoading(false);
       } finally {
         setLoading(false);
       }

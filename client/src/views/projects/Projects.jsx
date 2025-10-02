@@ -77,15 +77,13 @@ function Projects() {
             ) : (
               projects.map((project) => {
                 return (
-                  <>
-                    <ProjectCard
-                      key={project._id}
-                      id={project._id}
-                      title={project.title}
-                      projectLink={project.projectLink}
-                      imageUrl={project.coverImage.url}
-                    />
-                  </>
+                  <ProjectCard
+                    key={project._id}
+                    id={project._id}
+                    title={project.title}
+                    projectLink={project.projectLink}
+                    imageUrl={project.coverImage.url}
+                  />
                 );
               })
             )}
