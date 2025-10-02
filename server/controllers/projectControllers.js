@@ -27,13 +27,13 @@ const addProject = async (req, res) => {
     req.body;
 
   if (!req.file)
-    res.status(400).json({ message: "A cover image is required." });
+    return res.status(400).json({ message: "A cover image is required." });
 
   const imageFile = req.file;
   const coverImage = {
     fileName: imageFile.originalname,
     url: imageFile.path,
-    uplaodedAt: new Date(),
+    uploadedAt: new Date(),
   };
 
   const newProject = new Project({
