@@ -1,11 +1,12 @@
 import Project from "../models/Project.js";
+import { deleteImage } from "./imageControllers.js";
 
 // Get all projects
 const getProjects = async (req, res) => {
   const projects = await Project.find();
 
   if (projects.length === 0)
-    res.status(404).json({ message: "No projects found" });
+    return res.status(404).json({ message: "No projects found" });
 
   res.status(200).json(projects);
 };
@@ -30,8 +31,11 @@ const addProject = async (req, res) => {
     return res.status(400).json({ message: "A cover image is required." });
 
   const imageFile = req.file;
+  console.log(imageFile); // to be removed
+
   const coverImage = {
     fileName: imageFile.originalname,
+    publicId: imageFile.filename,
     url: imageFile.path,
     uploadedAt: new Date(),
   };
@@ -87,6 +91,9 @@ const deleteProject = async (req, res) => {
 
   const deletedProject = await Project.findByIdAndDelete(id);
   if (!deletedProject) res.status(404).json({ message: "Project not found" });
+
+  // Delete image from cloudinary
+  await deleteImage(deletedProject.coverImage.publicId);
 
   res
     .status(200)
