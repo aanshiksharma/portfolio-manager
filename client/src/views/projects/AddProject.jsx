@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
+import UploadingOverlay from "../../components/ui/UploadingOverlay";
 
 function AddProject() {
   const {
@@ -11,16 +13,42 @@ function AddProject() {
     formState: { errors },
   } = useForm();
 
+  const [uploading, setUploading] = useState(false);
+
   const onSubmit = async (data) => {
-    const promise = new Promise((resolve, rej) => {
-      setTimeout(() => resolve(), 1500);
-    });
-    await promise;
-    reset();
+    setUploading(true);
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("skills", data.skills);
+    formData.append("featured", data.featured);
+    formData.append("description", data.description);
+    formData.append("projectLink", data["project-link"]);
+    formData.append("githubLink", data["github-link"]);
+    formData.append("coverImage", data["cover-image"][0]);
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/projects/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+
+      const response = res.ok ? await res.json() : "Server error";
+      console.log(response);
+    } catch (err) {
+      return console.log("SERVER ERROR", err);
+      setUploading(false);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
     <>
+      {!uploading && <UploadingOverlay />}
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4">
@@ -95,15 +123,15 @@ function AddProject() {
           <div className="right max-w-200 w-full">
             <div className="w-full flex flex-col gap-6">
               <div className="input-group">
-                <span className="label">Deployed Site</span>
+                <span className="label">Project Link</span>
                 <input
-                  placeholder="Project's live site link"
-                  {...register("deployed-link")}
+                  placeholder="Project's live link"
+                  {...register("project-link")}
                 />
               </div>
 
               <div className="input-group">
-                <span className="label">GitHub</span>
+                <span className="label">GitHub Link</span>
                 <input
                   placeholder="Project's github link"
                   {...register("github-link")}
@@ -125,10 +153,10 @@ function AddProject() {
           <div className="right max-w-200 w-full">
             <div className="w-full flex flex-col gap-6">
               <div className="input-group">
-                <span className="label">Main Cover Photo*</span>
+                <span className="label">Main Cover Image*</span>
                 <input
                   type="file"
-                  {...register("main-cover-photo", {
+                  {...register("cover-image", {
                     required: {
                       value: true,
                       message: "Please upload a cover image.",

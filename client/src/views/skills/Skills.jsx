@@ -35,7 +35,13 @@ function Skills() {
     loadData();
   }, []);
 
-  if (loading) return <LoadingPage />;
+  if (loading)
+    return (
+      <>
+        <Navbar />
+        <LoadingPage />;
+      </>
+    );
 
   return (
     <>

@@ -5,8 +5,9 @@ import {
   Cpu,
   Person,
   FileEarmarkX,
-  Plus,
+  PlusLg,
   Search,
+  Link45deg,
 } from "react-bootstrap-icons";
 
 function Icon({ icon, size }) {
@@ -20,9 +21,11 @@ function Icon({ icon, size }) {
     case "person":
       return <Person size={size} />;
     case "plus":
-      return <Plus size={size} />;
+      return <PlusLg size={size} />;
     case "search":
       return <Search size={size} />;
+    case "link":
+      return <Link45deg size={size} />;
     case "not-found":
       return <FileEarmarkX size={size} />;
     case "exclamation-circle":

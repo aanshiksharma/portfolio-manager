@@ -1,9 +1,13 @@
 import Icon from "./Icon";
 
-function Button({ label, icon, type, variant, onClick }) {
+function Button({ label, icon, type, className, variant, onClick }) {
   const styles = {
-    base: `py-2 rounded-lg min-w-15 text-xs font-semibold transition ease-out cursor-pointer ${
-      icon ? "px-2 flex items-center justify-center gap-2" : "px-3"
+    base: `py-2 rounded-lg text-xs font-semibold transition ease-out cursor-pointer ${
+      icon
+        ? label
+          ? "px-2 flex items-center justify-center gap-2 min-w-15"
+          : "px-2 border-1 border-border"
+        : "px-3 min-w-15"
     }`,
     primary: "bg-bg-surface-dark/50 text-text-primary hover:bg-bg-surface-dark",
     secondary:
@@ -15,9 +19,10 @@ function Button({ label, icon, type, variant, onClick }) {
     <button
       type={type || "button"}
       className={`
-            ${styles.base}
-            ${styles[variant]}
-        `}
+        ${styles.base}
+        ${styles[variant]}
+        ${className}
+      `}
       onClick={onClick}
     >
       {icon && <Icon icon={icon.icon} size={icon.size} />}
