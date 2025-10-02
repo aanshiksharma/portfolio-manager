@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get("/", getProjects);
 router.get("/:id", getSingleProject);
-router.post("/", authenticateToken, upload.single("coverImage"), addProject);
+router.post("/", authenticateToken, addProject);
 router.put("/:id", authenticateToken, upload.single("coverImage"), editProject);
 router.delete("/:id", authenticateToken, deleteProject);
 

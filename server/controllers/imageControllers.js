@@ -1,5 +1,17 @@
 import { v2 as cloudinary } from "cloudinary";
 
+const uploadImage = async (file) => {
+  try {
+    const result = await cloudinary.uploader.upload(file, {
+      folder: "projects-cover-images",
+    });
+    console.log("Clodinary upload result :", result);
+    return result;
+  } catch (err) {
+    console.error("Error uploading image to Cloudinary", err);
+  }
+};
+
 const deleteImage = async (publicId) => {
   try {
     const result = await cloudinary.uploader.destroy(publicId);
@@ -11,4 +23,4 @@ const deleteImage = async (publicId) => {
   }
 };
 
-export { deleteImage };
+export { uploadImage, deleteImage };

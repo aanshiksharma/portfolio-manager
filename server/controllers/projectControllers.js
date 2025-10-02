@@ -1,5 +1,5 @@
 import Project from "../models/Project.js";
-import { deleteImage } from "./imageControllers.js";
+import { uploadImage, deleteImage } from "./imageControllers.js";
 
 // Get all projects
 const getProjects = async (req, res) => {
@@ -27,16 +27,22 @@ const addProject = async (req, res) => {
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
 
-  if (!req.file)
-    return res.status(400).json({ message: "A cover image is required." });
+  const existingProject = await Project.findOne({ projectLink });
+  if (existingProject) {
+    return res.status(400).json({ message: "Project already exists." });
+  }
 
-  const imageFile = req.file;
-  console.log(imageFile); // to be removed
+  if (!req.file) {
+    return res.status(400).json({ message: "A cover image is required." });
+  }
+
+  // Upload to cloudinary
+  const uploadResult = await uploadImage(req.file.path);
 
   const coverImage = {
-    fileName: imageFile.originalname,
-    publicId: imageFile.filename,
-    url: imageFile.path,
+    fileName: req.file.originalname, // original name from user
+    publicId: uploadResult.public_id, // Cloudinary’s ID
+    url: uploadResult.secure_url, // Cloudinary’s URL
     uploadedAt: new Date(),
   };
 
