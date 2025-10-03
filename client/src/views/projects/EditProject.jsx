@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useImageViewer } from "../../contexts/ImageViewerContext";
 
-import ImageViewer from "../../components/ui/ImageViewer";
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
@@ -12,15 +12,13 @@ function EditProject() {
     value: true,
     message: "Loading...",
   });
-  const [previewImage, setPreviewImage] = useState({
-    url: "",
-    visibility: false,
-  });
 
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname.split("/");
   const projectId = pathname[pathname.length - 1];
+
+  const { open } = useImageViewer();
 
   const {
     register,
@@ -114,10 +112,6 @@ function EditProject() {
     }
   };
 
-  const toggleImagePreview = (url) => {
-    setPreviewImage({ url: url, visibility: !previewImage.visibility });
-  };
-
   const projectData = watch();
 
   if (loading.value)
@@ -130,11 +124,6 @@ function EditProject() {
 
   return (
     <>
-      <ImageViewer
-        url={previewImage.url}
-        visible={previewImage.visibility}
-        setPreviewImage={setPreviewImage}
-      />
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4 flex items-center justify-between w-full">
@@ -254,7 +243,7 @@ function EditProject() {
                   type="button"
                   className="image-overview"
                   onClick={() => {
-                    toggleImagePreview(projectData.coverImage.url);
+                    open(projectData.coverImage.url);
                   }}
                 >
                   <div className="flex items-center justify-center rounded-sm w-9.5 min-h-7.5 aspect-video overflow-hidden">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useImageViewer } from "../../contexts/ImageViewerContext";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
@@ -15,6 +16,8 @@ function ProjectPage() {
   const location = useLocation();
   const pathname = location.pathname.split("/");
   const projectId = pathname[pathname.length - 1];
+
+  const { open } = useImageViewer();
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
@@ -119,7 +122,12 @@ function ProjectPage() {
           {/* Gallery Section */}
           {activeTab === "gallery" && (
             <section className="flex flex-col gap-4">
-              <div className="cover-image-container shadow-md shadow-text-secondary/25 border border-border rounded-lg overflow-hidden">
+              <div
+                className="cover-image-container shadow-md shadow-text-secondary/25 border border-border rounded-lg overflow-hidden cursor-pointer"
+                onClick={() => {
+                  open(project.coverImage.url);
+                }}
+              >
                 <img src={project.coverImage.url} alt="" />
               </div>
 
@@ -136,7 +144,12 @@ function ProjectPage() {
                   {project.otherImages.length !== 0 &&
                     project.otherImages.map((image) => {
                       return (
-                        <div className="border border-border rounded-lg overflow-hidden shadow-md shadow-bg-surface-light max-w-xs">
+                        <div
+                          className="border border-border rounded-lg overflow-hidden shadow-md shadow-bg-surface-light max-w-xs"
+                          onClick={() => {
+                            open(image.url);
+                          }}
+                        >
                           <img src={image.url} alt="" />
                         </div>
                       );

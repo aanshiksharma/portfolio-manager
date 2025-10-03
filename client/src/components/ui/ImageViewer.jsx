@@ -1,9 +1,9 @@
 import Button from "../Button";
+import { useImageViewer } from "../../contexts/ImageViewerContext";
 
-function ImageViewer({ url, visible, setPreviewImage }) {
-  const handleVisibility = () => {
-    setPreviewImage({ url: "", visibility: false });
-  };
+function ImageViewer() {
+  const { visible, imageUrl, close } = useImageViewer();
+
   if (visible)
     return (
       <>
@@ -18,11 +18,11 @@ function ImageViewer({ url, visible, setPreviewImage }) {
           <Button
             variant={"primary"}
             icon={{ icon: "x", size: 16 }}
-            onClick={handleVisibility}
+            onClick={() => close()}
             className="border-none fixed top-3 right-3 font-bold bg-transparent hover:bg-transparent"
           />
           <div className="image-container max-w-6xl rounded-lg overflow-hidden">
-            <img src={url} alt="" />
+            <img src={imageUrl} alt="" />
           </div>
         </div>
       </>
