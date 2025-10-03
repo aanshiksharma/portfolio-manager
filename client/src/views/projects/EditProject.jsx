@@ -2,13 +2,20 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import ImageViewer from "../../components/ui/ImageViewer";
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
 function EditProject() {
-  const [loading, setLoading] = useState(false);
-  const [projectData, setProjectData] = useState({});
+  const [loading, setLoading] = useState({
+    value: true,
+    message: "Loading...",
+  });
+  const [previewImage, setPreviewImage] = useState({
+    url: "",
+    visibility: false,
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,6 +25,7 @@ function EditProject() {
   const {
     register,
     handleSubmit,
+    watch,
     reset,
     formState: { errors },
   } = useForm();
@@ -30,30 +38,67 @@ function EditProject() {
         if (!res.ok) console.log("Error fetching data");
 
         const project = await res.json();
-        setProjectData(project);
 
         reset(project);
       } catch (err) {
         // Toast notification to be added
-        alert("Could not load projects");
         console.log("Error loading project", err);
       } finally {
-        setLoading(false);
+        setLoading({ value: false, message: "" });
       }
     };
 
     loadProjectData();
   }, []);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    // Toast notification to be added
-    alert("Project Updated!");
-    navigate("/dashboard");
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("skills", data.skills);
+    formData.append("featured", data.featured);
+    formData.append("description", data.description);
+    formData.append("projectLink", data.projectLink);
+    formData.append("githubLink", data.githubLink);
+    formData.append("coverImage", data.coverImage[0]);
+
+    try {
+      setLoading({
+        value: true,
+        message: "Uploading Data...",
+      });
+
+      const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        body: formData,
+      });
+
+      const result = await res.json();
+      console.log(result);
+
+      if (!res.ok) {
+        console.log("Server responded with error code :", res.status);
+        if (res.status === 403) {
+          alert("You need to login as admin before you can save changes!");
+          navigate("/auth/login");
+        } else return alert("Cannot update project at the moment!");
+      }
+
+      // Toast notification to be added
+      console.log(res.status, result.message);
+    } catch (err) {
+      console.error("Error updating project :", err);
+    } finally {
+      setLoading({
+        value: false,
+        message: "",
+      });
+    }
   };
 
   const handleDeleteProject = async () => {
-    setLoading(true);
+    setLoading({ value: true, message: "Deleting Project..." });
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
@@ -65,20 +110,31 @@ function EditProject() {
       if (!res.ok) return;
     } catch (err) {
     } finally {
-      setLoading(false);
+      setLoading({ value: false, message: "" });
     }
   };
 
-  if (loading)
+  const toggleImagePreview = (url) => {
+    setPreviewImage({ url: url, visibility: !previewImage.visibility });
+  };
+
+  const projectData = watch();
+
+  if (loading.value)
     return (
       <>
         <Navbar />
-        <LoadingPage />;
+        <LoadingPage text={loading.message} />
       </>
     );
 
   return (
     <>
+      <ImageViewer
+        url={previewImage.url}
+        visible={previewImage.visibility}
+        setPreviewImage={setPreviewImage}
+      />
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4 flex items-center justify-between w-full">
@@ -145,9 +201,6 @@ function EditProject() {
                 <input
                   type="checkbox"
                   id="checkbox"
-                  defaultChecked={
-                    projectData.featured ? "checked" : "unchecked"
-                  }
                   {...register("featured")}
                 />
                 <label htmlFor="checkbox" className="text-text-primary">
@@ -195,18 +248,27 @@ function EditProject() {
             <div className="w-full flex flex-col gap-6">
               <div className="input-group">
                 <span className="label">Main Cover Image*</span>
-                <input
-                  type="file"
-                  {...register("coverImage", {
-                    required: {
-                      value: true,
-                      message: "Please upload a cover image.",
-                    },
-                  })}
-                />
-                <span className="error-message">
-                  {errors.coverImage && errors.coverImage.message}
-                </span>
+
+                {/* The button below opens an image view. */}
+                <button
+                  type="button"
+                  className="image-overview"
+                  onClick={() => {
+                    toggleImagePreview(projectData.coverImage.url);
+                  }}
+                >
+                  <div className="flex items-center justify-center rounded-sm w-9.5 min-h-7.5 aspect-video overflow-hidden">
+                    <img
+                      src={projectData.coverImage.url}
+                      alt=""
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <span className="text-text-secondary">
+                    {projectData.coverImage.fileName}
+                  </span>
+                </button>
+                <input type="file" {...register("coverImage")} />
               </div>
 
               <div className="input-group">

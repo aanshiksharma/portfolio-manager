@@ -17,7 +17,7 @@ function ProjectCard({ id, title, projectLink, imageUrl }) {
           <a
             href={projectLink}
             target="_blank"
-            className="text-xs flex items-center gap-1"
+            className="text-xs flex items-center gap-1 hover:text-text-secondary transition ease-out"
           >
             <Icon size={12} icon={"link"} />
             {projectLink}

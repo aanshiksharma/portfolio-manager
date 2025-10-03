@@ -1,10 +1,10 @@
-import React from "react";
-
-function LoadingPage() {
+function LoadingPage({ text }) {
   return (
     <>
-      <div className="text-text-primary flex items-center justify-center h-screen w-full">
-        Loading...
+      <div className="container justify-center">
+        <p className="w-full text-text-primary text-center">
+          {text ? text : "Loading..."}
+        </p>
       </div>
     </>
   );

@@ -6,6 +6,7 @@ import {
   Person,
   FileEarmarkX,
   PlusLg,
+  XLg,
   Search,
   Link45deg,
 } from "react-bootstrap-icons";
@@ -22,6 +23,8 @@ function Icon({ icon, size }) {
       return <Person size={size} />;
     case "plus":
       return <PlusLg size={size} />;
+    case "x":
+      return <XLg size={size} />;
     case "search":
       return <Search size={size} />;
     case "link":

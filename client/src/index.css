@@ -23,8 +23,8 @@
   }
 
   body {
-    @apply font-['Inter'] text-text-muted;
-    @apply bg-bg-base;
+    @apply font-['Inter'] text-text-muted
+    bg-bg-base;
   }
 
   .container {
@@ -51,8 +51,8 @@
     }
 
     input[type="checkbox"] {
-      @apply w-4 h-4 p-0 bg-transparent appearance-none cursor-pointer;
-      @apply outline-0 border-2 border-text-primary focus:border-accent;
+      @apply w-4 h-4 p-0 bg-transparent appearance-none cursor-pointer
+      outline-0 border-2 border-text-primary focus:border-accent;
 
       &:checked {
         @apply border-accent bg-accent;
@@ -60,9 +60,16 @@
     }
 
     input[type="file"] {
-      @apply w-full px-8 py-16 rounded-sm;
-      @apply outline-0 border-dashed border-2 border-border;
-      @apply focus:border-accent;
+      @apply w-full px-8 py-16 rounded-sm
+      outline-0 border-dashed border-2 border-border
+       focus:border-accent;
+    }
+
+    .image-overview {
+      @apply max-w-75 p-2 rounded-sm
+      flex items-center gap-4
+      border-1 border-border/50 
+      bg-bg-surface-dark/50;
     }
 
     .error-message {
@@ -72,9 +79,9 @@
 
   input:not([type="file"]),
   textarea {
-    @apply p-2 max-w-110 w-full h-full rounded-sm transition ease-out duration-200 bg-bg-surface-dark/60;
-    @apply outline-2 outline-transparent border-1 border-border;
-    @apply placeholder:text-text-primary/50 text-text-primary font-normal;
-    @apply focus:outline-accent focus:border-transparent;
+    @apply p-2 max-w-110 w-full h-full rounded-sm transition ease-out duration-200 bg-bg-surface-dark/60
+    outline-2 outline-transparent border-1 border-border
+    placeholder:text-text-primary/50 text-text-primary font-normal
+    focus:outline-accent focus:border-transparent;
   }
 }
