@@ -7,6 +7,8 @@ import {
   FileEarmarkX,
   PlusLg,
   XLg,
+  Images,
+  Database,
   Search,
   Link45deg,
 } from "react-bootstrap-icons";
@@ -29,6 +31,10 @@ function Icon({ icon, size }) {
       return <Search size={size} />;
     case "link":
       return <Link45deg size={size} />;
+    case "database":
+      return <Database size={size} />;
+    case "images":
+      return <Images size={size} />;
     case "not-found":
       return <FileEarmarkX size={size} />;
     case "exclamation-circle":

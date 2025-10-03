@@ -2,7 +2,7 @@ import Pill from "./Pill";
 
 function Navbar() {
   const links = [
-    { path: "/", label: "Overview", icon: "book" },
+    { path: "/dashboard", label: "Overview", icon: "book" },
     { path: "/projects", label: "Projects", icon: "layout" },
     { path: "/skills", label: "Skills", icon: "cpu" },
     { path: "/personal", label: "Personal", icon: "person" },

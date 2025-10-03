@@ -44,7 +44,9 @@ function Projects() {
       <div className="container">
         <div className="flex flex-col gap-8 px-4 py-8 w-full">
           <section className="flex items-center justify-between">
-            <h1 className="text-[2rem] text-text-primary">Projects</h1>
+            <h1 className="text-[2rem] text-text-primary font-medium">
+              Projects
+            </h1>
             <div className="flex gap-2 items-center">
               <Button icon={{ icon: "search", size: 18 }} variant={"primary"} />
 

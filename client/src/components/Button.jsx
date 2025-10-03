@@ -14,6 +14,7 @@ function Button({ label, icon, type, className, variant, onClick }) {
       "bg-transparent text-text-muted hover:bg-bg-surface-dark/50 hover:text-text-primary",
     accent: "bg-accent text-text-primary hover:bg-accent/80",
     delete: "text-error bg-red-800/20 hover:bg-red-800/30",
+    disabled: "bg-bg-surface-light/75 text-text-secondary",
   };
 
   return (
