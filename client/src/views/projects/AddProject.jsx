@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
-import UploadingOverlay from "../../components/ui/UploadingOverlay";
+import LoadingPage from "../LoadingPage";
 
 function AddProject() {
+  const [adding, setAdding] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -13,10 +16,10 @@ function AddProject() {
     formState: { errors },
   } = useForm();
 
-  const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setUploading(true);
+    setAdding(true);
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const formData = new FormData();
     formData.append("title", data.title);
@@ -36,14 +39,35 @@ function AddProject() {
         body: formData,
       });
 
-      const response = res.ok ? await res.json() : "Server error";
-      console.log(response);
+      if (!res.ok) {
+        if (res.status === 403) {
+          alert("You need to be logged in as admin before adding a project");
+          navigate("/auth/login");
+          return;
+        }
+
+        return alert(
+          "Could not add your project at the moment. Try again later!"
+        );
+      }
+
+      const response = await res.json();
+      alert(response.message);
+      navigate(-1);
     } catch (err) {
       console.log("SERVER ERROR", err);
     } finally {
-      setUploading(false);
+      setAdding(false);
     }
   };
+
+  if (adding)
+    return (
+      <>
+        <Navbar />
+        <LoadingPage text="Adding Project..." />
+      </>
+    );
 
   return (
     <>

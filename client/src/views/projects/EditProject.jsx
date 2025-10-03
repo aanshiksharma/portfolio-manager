@@ -72,19 +72,19 @@ function EditProject() {
         body: formData,
       });
 
-      const result = await res.json();
-      console.log(result);
-
       if (!res.ok) {
-        console.log("Server responded with error code :", res.status);
         if (res.status === 403) {
           alert("You need to login as admin before you can save changes!");
           navigate("/auth/login");
         } else return alert("Cannot update project at the moment!");
       }
 
+      const result = await res.json();
+      console.log(result);
+
       // Toast notification to be added
-      console.log(res.status, result.message);
+      alert(res.status + ":" + result.message);
+      navigate(-1);
     } catch (err) {
       console.error("Error updating project :", err);
     } finally {
