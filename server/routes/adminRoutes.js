@@ -12,6 +12,6 @@ const router = express.Router();
 router.get("/", getAdmin);
 router.get("/:id", getAdminById);
 router.put("/:id", authenticateToken, updateAdmin);
-router.patch("/:id/change-password", authenticateToken, changePassword);
+router.patch("/change-password/:id", authenticateToken, changePassword);
 
 export default router;

@@ -29,19 +29,15 @@ const updateAdmin = async (req, res) => {
   const {
     name,
     email,
-    password, // this password is not supposed to be updated. it will be used for validation only
     mobile,
     portfolioLink,
     about,
     socialMediaLinks,
+    resumeLink,
   } = req.body;
 
   const admin = await Admin.findById(id);
   if (!admin) return res.status(404).json({ message: "Admin not found" });
-
-  const isPasswordValid = await bcrypt.compare(password, admin.password);
-  if (!isPasswordValid)
-    return res.status(401).json({ message: "Invalid password" });
 
   // Update fields if new values are provided
   admin.name = name || admin.name;
@@ -49,18 +45,16 @@ const updateAdmin = async (req, res) => {
   admin.mobile = mobile || admin.mobile;
   admin.portfolioLink = portfolioLink || admin.portfolioLink;
   admin.about = about || admin.about;
+  admin.resumeLink = resumeLink || admin.resumeLink;
+  admin.socialMediaLinks = socialMediaLinks || admin.socialMediaLinks;
 
-  // Needs to be replaced with actual default file details
-  admin.resumeLink =
-    "https://example.com/changed-resume.pdf" || admin.resumeLink;
   admin.profileImage =
     {
-      fileName: "changed-profile.png",
-      firebasePath: "profiles/changed-profile.png",
-      url: "https://example.com/changed-profile.png",
+      fileName: "fileName",
+      publicId: "publicId",
+      url: "url",
       uploadedAt: new Date(),
     } || admin.profileImage;
-  admin.socialMediaLinks = socialMediaLinks || admin.socialMediaLinks;
 
   await admin.save();
   res.status(200).json({ message: "Admin updated successfully", admin });

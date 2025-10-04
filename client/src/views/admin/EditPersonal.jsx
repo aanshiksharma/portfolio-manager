@@ -3,7 +3,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
-import Icon from "../../components/Icon";
 
 import LoadingPage from "../LoadingPage";
 
@@ -67,10 +66,31 @@ function EditPersonal() {
     if (socialFields.length === 0) addSocial({ platform: "", link: "" });
   }, []);
 
-  // const adminDetails = watch();
+  const adminDetails = watch();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/admin/${adminDetails._id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const response = await res.json();
+
+      alert(response.message);
+      reset(response.admin);
+      console.log(response);
+    } catch (err) {
+      alert("Internal Server Error", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading)

@@ -11,7 +11,7 @@ const socialMediaLinkSchema = new mongoose.Schema(
 const adminImageSchema = new mongoose.Schema(
   {
     fileName: { type: String, required: true },
-    firebasePath: { type: String, required: true },
+    publicId: { type: String, required: true },
     url: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
   },

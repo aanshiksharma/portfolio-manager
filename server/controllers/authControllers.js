@@ -13,8 +13,9 @@ const adminRegister = async (req, res) => {
     password,
     verificationPassword,
     mobile,
-    portfolioLink,
     about,
+    portfolioLink,
+    resumeLink,
     socialMediaLinks,
   } = req.body;
 
@@ -32,16 +33,14 @@ const adminRegister = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      about,
       mobile,
       portfolioLink,
-      about,
+      resumeLink,
 
-      // Needs to be replaced with actual default file details
-      resumeLink: "https://example.com/default-resume.pdf",
-
-      profileImage: {
+      profileImage: profileImage || {
         fileName: "default-profile.png",
-        firebasePath: "profiles/default-profile.png",
+        publicId: "profiles/default-profile.png",
         url: "https://example.com/default-profile.png",
         uploadedAt: new Date(),
       },
