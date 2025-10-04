@@ -5,22 +5,26 @@ import Navbar from "../components/Navbar";
 import LoadingPage from "./LoadingPage";
 
 function Dashboard() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState();
+
   const navigate = useNavigate();
 
-  const BACKEND_LINK = import.meta.env.VITE_BACKEND_LINK;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const verifyToken = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`${BACKEND_LINK}/auth/verify-token`, {
+        const res = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
-        if (!res.ok) navigate("/auth/login");
-      } catch (err) {
-        console.error(err);
-      } finally {
+        if (!res.ok) return navigate("/auth/login");
+
         setLoading(false);
+      } catch (err) {
+        setLoadingText("An error occurred on our side.");
+        console.error(err);
       }
     };
 
@@ -31,7 +35,7 @@ function Dashboard() {
     return (
       <>
         <Navbar />
-        <LoadingPage />
+        <LoadingPage text={loadingText} />
       </>
     );
   }

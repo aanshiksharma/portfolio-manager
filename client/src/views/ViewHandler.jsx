@@ -6,6 +6,7 @@ import LoadingPage from "./LoadingPage";
 
 function ViewHandler() {
   const navigate = useNavigate();
+  const [loadingText, setLoadingText] = useState();
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,12 +14,23 @@ function ViewHandler() {
     const token = localStorage.getItem("token") || "";
 
     const verifyTokenAndNavigate = async (token) => {
-      const res = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (res.ok) navigate("/dashboard");
-      else navigate("/auth/login");
+        const response = await res.json();
+
+        if (res.ok) {
+          navigate("/dashboard");
+        } else {
+          navigate("/auth/login");
+        }
+      } catch (err) {
+        setLoadingText(
+          `An error occurred on our side. Please try again later!`
+        );
+      }
     };
 
     verifyTokenAndNavigate(token);
@@ -27,7 +39,7 @@ function ViewHandler() {
   return (
     <>
       <Navbar />
-      <LoadingPage />
+      <LoadingPage text={loadingText} />
     </>
   );
 }
