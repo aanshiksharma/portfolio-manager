@@ -48,7 +48,9 @@ function Skills() {
       <div className="container">
         <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-200 mx-auto">
           <section className="flex items-center justify-between">
-            <h1 className="text-[2rem] text-text-primary">Skills</h1>
+            <h1 className="text-[2rem] text-text-primary font-medium">
+              Skills
+            </h1>
             <Button
               label={"Add a skill"}
               icon={{ icon: "plus", size: 18 }}

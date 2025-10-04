@@ -40,15 +40,13 @@ function AddProject() {
       });
 
       if (!res.ok) {
-        if (res.status === 403) {
+        if (res.status === 403 || res.status === 401) {
           alert("You need to be logged in as admin before adding a project");
-          navigate("/auth/login");
-          return;
+          return navigate(-1);
         }
 
-        return alert(
-          "Could not add your project at the moment. Try again later!"
-        );
+        const response = await res.json();
+        alert(response.message);
       }
 
       const response = await res.json();
@@ -71,7 +69,6 @@ function AddProject() {
 
   return (
     <>
-      {uploading && <UploadingOverlay />}
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4">

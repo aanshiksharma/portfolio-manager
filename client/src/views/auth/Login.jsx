@@ -33,7 +33,6 @@ function Login({ role }) {
           body: JSON.stringify({ password: data.password }),
         });
 
-        const user = await res.json();
         if (!res.ok) {
           setError("password", {
             type: 401,
@@ -41,6 +40,8 @@ function Login({ role }) {
           });
           return;
         }
+
+        const user = await res.json();
 
         const token = user.token;
         localStorage.setItem("token", token);
@@ -52,6 +53,8 @@ function Login({ role }) {
         });
 
         if (!res.ok) return;
+
+        localStorage.setItem("login-mode", role);
       }
       navigate("/dashboard");
     } catch (error) {
@@ -61,11 +64,11 @@ function Login({ role }) {
 
   const welcomeText = [
     "This project runs behind my portfolio and keeps everything working smoothly",
-    "To protect the real data, only I (the admin) can save changes to the main database.",
-    "You’re free to explore, add or edit content, and see how it all looks in my portfolio — but those changes won’t stick.",
+    "To protect the real data, only I (the admin) can save changes to the main database. You’re free to explore, add or edit content — but those changes won’t stick.",
     "Recruiters, feel free to explore without fear, this won’t alter my actual portfolio.",
     "Thanks for dropping by, and have fun!",
   ];
+
   return (
     <>
       <div className="flex min-h-screen">

@@ -12,6 +12,7 @@ function ViewHandler() {
 
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
+    const loginMode = localStorage.getItem("login-mode");
 
     const verifyTokenAndNavigate = async (token) => {
       try {
@@ -19,13 +20,8 @@ function ViewHandler() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const response = await res.json();
-
-        if (res.ok) {
-          navigate("/dashboard");
-        } else {
-          navigate("/auth/login");
-        }
+        if (res.ok) navigate("/dashboard");
+        else navigate("/auth/login");
       } catch (err) {
         setLoadingText(
           `An error occurred on our side. Please try again later!`
@@ -33,7 +29,8 @@ function ViewHandler() {
       }
     };
 
-    verifyTokenAndNavigate(token);
+    if (loginMode) navigate("/dashboard");
+    else verifyTokenAndNavigate(token);
   }, []);
 
   return (

@@ -18,14 +18,9 @@ function Admin() {
     const loadPersonalData = async () => {
       try {
         const res = await fetch(`${BACKEND_URL}/api/admin`);
-
         const response = await res.json();
 
-        if (!res.ok) {
-          alert(response.message);
-          console.error(response.message);
-          return;
-        }
+        if (!res.ok) return alert(response.message);
 
         setAdminDetails(response);
       } catch (err) {

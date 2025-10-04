@@ -34,7 +34,7 @@ const addSkill = async (req, res) => {
   const existingSkill = await Skill.findOne({ name: skillName });
 
   if (existingSkill) {
-    return res.status(400).json({ message: "Skill already exists!" });
+    return res.status(409).json({ message: "Skill already exists!" });
   }
 
   const newSkill = new Skill({

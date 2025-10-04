@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
@@ -8,6 +9,8 @@ import LoadingPage from "../LoadingPage";
 
 function EditPersonal() {
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -81,11 +84,19 @@ function EditPersonal() {
         body: JSON.stringify(data),
       });
 
-      const response = await res.json();
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 401) {
+          alert("You need to be logged in as admin to save changes.");
+          return navigate(-1);
+        }
 
+        const response = await res.json();
+        alert(response.message);
+      }
+
+      const response = await res.json();
       alert(response.message);
       reset(response.admin);
-      console.log(response);
     } catch (err) {
       alert("Internal Server Error", err);
     } finally {

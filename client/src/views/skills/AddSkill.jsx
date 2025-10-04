@@ -35,12 +35,11 @@ function AddSkill() {
       if (!res.ok) {
         if (res.status === 403) {
           alert("You need to be logged in as admin to save changes.");
-          return navigate("/auth/login");
+          return navigate(-1);
         }
 
         const response = await res.json();
-        alert(response.message);
-        return console.log("Cannot add the skill right now. Try again later");
+        return alert(response.message);
       }
 
       alert("Skill added");

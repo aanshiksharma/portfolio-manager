@@ -12,23 +12,31 @@ function Dashboard() {
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
+    const loginMode = localStorage.getItem("login-mode");
+
     const verifyToken = async () => {
       setLoading(true);
+
       try {
         const res = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
-        if (!res.ok) return navigate("/auth/login");
+        if (!res.ok) {
+          const response = await res.json();
+          alert(response.message);
+          return navigate("/auth/login");
+        }
 
         setLoading(false);
       } catch (err) {
         setLoadingText("An error occurred on our side.");
-        console.error(err);
       }
     };
 
-    verifyToken();
+    if (!loginMode) {
+      verifyToken();
+    }
   }, []);
 
   if (loading) {
