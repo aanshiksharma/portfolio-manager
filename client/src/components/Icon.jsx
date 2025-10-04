@@ -5,12 +5,15 @@ import {
   Cpu,
   Person,
   FileEarmarkX,
-  PlusLg,
-  XLg,
   Images,
   Database,
+  Linkedin,
+  Github,
   Search,
   Link45deg,
+  PlusLg,
+  XLg,
+  Trash,
 } from "react-bootstrap-icons";
 
 function Icon({ icon, size }) {
@@ -31,10 +34,16 @@ function Icon({ icon, size }) {
       return <Search size={size} />;
     case "link":
       return <Link45deg size={size} />;
+    case "trash":
+      return <Trash size={size} />;
     case "database":
       return <Database size={size} />;
     case "images":
       return <Images size={size} />;
+    case "linkedin":
+      return <Linkedin size={size} />;
+    case "github":
+      return <Github size={size} />;
     case "not-found":
       return <FileEarmarkX size={size} />;
     case "exclamation-circle":

@@ -92,7 +92,7 @@ function ProjectPage() {
 
           {/* General Details Section */}
           {activeTab === "general" && (
-            <section className="flex flex-col min-h-40">
+            <section>
               <TableRow
                 heading={"Title"}
                 value={project.title}
