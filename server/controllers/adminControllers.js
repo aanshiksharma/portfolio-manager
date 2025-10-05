@@ -40,13 +40,13 @@ const updateAdmin = async (req, res) => {
   if (!admin) return res.status(404).json({ message: "Admin not found" });
 
   // Update fields if new values are provided
-  admin.name = name || admin.name;
-  admin.email = email || admin.email;
-  admin.mobile = mobile || admin.mobile;
-  admin.portfolioLink = portfolioLink || admin.portfolioLink;
-  admin.about = about || admin.about;
-  admin.resumeLink = resumeLink || admin.resumeLink;
-  admin.socialMediaLinks = socialMediaLinks || admin.socialMediaLinks;
+  admin.name = name;
+  admin.email = email;
+  admin.mobile = mobile;
+  admin.portfolioLink = portfolioLink;
+  admin.about = about;
+  admin.resumeLink = resumeLink;
+  admin.socialMediaLinks = socialMediaLinks;
 
   admin.profileImage =
     {

@@ -34,10 +34,16 @@ function Login({ role }) {
         });
 
         if (!res.ok) {
-          setError("password", {
-            type: 401,
-            message: "Incorrect Password",
-          });
+          if (res.status === 401)
+            setError("password", {
+              type: 401,
+              message: "Incorrect Password",
+            });
+
+          if (res.status === 404) {
+            alert("Please register the admin first!");
+            navigate("/auth/register");
+          }
           return;
         }
 

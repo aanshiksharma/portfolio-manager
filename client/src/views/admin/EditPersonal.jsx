@@ -6,9 +6,12 @@ import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 
 import LoadingPage from "../LoadingPage";
+import Overlay from "../../components/Overlay";
+import { transformWithEsbuild } from "vite";
 
 function EditPersonal() {
   const [loading, setLoading] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(true);
 
   const navigate = useNavigate();
 
@@ -67,12 +70,19 @@ function EditPersonal() {
   useEffect(() => {
     if (aboutFields.length === 0) addAbout("");
     if (socialFields.length === 0) addSocial({ platform: "", link: "" });
-  }, []);
+  }, [aboutFields, socialFields]);
 
   const adminDetails = watch();
 
   const onSubmit = async (data) => {
+    console.log(data);
     setLoading(true);
+    if (
+      data.socialMediaLinks[0].platform === "" ||
+      data.socialMediaLinks[0].link === ""
+    ) {
+      data.socialMediaLinks = [];
+    }
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/admin/${adminDetails._id}`, {
@@ -97,6 +107,7 @@ function EditPersonal() {
       const response = await res.json();
       alert(response.message);
       reset(response.admin);
+      navigate(-1);
     } catch (err) {
       alert("Internal Server Error", err);
     } finally {
@@ -115,6 +126,15 @@ function EditPersonal() {
   return (
     <>
       <Navbar />
+
+      {showOverlay && (
+        <ChangePasswordOverlay
+          onClose={() => {
+            setShowOverlay(false);
+          }}
+        />
+      )}
+
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 px-4 py-8 w-full">
           <section className="flex items-center justify-between">
@@ -126,7 +146,9 @@ function EditPersonal() {
               <Button
                 label={"Change Password"}
                 variant={"primary"}
-                onClick={() => {}}
+                onClick={() => {
+                  setShowOverlay(true);
+                }}
               />
             </div>
           </section>
@@ -193,7 +215,7 @@ function EditPersonal() {
                 </div>
 
                 <div className="input-group">
-                  <span className="label">About*</span>
+                  <span className="label">About</span>
 
                   {aboutFields.map((field, index) => (
                     <div key={field.id} className="flex items-center gap-3">
@@ -246,6 +268,7 @@ function EditPersonal() {
                       className="flex-1"
                       {...register(`socialMediaLinks.${index}.link`)}
                     />
+
                     <Button
                       variant={"delete"}
                       icon={{ icon: "trash", size: 16 }}
@@ -263,7 +286,10 @@ function EditPersonal() {
                   label={"Add a link"}
                   className={"self-start"}
                   onClick={() => {
-                    addSocial({ platform: "", link: "" });
+                    const hasEmpty = socialFields.some(
+                      (field) => !field.platform.trim() || !field.link.trim()
+                    );
+                    if (!hasEmpty) addSocial({ platform: "", link: "" });
                   }}
                 />
               </div>
@@ -285,6 +311,10 @@ function EditPersonal() {
                   variant={"delete"}
                   icon={{ icon: "trash", size: 16 }}
                   className={"border-none bg-transparent"}
+                  onClick={() => {
+                    const data = watch();
+                    reset({ ...data, resumeLink: "" });
+                  }}
                 />
               </div>
             </div>
@@ -297,6 +327,40 @@ function EditPersonal() {
         </div>
       </form>
     </>
+  );
+}
+
+function ChangePasswordOverlay({ onClose }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async () => {};
+
+  return (
+    <Overlay>
+      <form
+        className={`
+          py-8 px-6 rounded-lg border-1 max-w-xs w-full
+        bg-bg-base border-border/50
+          flex flex-col gap-6
+        `}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <section className="flex items-center justify-between">
+          <h2 className="font-semibold text-text-primary">Change Password</h2>
+
+          <Button
+            icon={{ icon: "x", size: 16 }}
+            variant={"secondary"}
+            className={"!p-0 border-none hover:bg-transparent"}
+            onClick={onClose}
+          />
+        </section>
+      </form>
+    </Overlay>
   );
 }
 

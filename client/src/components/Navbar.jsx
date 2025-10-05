@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Pill from "./Pill";
 import Button from "./Button";
 
-function Navbar() {
+function Navbar({ text }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [loggedIn, setLoggedIn] = useState();
 
@@ -35,18 +35,22 @@ function Navbar() {
   return (
     <>
       <header className="border-b-1 border-border px-4 py-3 fixed inset-0 bottom-auto bg-bg-base/25 backdrop-blur-3xl flex items-center justify-between">
-        <nav className="flex gap-4 items-center">
-          {links.map((link) => {
-            return (
-              <Pill
-                key={link.path}
-                to={link.path}
-                label={link.label}
-                icon={{ link: link.icon, size: 16 }}
-              />
-            );
-          })}
-        </nav>
+        {text ? (
+          <span>{text}</span>
+        ) : (
+          <nav className="flex gap-4 items-center">
+            {links.map((link) => {
+              return (
+                <Pill
+                  key={link.path}
+                  to={link.path}
+                  label={link.label}
+                  icon={{ link: link.icon, size: 16 }}
+                />
+              );
+            })}
+          </nav>
+        )}
 
         <Button
           icon={{ icon: "person-fill", size: 16 }}

@@ -73,7 +73,7 @@ function Admin() {
 
             <TableRow
               heading={"Mobile number"}
-              value={adminDetails.mobile}
+              value={adminDetails.mobile || "Mobile number not set."}
               background={true}
             />
 
@@ -85,22 +85,38 @@ function Admin() {
 
             <TableRow
               heading={"About"}
-              value={adminDetails.about}
+              value={
+                adminDetails.about[0] === ""
+                  ? "About text not set."
+                  : adminDetails.about
+              }
               background={true}
-              type="textArray"
+              type={adminDetails.about[0] === "" ? "text" : "textArray"}
             />
 
             <TableRow
               heading={"Resume link"}
-              value={[{ platform: "link", link: adminDetails.resumeLink }]}
-              type="linkArray"
+              value={
+                adminDetails.resumeLink
+                  ? [{ platform: "link", link: adminDetails.resumeLink }]
+                  : "Resume link not set."
+              }
+              type={adminDetails.resumeLink ? "linkArray" : "text"}
             />
 
             <TableRow
               heading={"Social media links"}
-              value={adminDetails.socialMediaLinks}
+              value={
+                adminDetails.socialMediaLinks.length === 0
+                  ? "Social media links not set"
+                  : adminDetails.socialMediaLinks
+              }
               background={true}
-              type="linkArray"
+              type={
+                adminDetails.socialMediaLinks.length === 0
+                  ? "text"
+                  : "linkArray"
+              }
               last={true}
             />
           </section>

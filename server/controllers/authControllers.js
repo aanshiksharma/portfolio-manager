@@ -11,7 +11,7 @@ const adminRegister = async (req, res) => {
     name,
     email,
     password,
-    verificationPassword,
+    secretPassword,
     mobile,
     about,
     portfolioLink,
@@ -20,7 +20,7 @@ const adminRegister = async (req, res) => {
   } = req.body;
 
   const addAdminPassword = process.env.ADD_ADMIN_PASSWORD;
-  if (verificationPassword !== addAdminPassword) {
+  if (secretPassword !== addAdminPassword) {
     return res.status(401).json({
       message: "Wrong Password! Cannot add admin.",
     });
@@ -38,7 +38,7 @@ const adminRegister = async (req, res) => {
       portfolioLink,
       resumeLink,
 
-      profileImage: profileImage || {
+      profileImage: {
         fileName: "default-profile.png",
         publicId: "profiles/default-profile.png",
         url: "https://example.com/default-profile.png",
@@ -53,6 +53,7 @@ const adminRegister = async (req, res) => {
       admin: newAdmin,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "An error occurred while registering you.",
     });
