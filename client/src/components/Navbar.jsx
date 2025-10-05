@@ -56,7 +56,7 @@ function Navbar() {
         />
 
         {dropdownVisible && (
-          <div className="dropdown absolute right-3 top-[58.8px] py-2 min-w-30 rounded-lg border-border border-1">
+          <div className="dropdown absolute right-3 top-[58.8px] py-2 min-w-30 rounded-lg bg-bg-base border-border border-1">
             <Button
               label={loggedIn ? "Log Out" : "Login as Admin"}
               variant={"secondary"}

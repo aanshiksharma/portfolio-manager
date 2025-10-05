@@ -33,8 +33,10 @@ function EditProject() {
     const loadProjectData = async () => {
       try {
         const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`);
-        if (!res.ok) console.log("Error fetching data");
-
+        if (!res.ok) {
+          if (res.status === 404) navigate("/page-not-found");
+          console.log("Error fetching data");
+        }
         const project = await res.json();
 
         reset(project);
@@ -105,8 +107,22 @@ function EditProject() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      if (!res.ok) return;
+
+      if (!res.ok) {
+        if (res.status === 403) {
+          alert("You need to login as admin before you can save changes!");
+          navigate("/auth/login");
+        } else return alert("Cannot update project at the moment!");
+      }
+
+      const result = await res.json();
+      console.log(result);
+
+      // Toast notification to be added
+      alert(res.status + ":" + result.message);
+      navigate("/projects");
     } catch (err) {
+      console.error("Error updating project :", err);
     } finally {
       setLoading({ value: false, message: "" });
     }

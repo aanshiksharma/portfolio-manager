@@ -1,5 +1,6 @@
 import Project from "../models/Project.js";
 import { uploadImage, deleteImage } from "./imageControllers.js";
+import { parseFormData } from "../middlewares/upload.js";
 
 // Get all projects
 const getProjects = async (req, res) => {
@@ -24,12 +25,14 @@ const getSingleProject = async (req, res) => {
 // Add a new project
 // Password protected route
 const addProject = async (req, res) => {
+  await parseFormData(req, res);
+
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
 
   const existingProject = await Project.findOne({ projectLink });
   if (existingProject) {
-    return res.status(400).json({ message: "Project already exists." });
+    return res.status(409).json({ message: "Project already exists." });
   }
 
   if (!req.file) {

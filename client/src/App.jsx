@@ -66,6 +66,7 @@ function App() {
             <Route path="/personal/edit" element={<EditPersonal />} />
 
             {/* NOT FOUND PAGE ROUTE */}
+            <Route path="/page-not-found" element={<NotFound />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Router>
