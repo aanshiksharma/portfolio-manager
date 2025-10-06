@@ -65,9 +65,9 @@ function AddSkill() {
     <>
       <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
-        <div className="p-4">
+        <section className="p-4">
           <h1 className="form-heading">Add a new skill</h1>
-        </div>
+        </section>
 
         <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
           <div className="left text-text-primary">Skill</div>
@@ -116,6 +116,7 @@ function AddSkill() {
             variant={"secondary"}
             onClick={() => {
               reset();
+              navigate(-1);
             }}
           />
           <Button type={"submit"} label={"Add Skill"} variant={"accent"} />

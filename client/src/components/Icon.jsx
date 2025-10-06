@@ -22,9 +22,9 @@ import {
   Link45deg,
   PlusLg,
   XLg,
+  PencilSquare,
   Trash,
   ExclamationCircle,
-  Twitter,
 } from "react-bootstrap-icons";
 
 function Icon({ icon, size }) {
@@ -72,6 +72,8 @@ function Icon({ icon, size }) {
       return <XLg size={size} />;
     case "trash":
       return <Trash size={size} />;
+    case "edit":
+      return <PencilSquare size={size} />;
     case "exclamation-circle":
       return <ExclamationCircle size={size} />;
     default:

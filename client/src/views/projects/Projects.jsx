@@ -48,7 +48,7 @@ function Projects() {
               Projects
             </h1>
             <div className="flex gap-2 items-center">
-              <Button icon={{ icon: "search", size: 18 }} variant={"primary"} />
+              <Button icon={{ icon: "search", size: 16 }} variant={"primary"} />
 
               <Button
                 label={"Add a Project"}

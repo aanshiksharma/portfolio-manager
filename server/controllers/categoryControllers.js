@@ -9,4 +9,14 @@ const getCategories = async (req, res) => {
   res.status(200).json(categories);
 };
 
-export { getCategories };
+const getCategoryById = async (req, res) => {
+  const categoryId = req.params.id;
+  const category = await Category.findById(categoryId);
+
+  if (!category)
+    return res.status(404).json({ message: "Category Not Found!" });
+
+  res.status(200).json(category);
+};
+
+export { getCategories, getCategoryById };

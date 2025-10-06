@@ -12,6 +12,18 @@ const getSkills = async (req, res) => {
   res.status(200).json(skills);
 };
 
+// Get all skills
+const getSkillbyId = async (req, res) => {
+  const skillId = req.params.id;
+  const skill = await Skill.findById(skillId);
+  if (!skill)
+    return res.status(404).json({
+      message: "No skills found",
+    });
+
+  res.status(200).json(skill);
+};
+
 // Add a new skill
 const addSkill = async (req, res) => {
   const { skillName, categoryName } = req.body;
@@ -87,4 +99,4 @@ const deleteSkill = async (req, res) => {
   res.status(200).json({ message: "Skill Deleted!" });
 };
 
-export { getSkills, addSkill, editSkill, deleteSkill };
+export { getSkills, getSkillbyId, addSkill, editSkill, deleteSkill };
