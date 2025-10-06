@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useImageViewer } from "../../contexts/ImageViewerContext";
 
 import Navbar from "../../components/Navbar";
@@ -12,6 +12,7 @@ function EditProject() {
     value: true,
     message: "Loading...",
   });
+  const [currentSkill, setCurrentSkill] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,8 +26,14 @@ function EditProject() {
     handleSubmit,
     watch,
     reset,
+    control,
     formState: { errors },
   } = useForm();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "skills",
+  });
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
@@ -52,10 +59,10 @@ function EditProject() {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const skills = data.skills[0] !== "" ? data.skills : [];
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("skills", data.skills);
+    formData.append("skills", JSON.stringify(skills));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
     formData.append("projectLink", data.projectLink);
@@ -77,7 +84,7 @@ function EditProject() {
       if (!res.ok) {
         if (res.status === 403) {
           alert("You need to login as admin before you can save changes!");
-          navigate("/auth/login");
+          return navigate("/auth/login");
         } else return alert("Cannot update project at the moment!");
       }
 
@@ -125,6 +132,15 @@ function EditProject() {
       console.error("Error updating project :", err);
     } finally {
       setLoading({ value: false, message: "" });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && currentSkill.trim() !== "") {
+      console.log(fields);
+      e.preventDefault();
+      append(currentSkill.trim());
+      setCurrentSkill("");
     }
   };
 
@@ -188,15 +204,50 @@ function EditProject() {
 
               <div className="input-group">
                 <span className="label">Skills*</span>
-                <textarea
-                  placeholder="Skills applied in this project."
-                  {...register("skills", {
-                    required: {
-                      value: true,
-                      message: "This field is required.",
-                    },
-                  })}
-                ></textarea>
+
+                <div className="flex flex-wrap items-start gap-2 bg-bg-surface-dark/60 border-1 border-border p-2 rounded-sm focus-within:outline-accent focus-within:border-transparent outline-2 outline-transparent transition ease-out duration-200 ">
+                  {fields.map((field, index) => (
+                    <div
+                      key={field.id}
+                      className="flex items-center gap-2 bg-bg-surface-light/75 p-2 rounded-lg text-text-secondary"
+                    >
+                      <input
+                        type="text"
+                        disabled
+                        className="hidden"
+                        {...register(`skills.${index}`)}
+                      />
+
+                      <span className="text-xs font-semibold">
+                        {watch(`skills.${index}`)}
+                      </span>
+
+                      <Button
+                        type={"button"}
+                        variant={"secondary"}
+                        icon={{ icon: "x", size: 12 }}
+                        className={
+                          "bg-transparent hover:bg-transparent !p-0 border-none"
+                        }
+                        onClick={() => {
+                          remove(index);
+                        }}
+                      />
+                    </div>
+                  ))}
+
+                  <input
+                    type="text"
+                    value={currentSkill}
+                    className="!bg-transparent border-none !max-w-none min-w-3xs outline-none !px-0 flex-1"
+                    placeholder="Type a skill and press Enter"
+                    onChange={(e) => {
+                      setCurrentSkill(e.target.value);
+                    }}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
+
                 <span className="error-message">
                   {errors.skills && errors.skills.message}
                 </span>

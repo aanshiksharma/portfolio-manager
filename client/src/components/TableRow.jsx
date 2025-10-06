@@ -23,7 +23,7 @@ function TableRow({ heading, value, background, last, type = "text" }) {
         </a>
       )}
 
-      {type === "text" && <p className="w-full">{value}</p>}
+      {type === "text" && <p className="w-full whitespace-pre-wrap">{value}</p>}
 
       {type === "textArray" && (
         <div className={`flex flex-col gap-2`}>
@@ -47,6 +47,28 @@ function TableRow({ heading, value, background, last, type = "text" }) {
                 <span className="truncate max-w-xs">{link}</span>
               </a>
             );
+          })}
+        </div>
+      )}
+
+      {type === "pills" && (
+        <div className="flex flex-wrap gap-2">
+          {value.map((val) => {
+            if (val === "Skills not set.")
+              return (
+                <p key={val} className="w-full whitespace-pre-wrap">
+                  {val}
+                </p>
+              );
+            else
+              return (
+                <span
+                  key={val}
+                  className="p-2 bg-bg-surface-light/75 rounded-lg text-xs font-semibold text-text-secondary"
+                >
+                  {val}
+                </span>
+              );
           })}
         </div>
       )}

@@ -98,10 +98,22 @@ function ProjectPage() {
                 value={project.title}
                 background={true}
               />
-              <TableRow heading={"Skills"} value={project.skills} />
+              <TableRow
+                heading={"Skills"}
+                value={
+                  project.skills.length === 0
+                    ? ["Skills not set."]
+                    : project.skills
+                }
+                type="pills"
+              />
               <TableRow
                 heading={"Description"}
-                value={project.description}
+                value={
+                  project.description
+                    ? project.description
+                    : "Description not set."
+                }
                 background={true}
               />
               <TableRow
@@ -111,8 +123,12 @@ function ProjectPage() {
               />
               <TableRow
                 heading={"GitHub Link"}
-                value={project.githubLink}
-                type="link"
+                value={
+                  project.githubLink
+                    ? project.githubLink
+                    : "Github Link not set"
+                }
+                type={project.githubLink ? "link" : "text"}
                 background={true}
                 last={true}
               />

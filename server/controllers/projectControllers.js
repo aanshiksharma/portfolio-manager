@@ -76,12 +76,12 @@ const editProject = async (req, res) => {
   const project = await Project.findById(id);
   if (!project) return res.status(404).json({ message: "Project not found" });
 
-  project.title = title || project.title;
-  project.skills = skills || project.skills;
+  project.title = title;
+  project.skills = JSON.parse(skills);
   project.featured = featured !== undefined ? featured : project.featured;
-  project.description = description || project.description;
-  project.projectLink = projectLink || project.projectLink;
-  project.githubLink = githubLink || project.githubLink;
+  project.description = description;
+  project.projectLink = projectLink;
+  project.githubLink = githubLink;
 
   // Pictures will be handled with file upload logic later
   // For now, just retain existing images.
