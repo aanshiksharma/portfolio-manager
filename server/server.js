@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: "https://portfolio-manager-cms.vercel.app/",
+    origin: "https://portfolio-manager-cms.vercel.app",
   })
 );
 app.use(express.json());
