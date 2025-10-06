@@ -7,11 +7,10 @@ import Button from "../../components/Button";
 
 import LoadingPage from "../LoadingPage";
 import Overlay from "../../components/Overlay";
-import { transformWithEsbuild } from "vite";
 
 function EditPersonal() {
   const [loading, setLoading] = useState(true);
-  const [showOverlay, setShowOverlay] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   const navigate = useNavigate();
 
@@ -321,7 +320,14 @@ function EditPersonal() {
           </section>
 
           <div className="p-4 w-full flex gap-4 items-center justify-end">
-            <Button type={"reset"} label={"Cancel"} variant={"secondary"} />
+            <Button
+              type={"button"}
+              label={"Cancel"}
+              variant={"secondary"}
+              onClick={() => {
+                navigate(-1);
+              }}
+            />
             <Button type={"submit"} label={"Save Changes"} variant={"accent"} />
           </div>
         </div>
@@ -334,6 +340,7 @@ function ChangePasswordOverlay({ onClose }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -343,7 +350,7 @@ function ChangePasswordOverlay({ onClose }) {
     <Overlay>
       <form
         className={`
-          py-8 px-6 rounded-lg border-1 max-w-xs w-full
+          py-8 px-6 rounded-lg border-1 max-w-sm w-full
         bg-bg-base border-border/50
           flex flex-col gap-6
         `}
@@ -357,6 +364,58 @@ function ChangePasswordOverlay({ onClose }) {
             variant={"secondary"}
             className={"!p-0 border-none hover:bg-transparent"}
             onClick={onClose}
+          />
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <div className="input-group">
+            <h4 className="label">Old Password</h4>
+
+            <input
+              type="password"
+              placeholder="********"
+              {...register("oldPassword", {
+                required: { value: true, message: "This feild is required" },
+              })}
+            />
+
+            <div className="error-message">
+              {errors.oldPassword && errors.oldPassword.message}
+            </div>
+          </div>
+
+          <div className="input-group">
+            <h4 className="label">New Password</h4>
+
+            <input
+              type="password"
+              placeholder="********"
+              {...register("newPassword", {
+                required: { value: true, message: "This feild is required" },
+              })}
+            />
+
+            <div className="error-message">
+              {errors.newPassword && errors.newPassword.message}
+            </div>
+          </div>
+        </section>
+
+        <section className="flex items-center gap-2">
+          <Button
+            type={"submit"}
+            label={"Change Password"}
+            variant={"accent"}
+          />
+
+          <Button
+            type={"button"}
+            label={"Cancel"}
+            variant={"secondary"}
+            onClick={() => {
+              reset();
+              onClose();
+            }}
           />
         </section>
       </form>
