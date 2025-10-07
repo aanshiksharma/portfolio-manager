@@ -14,6 +14,7 @@ import {
   TwitterX,
   Whatsapp,
   Envelope,
+  Telephone,
 
   // General Purpose
   Person,
@@ -54,8 +55,10 @@ function Icon({ icon, size }) {
       return <TwitterX size={size} />;
     case "whatsapp":
       return <Whatsapp size={size} />;
-    case "Email":
+    case "mail":
       return <Envelope size={size} />;
+    case "mobile":
+      return <Telephone size={size} />;
 
     // General Purpose
     case "person":

@@ -51,7 +51,7 @@ const addProject = async (req, res) => {
 
   const newProject = new Project({
     title,
-    skills,
+    skills: JSON.parse(skills),
     featured,
     description,
     projectLink,

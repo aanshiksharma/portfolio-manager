@@ -34,11 +34,11 @@ function AddProject() {
   };
 
   const onSubmit = async (data) => {
-    setAdding(true);
+    const skills = data.skills[0] !== "" ? data.skills : [];
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("skills", data.skills);
+    formData.append("skills", JSON.stringify(skills));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
     formData.append("projectLink", data.projectLink);
@@ -46,6 +46,7 @@ function AddProject() {
     formData.append("coverImage", data.coverImage[0]);
 
     try {
+      setAdding(true);
       const res = await fetch(`${BACKEND_URL}/api/projects/`, {
         method: "POST",
         headers: {
@@ -130,12 +131,21 @@ function AddProject() {
                   {fields.map((field, index) => (
                     <div
                       key={field.id}
-                      className="flex items-center gap-2 bg-bg-surface-light p-2 rounded-sm text-sm font-semibold text-text-secondary"
+                      className="flex items-center gap-2 bg-bg-surface-light/75 p-2 rounded-lg text-text-secondary"
                     >
-                      <span>{watch(`skills.${index}`)}</span>
+                      <input
+                        type="text"
+                        disabled
+                        className="hidden"
+                        {...register(`skills.${index}`)}
+                      />
+
+                      <span className="text-xs font-semibold">
+                        {watch(`skills.${index}`)}
+                      </span>
 
                       <Button
-                        type={"disabled"}
+                        type={"button"}
                         variant={"secondary"}
                         icon={{ icon: "x", size: 12 }}
                         className={

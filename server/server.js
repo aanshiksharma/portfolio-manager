@@ -8,10 +8,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const corsOrigin = [
+  "https://portfolio-manager-cms.vercel.app",
+  "http://localhost:5173",
+];
+
 // Middleware
 app.use(
   cors({
-    origin: "https://portfolio-manager-cms.vercel.app",
+    origin: corsOrigin[1],
   })
 );
 app.use(express.json());

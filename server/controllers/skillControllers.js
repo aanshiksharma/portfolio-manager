@@ -37,6 +37,7 @@ const addSkill = async (req, res) => {
     const newSkill = new Skill({
       name: skillName,
       category: newCategory._id,
+      categoryName: newCategory.name,
     });
     await newSkill.save();
 
@@ -52,6 +53,7 @@ const addSkill = async (req, res) => {
   const newSkill = new Skill({
     name: skillName,
     category: existingCategory._id,
+    categoryName: existingCategory.name,
   });
   await newSkill.save();
 
@@ -73,12 +75,14 @@ const editSkill = async (req, res) => {
     await newCategory.save();
 
     skill.category = newCategory._id;
+    skill.categoryName = newCategory.name;
     await skill.save();
 
     return res.status(200).json({ message: "Skill Updated!" });
   }
 
   skill.category = category._id;
+  skill.categoryName = category.name;
   await skill.save();
 
   res.status(200).json({ message: "Skill Updated!" });
