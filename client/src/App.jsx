@@ -10,7 +10,7 @@ import Register from "./views/auth/Register";
 
 // Pages Routes
 import NotFound from "./views/NotFound";
-import Dashboard from "./views/Dashboard";
+import Dashboard from "./views/Dashboard/Dashboard";
 
 // Projects
 import Projects from "./views/projects/Projects";

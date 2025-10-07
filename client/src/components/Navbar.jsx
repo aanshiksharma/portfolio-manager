@@ -62,12 +62,21 @@ function Navbar({ text }) {
         {dropdownVisible && (
           <div className="dropdown absolute right-3 top-[58.8px] py-2 min-w-30 rounded-lg bg-bg-base border-border border-1">
             <Button
-              label={loggedIn ? "Log Out" : "Login as Admin"}
+              label={loggedIn ? "Login as Guest" : "Login as Admin"}
               variant={"secondary"}
               className={"w-full rounded-none"}
               onClick={() => {
-                if (loggedIn) handleLogout();
+                if (loggedIn) navigate("/auth/visitor-login");
                 else navigate("/auth/login");
+              }}
+            />
+
+            <Button
+              label={"Log Out"}
+              variant={"secondary"}
+              className={"w-full rounded-none"}
+              onClick={() => {
+                handleLogout();
               }}
             />
           </div>
