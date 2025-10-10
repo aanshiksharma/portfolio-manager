@@ -7,7 +7,7 @@ function SkillListItem({ name, categoryName, onDoubleClick }) {
 
   return (
     <div
-      className="flex items-center hover:bg-bg-surface-dark rounded-sm px-2 py-1"
+      className="flex items-center hover:bg-bg-surface-dark rounded-sm px-2 py-1 transition duration-200 ease-out"
       onDoubleClick={onDoubleClick}
     >
       <span

@@ -139,12 +139,16 @@ function ProjectPage() {
           {activeTab === "gallery" && (
             <section className="flex flex-col gap-4">
               <div
-                className="cover-image-container shadow-md shadow-text-secondary/25 border border-border rounded-lg overflow-hidden cursor-pointer"
+                className="cover-image-container shadow-md shadow-text-secondary/25 border border-border rounded-lg overflow-hidden cursor-pointer flex items-center justify-center"
                 onClick={() => {
                   open(project.coverImage.url);
                 }}
               >
-                <img src={project.coverImage.url} alt="" />
+                <img
+                  src={project.coverImage.url}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div className="other-images-container flex flex-col gap-4 py-4">

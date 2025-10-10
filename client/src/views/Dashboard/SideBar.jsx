@@ -38,12 +38,12 @@ function SideBar({ admin }) {
       />
 
       <section className="flex flex-col gap-1">
-        <div className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm">
+        <div className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm transition duration-200 ease-out">
           <Icon icon={"mobile"} size={16} />
           <span>{admin.mobile}</span>
         </div>
 
-        <div className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm">
+        <div className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm transition duration-200 ease-out">
           <Icon icon={"mail"} size={16} />
           <span>{admin.email}</span>
         </div>
@@ -56,7 +56,7 @@ function SideBar({ admin }) {
               key={link.platform}
               href={link.link}
               target="_blank"
-              className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm"
+              className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm transition duration-200 ease-out"
             >
               <Icon icon={link.platform.toLowerCase()} />
               <span>{visibleLink}</span>

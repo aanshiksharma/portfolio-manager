@@ -41,6 +41,7 @@ const addProject = async (req, res) => {
 
   // Upload to cloudinary
   const uploadResult = await uploadImage(req.file.path);
+  await deleteImage(req.file.filename);
 
   const coverImage = {
     fileName: req.file.originalname, // original name from user
@@ -70,11 +71,33 @@ const addProject = async (req, res) => {
 // Password protected route
 const editProject = async (req, res) => {
   const id = req.params.id;
+
+  await parseFormData(req, res);
+
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
 
   const project = await Project.findById(id);
   if (!project) return res.status(404).json({ message: "Project not found" });
+
+  let coverImage;
+
+  if (req.file) {
+    // Upload to cloudinary
+    const uploadResult = await uploadImage(req.file.path);
+
+    await deleteImage(req.file.filename);
+    await deleteImage(project.coverImage.publicId);
+
+    coverImage = {
+      fileName: req.file.originalname, // original name from user
+      publicId: uploadResult.public_id, // Cloudinary’s ID
+      url: uploadResult.secure_url, // Cloudinary’s URL
+      uploadedAt: new Date(),
+    };
+  } else {
+    coverImage = project.coverImage;
+  }
 
   project.title = title;
   project.skills = JSON.parse(skills);
@@ -85,7 +108,7 @@ const editProject = async (req, res) => {
 
   // Pictures will be handled with file upload logic later
   // For now, just retain existing images.
-  project.coverImage = project.coverImage;
+  project.coverImage = coverImage;
   project.otherImages = project.otherImages;
 
   await project.save();

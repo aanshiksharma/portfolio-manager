@@ -317,7 +317,7 @@ function EditProject() {
                     <img
                       src={projectData.coverImage.url}
                       alt=""
-                      className="w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <span className="text-text-secondary">
