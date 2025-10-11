@@ -5,7 +5,7 @@ import Admin from "../models/Admin.js";
 import Guest from "../models/Guest.js";
 
 import { parseAdminFormData } from "../middlewares/upload.js";
-import { deleteImage, uploadImage } from "./imageControllers.js";
+import { deleteImage, uploadAdminImage } from "./imageControllers.js";
 
 // Add a new admin
 // This Route is protected by a password stored in the environment variables
@@ -32,7 +32,7 @@ const adminRegister = async (req, res) => {
   }
 
   try {
-    const uploadResult = req.file && (await uploadImage(req.file.path));
+    const uploadResult = req.file && (await uploadAdminImage(req.file.path));
     await deleteImage(req.file.filename);
 
     const profileImage = {

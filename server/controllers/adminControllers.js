@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import Admin from "../models/Admin.js";
 
 import { parseAdminFormData } from "../middlewares/upload.js";
-import { deleteImage, uploadImage } from "./imageControllers.js";
+import { deleteImage, uploadAdminImage } from "./imageControllers.js";
 
 const getAdmin = async (req, res) => {
   const admins = await Admin.find();
@@ -45,7 +45,7 @@ const updateAdmin = async (req, res) => {
     resumeLink,
   } = req.body;
 
-  const uploadResult = req.file && (await uploadImage(req.file.path));
+  const uploadResult = req.file && (await uploadAdminImage(req.file.path));
   req.file && (await deleteImage(req.file.filename));
   await deleteImage(admin.profileImage.publicId);
 

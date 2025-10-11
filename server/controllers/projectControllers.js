@@ -1,5 +1,5 @@
 import Project from "../models/Project.js";
-import { uploadImage, deleteImage } from "./imageControllers.js";
+import { uploadProjectImage, deleteImage } from "./imageControllers.js";
 import { parseProjectFormData } from "../middlewares/upload.js";
 
 // Get all projects
@@ -40,7 +40,7 @@ const addProject = async (req, res) => {
   }
 
   // Upload to cloudinary
-  const uploadResult = await uploadImage(req.file.path);
+  const uploadResult = await uploadProjectImage(req.file.path);
   await deleteImage(req.file.filename);
 
   const coverImage = {
@@ -84,7 +84,7 @@ const editProject = async (req, res) => {
 
   if (req.file) {
     // Upload to cloudinary
-    const uploadResult = await uploadImage(req.file.path);
+    const uploadResult = await uploadProjectImage(req.file.path);
 
     await deleteImage(req.file.filename);
     await deleteImage(project.coverImage.publicId);
