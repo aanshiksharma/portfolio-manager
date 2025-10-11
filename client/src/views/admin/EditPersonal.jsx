@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { useImageViewer } from "../../contexts/ImageViewerContext";
+
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 
@@ -72,6 +74,8 @@ function EditPersonal() {
   }, [aboutFields, socialFields]);
 
   const adminDetails = watch();
+
+  const { open } = useImageViewer();
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -337,6 +341,26 @@ function EditPersonal() {
             <div className="right max-w-200 w-full flex flex-col gap-6">
               <div className="input-group">
                 <span className="label">Admin Profile Image</span>
+
+                <button
+                  type="button"
+                  className="image-overview"
+                  onClick={() => {
+                    open(adminDetails.profileImage.url);
+                  }}
+                >
+                  <div className="flex items-center justify-center rounded-sm w-9.5 min-h-7.5 aspect-sqare overflow-hidden">
+                    <img
+                      src={adminDetails.profileImage.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span className="text-text-secondary">
+                    {adminDetails.profileImage.fileName}
+                  </span>
+                </button>
+
                 <input type="file" {...register("profileImage")} />
               </div>
             </div>

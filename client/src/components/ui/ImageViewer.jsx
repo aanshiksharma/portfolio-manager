@@ -21,8 +21,12 @@ function ImageViewer() {
             onClick={() => close()}
             className="border-none fixed top-3 right-3 font-bold bg-transparent hover:bg-transparent"
           />
-          <div className="image-container max-w-6xl rounded-lg overflow-hidden">
-            <img src={imageUrl} alt="" />
+          <div className="image-container max-w-6xl h-full rounded-lg overflow-hidden">
+            <img
+              src={imageUrl}
+              alt=""
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
       </>
