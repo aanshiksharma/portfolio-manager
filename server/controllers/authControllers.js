@@ -4,9 +4,14 @@ import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
 import Guest from "../models/Guest.js";
 
+import { parseAdminFormData } from "../middlewares/upload.js";
+import { deleteImage, uploadAdminImage } from "./imageControllers.js";
+
 // Add a new admin
 // This Route is protected by a password stored in the environment variables
 const adminRegister = async (req, res) => {
+  await parseAdminFormData(req, res);
+
   const {
     name,
     email,
@@ -27,24 +32,28 @@ const adminRegister = async (req, res) => {
   }
 
   try {
+    const uploadResult = req.file && (await uploadAdminImage(req.file.path));
+    await deleteImage(req.file.filename);
+
+    const profileImage = {
+      fileName: req.file ? req.file.originalname : "",
+      publicId: req.file ? uploadResult.public_id : "",
+      url: req.file ? uploadResult.secure_url : "",
+      uploadedAt: new Date(),
+    };
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newAdmin = new Admin({
       name,
       email,
       password: hashedPassword,
-      about,
+      about: JSON.parse(about),
       mobile,
       portfolioLink,
       resumeLink,
-
-      profileImage: {
-        fileName: "default-profile.png",
-        publicId: "profiles/default-profile.png",
-        url: "https://example.com/default-profile.png",
-        uploadedAt: new Date(),
-      },
-      socialMediaLinks: socialMediaLinks,
+      socialMediaLinks: JSON.parse(socialMediaLinks),
+      profileImage,
     });
     await newAdmin.save();
 

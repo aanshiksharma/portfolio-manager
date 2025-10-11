@@ -76,6 +76,7 @@ function EditPersonal() {
   const onSubmit = async (data) => {
     console.log(data);
     setLoading(true);
+
     if (
       data.socialMediaLinks[0].platform === "" ||
       data.socialMediaLinks[0].link === ""
@@ -83,14 +84,23 @@ function EditPersonal() {
       data.socialMediaLinks = [];
     }
 
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("mobile", data.mobile);
+    formData.append("portfolioLink", data.portfolioLink);
+    formData.append("about", JSON.stringify(data.about));
+    formData.append("socialMediaLinks", JSON.stringify(data.socialMediaLinks));
+    formData.append("resumeLink", data.resumeLink);
+    formData.append("profileImage", data.profileImage[0]);
+
     try {
       const res = await fetch(`${BACKEND_URL}/api/admin/${adminDetails._id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       if (!res.ok) {
@@ -153,7 +163,7 @@ function EditPersonal() {
           </section>
 
           <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
-            <div className="left text-text-primary">Project Details</div>
+            <div className="left text-text-primary">Personal Details</div>
 
             <div className="right max-w-200 w-full">
               <div className="w-full flex flex-col gap-6">
@@ -248,73 +258,86 @@ function EditPersonal() {
             </div>
           </section>
 
-          <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
-            <div className="left text-text-primary">Social Media Links</div>
+          <section className="py-8 px-4 w-full flex flex-col gap-6 border-b-1 border-border">
+            <div className="w-full flex items-start justify-between">
+              <div className="left text-text-primary">Social Media Links</div>
 
-            <div className="right max-w-200 w-full">
-              <div className="flex flex-col gap-3">
-                {socialFields.map((field, index) => (
-                  <div key={field.id} className="flex items-center gap-3">
-                    <input
-                      type="text"
-                      placeholder="Platform"
-                      className="basis-40 !text-text-muted"
-                      {...register(`socialMediaLinks.${index}.platform`)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Link"
-                      className="flex-1"
-                      {...register(`socialMediaLinks.${index}.link`)}
-                    />
+              <div className="right max-w-200 w-full">
+                <div className="flex flex-col gap-3">
+                  {socialFields.map((field, index) => (
+                    <div key={field.id} className="flex items-center gap-3">
+                      <input
+                        type="text"
+                        placeholder="Platform"
+                        className="basis-40 !text-text-muted"
+                        {...register(`socialMediaLinks.${index}.platform`)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Link"
+                        className="flex-1"
+                        {...register(`socialMediaLinks.${index}.link`)}
+                      />
 
-                    <Button
-                      variant={"delete"}
-                      icon={{ icon: "trash", size: 16 }}
-                      className={"border-none bg-transparent rounded-sm"}
-                      onClick={() => {
-                        removeSocial(index);
-                      }}
-                    />
-                  </div>
-                ))}
+                      <Button
+                        variant={"delete"}
+                        icon={{ icon: "trash", size: 16 }}
+                        className={"border-none bg-transparent rounded-sm"}
+                        onClick={() => {
+                          removeSocial(index);
+                        }}
+                      />
+                    </div>
+                  ))}
 
-                <Button
-                  variant={"secondary"}
-                  icon={{ icon: "plus", size: 16 }}
-                  label={"Add a link"}
-                  className={"self-start"}
-                  onClick={() => {
-                    const hasEmpty = socialFields.some(
-                      (field) => !field.platform.trim() || !field.link.trim()
-                    );
-                    if (!hasEmpty) addSocial({ platform: "", link: "" });
-                  }}
-                />
+                  <Button
+                    variant={"secondary"}
+                    icon={{ icon: "plus", size: 16 }}
+                    label={"Add a link"}
+                    className={"self-start"}
+                    onClick={() => {
+                      const hasEmpty = socialFields.some(
+                        (field) => !field.platform.trim() || !field.link.trim()
+                      );
+                      if (!hasEmpty) addSocial({ platform: "", link: "" });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex items-start justify-between">
+              <div className="left text-text-primary">Resume</div>
+
+              <div className="right max-w-200 w-full">
+                <div className="flex items-center gap-4">
+                  <input
+                    type="text"
+                    placeholder="https://example.com/resume-link"
+                    {...register("resumeLink")}
+                  />
+
+                  <Button
+                    variant={"delete"}
+                    icon={{ icon: "trash", size: 16 }}
+                    className={"border-none bg-transparent"}
+                    onClick={() => {
+                      const data = watch();
+                      reset({ ...data, resumeLink: "" });
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </section>
 
           <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
-            <div className="left text-text-primary">Resume</div>
+            <div className="left text-text-primary">Profile Picture</div>
 
-            <div className="right max-w-200 w-full">
-              <div className="flex items-center gap-4">
-                <input
-                  type="text"
-                  placeholder="https://example.com/resume-link"
-                  {...register("resumeLink")}
-                />
-
-                <Button
-                  variant={"delete"}
-                  icon={{ icon: "trash", size: 16 }}
-                  className={"border-none bg-transparent"}
-                  onClick={() => {
-                    const data = watch();
-                    reset({ ...data, resumeLink: "" });
-                  }}
-                />
+            <div className="right max-w-200 w-full flex flex-col gap-6">
+              <div className="input-group">
+                <span className="label">Admin Profile Image</span>
+                <input type="file" {...register("profileImage")} />
               </div>
             </div>
           </section>

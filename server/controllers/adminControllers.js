@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import Admin from "../models/Admin.js";
 
+import { parseAdminFormData } from "../middlewares/upload.js";
+import { deleteImage, uploadAdminImage } from "./imageControllers.js";
+
 const getAdmin = async (req, res) => {
   const admins = await Admin.find();
 
@@ -26,6 +29,12 @@ const getAdminById = async (req, res) => {
 // Update an existing admin
 const updateAdmin = async (req, res) => {
   const id = req.params.id;
+
+  const admin = await Admin.findById(id);
+  if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+  await parseAdminFormData(req, res);
+
   const {
     name,
     email,
@@ -36,25 +45,27 @@ const updateAdmin = async (req, res) => {
     resumeLink,
   } = req.body;
 
-  const admin = await Admin.findById(id);
-  if (!admin) return res.status(404).json({ message: "Admin not found" });
+  const uploadResult = req.file && (await uploadAdminImage(req.file.path));
+  req.file && (await deleteImage(req.file.filename));
+  await deleteImage(admin.profileImage.publicId);
+
+  const profileImage = req.file && {
+    fileName: req.file.originalname,
+    publicId: uploadResult.public_id,
+    url: uploadResult.secure_url,
+    uploadedAt: new Date(),
+  };
 
   // Update fields if new values are provided
   admin.name = name;
   admin.email = email;
   admin.mobile = mobile;
   admin.portfolioLink = portfolioLink;
-  admin.about = about;
+  admin.about = JSON.parse(about);
   admin.resumeLink = resumeLink;
-  admin.socialMediaLinks = socialMediaLinks;
+  admin.socialMediaLinks = JSON.parse(socialMediaLinks);
 
-  admin.profileImage =
-    {
-      fileName: "fileName",
-      publicId: "publicId",
-      url: "url",
-      uploadedAt: new Date(),
-    } || admin.profileImage;
+  admin.profileImage = req.file ? profileImage : admin.profileImage;
 
   await admin.save();
   res.status(200).json({ message: "Admin updated successfully", admin });

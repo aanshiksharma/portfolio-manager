@@ -1,6 +1,6 @@
 import Project from "../models/Project.js";
-import { uploadImage, deleteImage } from "./imageControllers.js";
-import { parseFormData } from "../middlewares/upload.js";
+import { uploadProjectImage, deleteImage } from "./imageControllers.js";
+import { parseProjectFormData } from "../middlewares/upload.js";
 
 // Get all projects
 const getProjects = async (req, res) => {
@@ -25,7 +25,7 @@ const getSingleProject = async (req, res) => {
 // Add a new project
 // Password protected route
 const addProject = async (req, res) => {
-  await parseFormData(req, res);
+  await parseProjectFormData(req, res);
 
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
@@ -40,7 +40,7 @@ const addProject = async (req, res) => {
   }
 
   // Upload to cloudinary
-  const uploadResult = await uploadImage(req.file.path);
+  const uploadResult = await uploadProjectImage(req.file.path);
   await deleteImage(req.file.filename);
 
   const coverImage = {
@@ -72,7 +72,7 @@ const addProject = async (req, res) => {
 const editProject = async (req, res) => {
   const id = req.params.id;
 
-  await parseFormData(req, res);
+  await parseProjectFormData(req, res);
 
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
@@ -84,7 +84,7 @@ const editProject = async (req, res) => {
 
   if (req.file) {
     // Upload to cloudinary
-    const uploadResult = await uploadImage(req.file.path);
+    const uploadResult = await uploadProjectImage(req.file.path);
 
     await deleteImage(req.file.filename);
     await deleteImage(project.coverImage.publicId);

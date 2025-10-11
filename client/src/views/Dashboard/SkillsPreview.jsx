@@ -18,14 +18,17 @@ function SkillsPreview({ skills }) {
       </div>
 
       <div className="flex flex-col gap-1">
-        {skills?.map((skill) => (
-          <SkillListItem
-            key={skill._id}
-            name={skill.name}
-            categoryName={skill.categoryName}
-            onDoubleClick={() => navigate(`/skills/edit/${skill._id}`)}
-          />
-        ))}
+        {skills?.map(
+          (skill, index) =>
+            index < 5 && (
+              <SkillListItem
+                key={skill._id}
+                name={skill.name}
+                categoryName={skill.categoryName}
+                onDoubleClick={() => navigate(`/skills/edit/${skill._id}`)}
+              />
+            )
+        )}
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ function SideBar({ admin }) {
         px-2 max-w-xs
       `}
     >
-      <div className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border">
+      <div className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border overflow-hidden">
         <img
           src={admin.profileImage.url}
           alt="admin profile image"
@@ -47,6 +47,15 @@ function SideBar({ admin }) {
           <Icon icon={"mail"} size={16} />
           <span>{admin.email}</span>
         </div>
+
+        <a
+          href={admin.resumeLink}
+          target="_blank"
+          className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm transition duration-200 ease-out"
+        >
+          <Icon icon={"resume"} />
+          <span>Resume</span>
+        </a>
 
         {admin.socialMediaLinks.map((link) => {
           const splitLink = link.link.split("/");
