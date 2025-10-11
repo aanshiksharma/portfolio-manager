@@ -35,7 +35,9 @@ function AddProject() {
 
   const onSubmit = async (data) => {
     const skills = data.skills[0] !== "" ? data.skills : [];
+
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("skills", JSON.stringify(skills));

@@ -3,7 +3,7 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 import cloudinary from "../config/cloudinary.js";
 
-const storage = new CloudinaryStorage({
+const projectsStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "projects-cover-images",
@@ -11,15 +11,29 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage });
-const parser = multer({ storage });
+const adminStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "admin-profile-images",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
 
-export const parseFormData = (req, res) =>
+const adminFormParser = multer({ storage: adminStorage });
+const projectFormParser = multer({ storage: projectsStorage });
+
+export const parseProjectFormData = (req, res) =>
   new Promise((resolve, reject) => {
-    parser.single("coverImage")(req, res, (err) => {
+    projectFormParser.single("coverImage")(req, res, (err) => {
       if (err) reject(err);
       else resolve();
     });
   });
 
-export default upload;
+export const parseAdminFormData = (req, res) =>
+  new Promise((resolve, reject) => {
+    adminFormParser.single("profileImage")(req, res, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });

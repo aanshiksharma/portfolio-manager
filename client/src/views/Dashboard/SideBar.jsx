@@ -12,7 +12,7 @@ function SideBar({ admin }) {
         px-2 max-w-xs
       `}
     >
-      <div className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border">
+      <div className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border overflow-hidden">
         <img
           src={admin.profileImage.url}
           alt="admin profile image"

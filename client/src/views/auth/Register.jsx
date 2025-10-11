@@ -66,13 +66,23 @@ function Register() {
       data.socialMediaLinks = [];
     }
 
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("mobile", data.mobile);
+    formData.append("portfolioLink", data.portfolioLink);
+    formData.append("about", JSON.stringify(data.about));
+    formData.append("socialMediaLinks", JSON.stringify(data.socialMediaLinks));
+    formData.append("resumeLink", data.resumeLink);
+    formData.append("profileImage", data.profileImage[0]);
+
     try {
       const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       if (!res.ok) {
@@ -294,7 +304,7 @@ function Register() {
             </div>
           </section>
 
-          <section className="p-4 w-full flex gap-4 items-center justify-end">
+          <div className="p-4 w-full flex gap-4 items-center justify-end">
             <Button type={"reset"} label={"Cancel"} variant={"secondary"} />
 
             <Button
@@ -306,7 +316,7 @@ function Register() {
                 if (isValid) setShowOverlay(true);
               }}
             />
-          </section>
+          </div>
         </div>
       </form>
     </>
