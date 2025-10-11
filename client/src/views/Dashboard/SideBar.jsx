@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Icon from "../../components/Icon";
 
+import { useImageViewer } from "../../contexts/ImageViewerContext";
+
 function SideBar({ admin }) {
   const navigate = useNavigate();
+  const { open } = useImageViewer();
   return (
     <aside
       className={`
@@ -12,13 +15,16 @@ function SideBar({ admin }) {
         px-2 max-w-xs
       `}
     >
-      <div className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border overflow-hidden">
+      <button
+        className="bg-bg-surface-light/50 w-full aspect-square max-w-45 self-center flex items-center justify-center rounded-full border-1 border-border overflow-hidden"
+        onClick={() => open(admin.profileImage.url)}
+      >
         <img
           src={admin.profileImage.url}
           alt="admin profile image"
           className="text-xs"
         />
-      </div>
+      </button>
 
       <div className="flex flex-col gap-1">
         <h3 className="font-semibold text-2xl text-text-primary">
