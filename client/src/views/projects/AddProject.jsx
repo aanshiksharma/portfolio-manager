@@ -103,6 +103,7 @@ function AddProject() {
                 <span className="label">Title*</span>
                 <input
                   placeholder="Title of your project."
+                  autoFocus
                   {...register("title", {
                     required: {
                       value: true,

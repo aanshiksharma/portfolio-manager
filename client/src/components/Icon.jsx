@@ -4,6 +4,7 @@ import {
   LayoutTextWindowReverse,
   Cpu,
   FileEarmarkX,
+  FileEarmarkText,
   Images,
   Database,
 
@@ -43,6 +44,8 @@ function Icon({ icon, size }) {
       return <Database size={size} />;
     case "images":
       return <Images size={size} />;
+    case "resume":
+      return <FileEarmarkText size={size} />;
 
     // Social Media and Contact
     case "linkedin":

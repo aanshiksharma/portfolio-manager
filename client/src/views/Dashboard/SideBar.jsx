@@ -48,6 +48,15 @@ function SideBar({ admin }) {
           <span>{admin.email}</span>
         </div>
 
+        <a
+          href={admin.resumeLink}
+          target="_blank"
+          className="flex items-center gap-2 hover:bg-bg-surface-dark px-2 py-1 rounded-sm transition duration-200 ease-out"
+        >
+          <Icon icon={"resume"} />
+          <span>Resume</span>
+        </a>
+
         {admin.socialMediaLinks.map((link) => {
           const splitLink = link.link.split("/");
           const visibleLink = splitLink[splitLink.length - 1];

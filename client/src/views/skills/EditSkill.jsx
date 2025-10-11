@@ -147,6 +147,7 @@ function EditSkill() {
                 <span className="label">Name*</span>
                 <input
                   placeholder="Name of the skill."
+                  autoFocus
                   {...register("skillName", {
                     required: {
                       value: true,
