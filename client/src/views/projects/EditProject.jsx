@@ -77,7 +77,7 @@ function EditProject() {
 
       const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
         method: "PUT",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
         body: formData,
       });
 
@@ -111,7 +111,7 @@ function EditProject() {
       const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
 

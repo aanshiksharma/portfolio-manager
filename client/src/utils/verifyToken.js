@@ -1,13 +1,13 @@
 export const verifyToken = async (navigate) => {
   try {
-    const guest = localStorage.getItem("login-mode");
+    const guest = sessionStorage.getItem("login-mode");
     if (guest) return true;
 
     const res = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-token`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       }
     );
