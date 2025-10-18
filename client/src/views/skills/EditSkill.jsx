@@ -56,7 +56,7 @@ function EditSkill() {
   }, []);
 
   const onSubmit = async (data) => {
-    if (localStorage.getItem("login-mode")) {
+    if (sessionStorage.getItem("login-mode")) {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
@@ -72,7 +72,7 @@ function EditSkill() {
       const res = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -110,7 +110,7 @@ function EditSkill() {
   };
 
   const onDelete = async () => {
-    if (localStorage.getItem("login-mode")) {
+    if (sessionStorage.getItem("login-mode")) {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
@@ -125,7 +125,7 @@ function EditSkill() {
 
       const res = await fetch(`${BACKEND_URL}/api/skills/${skill.id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       });
       const response = await res.json();
 

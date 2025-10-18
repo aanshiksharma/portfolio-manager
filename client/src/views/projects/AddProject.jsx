@@ -52,7 +52,7 @@ function AddProject() {
       const res = await fetch(`${BACKEND_URL}/api/projects/`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         body: formData,
       });

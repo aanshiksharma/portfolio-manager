@@ -102,7 +102,7 @@ function EditPersonal() {
       const res = await fetch(`${BACKEND_URL}/api/admin/${adminDetails._id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         body: formData,
       });

@@ -11,8 +11,8 @@ function ViewHandler() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    const token = localStorage.getItem("token") || "";
-    const loginMode = localStorage.getItem("login-mode");
+    const token = sessionStorage.getItem("token") || "";
+    const loginMode = sessionStorage.getItem("login-mode");
 
     const verifyTokenAndNavigate = async (token) => {
       try {
