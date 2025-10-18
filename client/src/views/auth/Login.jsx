@@ -50,6 +50,7 @@ function Login({ role }) {
         const user = await res.json();
 
         const token = user.token;
+        localStorage.removeItem("login-mode");
         localStorage.setItem("token", token);
       } else {
         res = await fetch(`${BACKEND_URL}/api/auth/${role}-login`, {
@@ -60,6 +61,7 @@ function Login({ role }) {
 
         if (!res.ok) return;
 
+        localStorage.removeItem("token");
         localStorage.setItem("login-mode", role);
       }
       navigate("/dashboard");

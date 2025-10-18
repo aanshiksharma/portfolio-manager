@@ -5,12 +5,16 @@ import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
+import { useToast } from "../../contexts/ToastContext";
+
 function Skills() {
   const navigate = useNavigate();
 
   const [skills, setSkills] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { addToast } = useToast();
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -38,6 +42,15 @@ function Skills() {
     try {
       setLoading(true);
 
+      if (localStorage.getItem("login-mode")) {
+        addToast(
+          "Access Denied!",
+          "You need to be logged in as admin to delete a skill.",
+          "error"
+        );
+        return navigate("/auth/login");
+      }
+
       const res = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -46,18 +59,27 @@ function Skills() {
 
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
-          alert("You need to be logged in as admin to delete a skill!");
+          addToast(
+            "Access unauthorized!",
+            "The token provided is either invalid or expired. Please login again.",
+            "error"
+          );
+
           return navigate("/auth/login");
         }
 
-        alert(response.message);
-        return;
+        return addToast("Some error occurred!", response.message, "error");
       }
 
-      alert(response.message);
-      console.log("Deleted", skillId);
+      addToast("Skill deleted!", response.message, "success");
     } catch (err) {
       console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }

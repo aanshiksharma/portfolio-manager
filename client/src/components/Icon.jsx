@@ -27,6 +27,8 @@ import {
   PencilSquare,
   Trash,
   ExclamationCircle,
+  InfoCircle,
+  CheckCircle,
 } from "react-bootstrap-icons";
 
 function Icon({ icon, size }) {
@@ -80,6 +82,10 @@ function Icon({ icon, size }) {
       return <Trash size={size} />;
     case "edit":
       return <PencilSquare size={size} />;
+    case "info-circle":
+      return <InfoCircle size={size} />;
+    case "check-circle":
+      return <CheckCircle size={size} />;
     case "exclamation-circle":
       return <ExclamationCircle size={size} />;
     default:
