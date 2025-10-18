@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useImageViewer } from "../../contexts/ImageViewerContext";
+import { useToast } from "../../contexts/ToastContext";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
@@ -20,6 +21,7 @@ function EditProject() {
   const projectId = pathname[pathname.length - 1];
 
   const { open } = useImageViewer();
+  const { addToast } = useToast();
 
   const {
     register,
@@ -59,7 +61,18 @@ function EditProject() {
   }, []);
 
   const onSubmit = async (data) => {
+    if (sessionStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
+
     const skills = data.skills[0] !== "" ? data.skills : [];
+
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("skills", JSON.stringify(skills));
@@ -81,21 +94,32 @@ function EditProject() {
         body: formData,
       });
 
+      const response = await res.json();
+
       if (!res.ok) {
-        if (res.status === 403) {
-          alert("You need to login as admin before you can save changes!");
+        if (res.status === 401 || res.status === 403) {
+          addToast(
+            "Unauthorized access!",
+            "The token provided is either unauthorized or expired. Please login again.",
+            "error"
+          );
+
           return navigate("/auth/login");
-        } else return alert("Cannot update project at the moment!");
+        }
+
+        return addToast("Error!", response.message, "error");
       }
 
-      const result = await res.json();
-      console.log(result);
-
-      // Toast notification to be added
-      alert(res.status + ":" + result.message);
+      addToast("Project updated!", response.message, "success");
       navigate(-1);
     } catch (err) {
-      console.error("Error updating project :", err);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading({
         value: false,
@@ -105,9 +129,19 @@ function EditProject() {
   };
 
   const handleDeleteProject = async () => {
-    setLoading({ value: true, message: "Deleting Project..." });
+    if (sessionStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
 
     try {
+      setLoading({ value: true, message: "Deleting Project..." });
+
       const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
         method: "DELETE",
         headers: {
@@ -115,21 +149,32 @@ function EditProject() {
         },
       });
 
+      const response = await res.json();
+
       if (!res.ok) {
-        if (res.status === 403) {
-          alert("You need to login as admin before you can save changes!");
-          navigate("/auth/login");
-        } else return alert("Cannot update project at the moment!");
+        if (res.status === 401 || res.status === 403) {
+          addToast(
+            "Unauthorized access!",
+            "The token provided is either unauthorized or expired. Please login again.",
+            "error"
+          );
+
+          return navigate("/auth/login");
+        }
+
+        return addToast("Error!", response.message, "error");
       }
 
-      const result = await res.json();
-      console.log(result);
-
-      // Toast notification to be added
-      alert(res.status + ":" + result.message);
+      addToast("Project deleted!", response.message, "success");
       navigate("/projects");
     } catch (err) {
-      console.error("Error updating project :", err);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading({ value: false, message: "" });
     }

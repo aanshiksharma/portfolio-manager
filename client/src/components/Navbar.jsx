@@ -27,8 +27,8 @@ function Navbar({ text }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("login-mode");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("login-mode");
     navigate("/");
   };
 

@@ -6,8 +6,10 @@ import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
+import { useToast } from "../../contexts/ToastContext";
+
 function AddProject() {
-  const [adding, setAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [currentSkill, setCurrentSkill] = useState("");
 
   const navigate = useNavigate();
@@ -25,6 +27,10 @@ function AddProject() {
     name: "skills",
   });
 
+  const { addToast } = useToast();
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && currentSkill.trim() !== "") {
       e.preventDefault();
@@ -34,9 +40,17 @@ function AddProject() {
   };
 
   const onSubmit = async (data) => {
-    const skills = data.skills[0] !== "" ? data.skills : [];
+    if (sessionStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+      return navigate("/auth/login");
+    }
+
+    const skills = data.skills[0] !== "" ? data.skills : [];
 
     const formData = new FormData();
     formData.append("title", data.title);
@@ -48,7 +62,8 @@ function AddProject() {
     formData.append("coverImage", data.coverImage[0]);
 
     try {
-      setAdding(true);
+      setLoading(true);
+
       const res = await fetch(`${BACKEND_URL}/api/projects/`, {
         method: "POST",
         headers: {
@@ -57,28 +72,38 @@ function AddProject() {
         body: formData,
       });
 
+      const response = await res.json();
+
       if (!res.ok) {
-        if (res.status === 403 || res.status === 401) {
-          alert("You need to be logged in as admin before adding a project");
-          return navigate(-1);
+        if (res.status === 401 || res.status === 403) {
+          addToast(
+            "Unauthorized access!",
+            "The token provided is either unauthorized or expired. Please login again.",
+            "error"
+          );
+
+          return navigate("/auth/login");
         }
 
-        const response = await res.json();
-        alert(response.message);
+        return addToast("Error!", response.message, "error");
       }
 
-      const response = await res.json();
-      alert(response.message);
+      addToast("New project added!", response.message, "success");
       navigate(-1);
     } catch (err) {
-      alert(err);
-      console.log("SERVER ERROR", err);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
-      setAdding(false);
+      setLoading(false);
     }
   };
 
-  if (adding)
+  if (loading)
     return (
       <>
         <Navbar />

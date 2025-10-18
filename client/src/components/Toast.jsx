@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
 import { useToast } from "../contexts/ToastContext";
 
 import Icon from "./Icon";
 import Button from "./Button";
 
 function Toast({ toast }) {
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(10);
 
   useEffect(() => {
     if (seconds === 0) return;
@@ -20,9 +22,16 @@ function Toast({ toast }) {
   const { removeToast } = useToast();
 
   const styles = {
-    info: "text-info",
-    success: "text-success",
-    error: "text-error",
+    icon: {
+      info: "text-info",
+      success: "text-success",
+      error: "text-error",
+    },
+    bg: {
+      info: "bg-info",
+      success: "bg-success",
+      error: "bg-error",
+    },
   };
 
   const icon =
@@ -35,21 +44,30 @@ function Toast({ toast }) {
       : "";
 
   return (
-    <div
+    <motion.div
+      initial={{ x: 500, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: 500, opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.5 }}
       className={`
         rounded-lg w-xs border-1 border-border/40
         text-text-secondary bg-bg-surface-dark/30 backdrop-blur-lg shadow-lg
         text-sm relative overflow-hidden
-    `}
+        `}
     >
-      <div
-        className={`h-1 w-full absolute bottom-0 rounded-l-lg origin-left bg-${toast.type}`}
-      ></div>
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 10, ease: "linear" }}
+        className={`h-1 w-full absolute bottom-0 left-0 origin-left ${
+          styles.bg[toast.type]
+        }`}
+      ></motion.div>
 
       <div className="py-3 px-4 flex flex-col gap-2">
         <div className="flex items-center justify-between flex-1">
           <div className="flex gap-2 items-center">
-            <span className={`icon-container ${styles[toast.type]}`}>
+            <span className={`icon-container ${styles.icon[toast.type]}`}>
               <Icon icon={icon} size={16} />
             </span>
 
@@ -76,7 +94,7 @@ function Toast({ toast }) {
       <p className="text-xs text-text-muted border-t-1 border-border/50 pt-2 pb-3 px-4">
         This message will close in {seconds} seconds.
       </p>
-    </div>
+    </motion.div>
   );
 }
 
