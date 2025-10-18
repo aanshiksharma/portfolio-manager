@@ -5,7 +5,7 @@ import Icon from "./Icon";
 import Button from "./Button";
 
 function Toast({ toast }) {
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(10);
 
   useEffect(() => {
     if (seconds === 0) return;
@@ -20,9 +20,16 @@ function Toast({ toast }) {
   const { removeToast } = useToast();
 
   const styles = {
-    info: "text-info",
-    success: "text-success",
-    error: "text-error",
+    icon: {
+      info: "text-info",
+      success: "text-success",
+      error: "text-error",
+    },
+    bg: {
+      info: "bg-info",
+      success: "bg-success",
+      error: "bg-error",
+    },
   };
 
   const icon =
@@ -43,13 +50,15 @@ function Toast({ toast }) {
     `}
     >
       <div
-        className={`h-1 w-full absolute bottom-0 rounded-l-lg origin-left bg-${toast.type}`}
+        className={`h-1 w-full absolute bottom-0 left-0 origin-left ${
+          styles.bg[toast.type]
+        }`}
       ></div>
 
       <div className="py-3 px-4 flex flex-col gap-2">
         <div className="flex items-center justify-between flex-1">
           <div className="flex gap-2 items-center">
-            <span className={`icon-container ${styles[toast.type]}`}>
+            <span className={`icon-container ${styles.icon[toast.type]}`}>
               <Icon icon={icon} size={16} />
             </span>
 

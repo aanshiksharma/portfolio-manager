@@ -58,7 +58,16 @@ function Register() {
   }, [aboutFields, socialFields]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    if (sessionStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
+
     if (
       data.socialMediaLinks[0].platform === "" ||
       data.socialMediaLinks[0].link === ""
@@ -77,6 +86,8 @@ function Register() {
     formData.append("profileImage", data.profileImage[0]);
 
     try {
+      setLoading(true);
+
       const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: {
@@ -85,20 +96,34 @@ function Register() {
         body: formData,
       });
 
+      const response = await res.json();
+
       if (!res.ok) {
         if (res.status === 401) {
-          return alert("The secret password is incorrect.");
+          return addToast(
+            "Unmatched credentials!",
+            "The secret password is incorrect.",
+            "error"
+          );
         }
 
-        const response = await res.json();
-        return alert(response.message);
+        return addToast("An error occurred!", response.message, "error");
       }
 
-      const response = await res.json();
-      alert(response.message, "Please login with the password");
+      addToast(
+        "New admin registered!",
+        response.message + " Please login with the password",
+        "success"
+      );
       navigate("/auth/login");
     } catch (err) {
-      alert("Internal Server Error", err.message);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }

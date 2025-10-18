@@ -3,6 +3,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { useImageViewer } from "../../contexts/ImageViewerContext";
+import { useToast } from "../../contexts/ToastContext";
 
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
@@ -44,6 +45,7 @@ function EditPersonal() {
   });
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     const loadPersonalData = async () => {
       try {
@@ -76,10 +78,18 @@ function EditPersonal() {
   const adminDetails = watch();
 
   const { open } = useImageViewer();
+  const { addToast } = useToast();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    setLoading(true);
+    if (sessionStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
 
     if (
       data.socialMediaLinks[0].platform === "" ||
@@ -99,6 +109,8 @@ function EditPersonal() {
     formData.append("profileImage", data.profileImage[0]);
 
     try {
+      setLoading(true);
+
       const res = await fetch(`${BACKEND_URL}/api/admin/${adminDetails._id}`, {
         method: "PUT",
         headers: {
@@ -107,22 +119,32 @@ function EditPersonal() {
         body: formData,
       });
 
+      const response = await res.json();
+
       if (!res.ok) {
-        if (res.status === 403 || res.status === 401) {
-          alert("You need to be logged in as admin to save changes.");
-          return navigate(-1);
+        if (res.status === 401 || res.status === 403) {
+          addToast(
+            "Unauthorized access!",
+            "The token provided is either unauthorized or expired. Please login again.",
+            "error"
+          );
+
+          return navigate("/auth/login");
         }
 
-        const response = await res.json();
-        alert(response.message);
+        return addToast("Error!", response.message, "error");
       }
 
-      const response = await res.json();
-      alert(response.message);
-      reset(response.admin);
+      addToast("Admin details updated!", response.message, "success");
       navigate(-1);
     } catch (err) {
-      alert("Internal Server Error", err);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }

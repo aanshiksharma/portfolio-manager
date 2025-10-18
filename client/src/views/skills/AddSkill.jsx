@@ -47,7 +47,7 @@ function AddSkill() {
         body: JSON.stringify(data),
       });
 
-      const result = await res.json();
+      const response = await res.json();
 
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
@@ -60,10 +60,10 @@ function AddSkill() {
           return navigate("/auth/login");
         }
 
-        return addToast("Error!", result.message, "error");
+        return addToast("Error!", response.message, "error");
       }
 
-      addToast("New skill added!", result.message, "success");
+      addToast("New skill added!", response.message, "success");
       reset();
       return navigate(-1);
     } catch (err) {

@@ -13,7 +13,7 @@ export const ToastProvider = ({ children }) => {
 
     setTimeout(() => {
       removeToast(id);
-    }, 5000);
+    }, 10000);
   }, []);
 
   const removeToast = useCallback((id) => {
