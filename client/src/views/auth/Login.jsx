@@ -1,13 +1,12 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useToast } from "../../contexts/ToastContext";
 
 import Button from "../../components/Button";
 import Pill from "../../components/Pill";
-import { useEffect } from "react";
 
-function Login({ role }) {
-  if (!role) role = "admin";
-
+function Login({ role = "admin" }) {
   const {
     register,
     handleSubmit,
@@ -15,6 +14,8 @@ function Login({ role }) {
     setError,
     formState: { errors },
   } = useForm();
+
+  const { addToast } = useToast();
 
   useEffect(() => {
     reset();
@@ -41,7 +42,11 @@ function Login({ role }) {
             });
 
           if (res.status === 404) {
-            alert("Please register the admin first!");
+            addToast(
+              "Admin not found!",
+              "Please register the admin first",
+              "info"
+            );
             navigate("/auth/register");
           }
           return;
@@ -52,6 +57,12 @@ function Login({ role }) {
         const token = user.token;
         sessionStorage.removeItem("login-mode");
         sessionStorage.setItem("token", token);
+
+        addToast(
+          "Logged in!",
+          `You are now logged in as ${user.name}`,
+          "success"
+        );
       } else {
         res = await fetch(`${BACKEND_URL}/api/auth/${role}-login`, {
           method: "POST",
@@ -61,12 +72,30 @@ function Login({ role }) {
 
         if (!res.ok) return;
 
+        const response = await res.json();
+        const user = role === "visitor" ? response.visitor : response.recruiter;
+
         sessionStorage.removeItem("token");
         sessionStorage.setItem("login-mode", role);
+
+        addToast(
+          `Welcome${user.noOfVisits > 1 ? " back" : ""}, ${
+            data[`${role}Name`]
+          }!`,
+          `You are now logged in as a ${role}.`,
+          "success"
+        );
       }
+
       navigate("/dashboard");
     } catch (error) {
-      console.error(error);
+      console.error("INTERNAL SERVER ERROR");
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "An error occurred on our side. Please try again.",
+        "error"
+      );
     }
   };
 
