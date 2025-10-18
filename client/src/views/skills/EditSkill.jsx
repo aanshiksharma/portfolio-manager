@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
+import { useToast } from "../../contexts/ToastContext";
 
 function EditSkill() {
   const [loading, setLoading] = useState({
@@ -12,6 +13,8 @@ function EditSkill() {
     message: "Loading...",
   });
   const [skill, setSkill] = useState({});
+
+  const { addToast } = useToast();
 
   const {
     register,
@@ -53,6 +56,16 @@ function EditSkill() {
   }, []);
 
   const onSubmit = async (data) => {
+    if (localStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
+
     try {
       setLoading({ value: true, message: "Saving changes..." });
 
@@ -64,28 +77,49 @@ function EditSkill() {
         },
         body: JSON.stringify(data),
       });
+
       const result = await res.json();
+
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
-          alert("You need to be logged in as admin to edit a skill.");
+          addToast(
+            "Unauthorized access!",
+            "The token provided is either unauthorized or expired. Please login again.",
+            "error"
+          );
+
           return navigate("/auth/login");
         }
-        alert(result.message);
+
+        return addToast("Error!", result.message, "error");
       }
-      alert("Changes saved.");
+
+      addToast("Changes saved!", result.message, "success");
       return navigate(-1);
     } catch (err) {
-      console.error(err);
+      console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading({ value: false, message: "" });
     }
-
-    // console.log(data);
-    // console.log(data.skillName);
-    // console.log(data.categoryName);
   };
 
   const onDelete = async () => {
+    if (localStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error"
+      );
+
+      return navigate("/auth/login");
+    }
+
     try {
       setLoading({ value: true, message: "Deleting..." });
 
@@ -97,18 +131,28 @@ function EditSkill() {
 
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
-          alert("You need to be logged in as admin to delete a skill!");
+          addToast(
+            "Access unauthorized!",
+            "The token provided is either invalid or expired. Please login again.",
+            "error"
+          );
+
           return navigate("/auth/login");
         }
 
-        alert(response.message);
-        return;
+        return addToast("Some error occurred!", response.message, "error");
       }
 
-      alert(response.message);
+      addToast("Skill deleted!", response.message, "success");
       return navigate(-1);
     } catch (err) {
       console.log("INTERNAL SERVER ERROR", err);
+
+      addToast(
+        "INTERNAL SERVER ERROR!",
+        "There was an error on our side. Please try again.",
+        "error"
+      );
     } finally {
       setLoading({ value: false, message: "" });
     }

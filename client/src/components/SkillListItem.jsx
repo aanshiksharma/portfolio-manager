@@ -2,7 +2,13 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "./Button";
 
-function SkillListItem({ name, categoryName, onDoubleClick }) {
+function SkillListItem({
+  name,
+  categoryName,
+  onDoubleClick,
+  id,
+  disableDelete = false,
+}) {
   const navigate = useNavigate();
 
   return (
@@ -23,15 +29,17 @@ function SkillListItem({ name, categoryName, onDoubleClick }) {
           icon={{ icon: "edit", size: 16 }}
           variant={"primary"}
           className={"bg-transparent !p-0 border-none hover:bg-tranparent"}
-          onClick={() => navigate(`/skills/edit/${skill._id}`)}
+          onClick={() => navigate(`/skills/edit/${id}`)}
         />
 
-        <Button
-          icon={{ icon: "trash", size: 16 }}
-          variant={"delete"}
-          className={"bg-transparent !p-0 border-none hover:bg-tranparent"}
-          onClick={() => navigate(`/skills/edit/${skill._id}`)}
-        />
+        {!disableDelete && (
+          <Button
+            icon={{ icon: "trash", size: 16 }}
+            variant={"delete"}
+            className={"bg-transparent !p-0 border-none hover:bg-tranparent"}
+            onClick={() => navigate(`/skills/edit/${id}`)}
+          />
+        )}
       </div>
     </div>
   );

@@ -23,8 +23,10 @@ function SkillsPreview({ skills }) {
             index < 5 && (
               <SkillListItem
                 key={skill._id}
+                id={skill._id}
                 name={skill.name}
                 categoryName={skill.categoryName}
+                disableDelete
                 onDoubleClick={() => navigate(`/skills/edit/${skill._id}`)}
               />
             )
