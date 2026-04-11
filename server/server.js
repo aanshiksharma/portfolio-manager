@@ -9,8 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
-  "https://portfolio-manager-cms.vercel.app",
-  "http://localhost:5173",
+  "https://portfolio-manager-cms.vercel.app", // Production frontend URL
+  "https://aanshik-dev-portfolio.vercel.app", // Production frontend URL for portfolio
+  "http://localhost:5173", // React development server
+  "http://localhost:3000", // Next.js development server
 ];
 
 // Middleware
@@ -27,7 +29,7 @@ app.use(
       console.warn(`Blocked CORS request from: ${origin}`);
       return callback(new Error("Not allowed by CORS"));
     },
-  })
+  }),
 );
 app.use(express.json());
 
