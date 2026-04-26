@@ -10,5 +10,8 @@
     "mongoose": "^8.18.2",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
   }
 }
