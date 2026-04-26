@@ -26,64 +26,55 @@ function Login({ role = "admin" }) {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const onSubmit = async (data) => {
     try {
-      let res;
-      if (role === "admin") {
-        res = await fetch(`${BACKEND_URL}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: data.password }),
-        });
+      const res = await fetch(`${BACKEND_URL}/api/auth/${role}-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data[`${role}Name`] || undefined,
+          password: data.password || undefined,
+          role: role,
+        }),
+      });
 
-        if (!res.ok) {
-          if (res.status === 401)
-            setError("password", {
-              type: 401,
-              message: "Incorrect Password",
-            });
+      if (!res.ok) {
+        if (res.status === 401)
+          setError("password", {
+            type: 401,
+            message: "Incorrect Password",
+          });
 
-          if (res.status === 404) {
-            addToast(
-              "Admin not found!",
-              "Please register the admin first",
-              "info"
-            );
-            navigate("/auth/register");
-          }
-          return;
+        if (res.status === 404) {
+          addToast(
+            "Admin not found!",
+            "Please register the admin first",
+            "info",
+          );
+          navigate("/auth/register");
         }
+        return;
+      }
 
-        const user = await res.json();
+      const response = await res.json();
+      const user = response.user;
 
-        const token = user.token;
+      if (role === "admin") {
+        const token = response.token;
         sessionStorage.removeItem("login-mode");
         sessionStorage.setItem("token", token);
 
         addToast(
           "Logged in!",
-          `You are now logged in as ${user.name}`,
-          "success"
+          `You are now logged in as ${user.name.split(" ")[0]}`,
+          "success",
         );
       } else {
-        res = await fetch(`${BACKEND_URL}/api/auth/${role}-login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: data[`${role}Name`], role: role }),
-        });
-
-        if (!res.ok) return;
-
-        const response = await res.json();
-        const user = role === "visitor" ? response.visitor : response.recruiter;
-
         sessionStorage.removeItem("token");
         sessionStorage.setItem("login-mode", role);
 
         addToast(
-          `Welcome${user.noOfVisits > 1 ? " back" : ""}, ${
-            data[`${role}Name`]
-          }!`,
+          `Welcome${user.noOfVisits > 1 ? " back" : ""}, ${data[`${role}Name`]}!`,
           `You are now logged in as a ${role}.`,
-          "success"
+          "success",
         );
       }
 
@@ -94,7 +85,7 @@ function Login({ role = "admin" }) {
       addToast(
         "INTERNAL SERVER ERROR!",
         "An error occurred on our side. Please try again.",
-        "error"
+        "error",
       );
     }
   };
@@ -108,11 +99,11 @@ function Login({ role = "admin" }) {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex flex-wrap min-h-screen">
         <div
           className={`
             left 
-            p-4
+            p-4 min-w-sm
             bg-text-secondary
             font-medium text-bg-base
             flex-1 flex flex-col gap-4 align-center justify-center
@@ -133,7 +124,7 @@ function Login({ role = "admin" }) {
         <div
           className={`
             right
-            p-4
+            p-4 min-w-sm
             font-medium text-text-primary
             flex-1 flex flex-col gap-6 align-center justify-center
             `}

@@ -96,11 +96,12 @@ const adminLogin = async (req, res) => {
         mobile: admin.mobile,
       },
       tokenKey,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     res.status(200).json({
       message: "Login Successful",
+      user: admin,
       token,
     });
   } catch (error) {
@@ -108,34 +109,35 @@ const adminLogin = async (req, res) => {
       message: "Internal Server Error",
       error: error.message,
     });
+    console.log(error);
   }
 };
 
-const recruiterLogin = async (req, res) => {
-  const { name } = req.body;
+const guestLogin = async (req, res) => {
+  const { name, role } = req.body;
 
   try {
-    const existingRecruiter = await Guest.findOne({ name, role: "recruiter" });
-    if (existingRecruiter) {
-      existingRecruiter.noOfVisits += 1;
-      existingRecruiter.lastVisitedAt = new Date();
-      await existingRecruiter.save();
+    const existingUser = await Guest.findOne({ name, role });
+    if (existingUser) {
+      existingUser.noOfVisits += 1;
+      existingUser.lastVisitedAt = new Date();
+      await existingUser.save();
 
       return res.status(200).json({
-        message: "Logged in as Recruiter.",
-        recruiter: existingRecruiter,
+        message: `Logged in as ${role}`,
+        user: existingUser,
       });
     }
 
-    const newRecruiter = new Guest({
+    const newUser = new Guest({
       name: name,
-      role: "recruiter",
+      role: role,
     });
-    await newRecruiter.save();
+    await newUser.save();
 
     res.status(201).json({
-      message: "Logged in as Recruiter.",
-      recruiter: newRecruiter,
+      message: `Logged in as ${role}`,
+      user: newUser,
     });
   } catch (error) {
     res.status(500).json({
@@ -145,37 +147,4 @@ const recruiterLogin = async (req, res) => {
   }
 };
 
-const visitorLogin = async (req, res) => {
-  const { name } = req.body;
-
-  try {
-    const existingVisitor = await Guest.findOne({ name, role: "visitor" });
-    if (existingVisitor) {
-      existingVisitor.noOfVisits += 1;
-      existingVisitor.lastVisitedAt = new Date();
-      await existingVisitor.save();
-
-      return res.status(200).json({
-        message: "Logged in as Visitor.",
-        visitor: existingVisitor,
-      });
-    }
-
-    const newVisitor = new Guest({
-      name: name,
-      role: "visitor",
-    });
-    await newVisitor.save();
-
-    res.status(201).json({
-      message: "Logged in as Visitor.",
-      visitor: newVisitor,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Some error occurred while logging you in.",
-    });
-  }
-};
-
-export { adminRegister, adminLogin, recruiterLogin, visitorLogin };
+export { adminRegister, adminLogin, guestLogin };
