@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Icon from "./Icon";
 
-function Pill({ label, icon, to }) {
+function Pill({ label, icon, to, className }) {
   const styles = {
     base: `p-2 rounded-lg text-xs font-semibold transition ease-out whitespace-nowrap
     ${icon && "flex align-center justify-center gap-2"}
@@ -18,9 +18,9 @@ function Pill({ label, icon, to }) {
         className={({ isActive }) => `
       ${styles.base}
       ${isActive ? styles.selected : styles.unSelected}
+      ${className}
         `}
       >
-        {/* Icon sits here if it is present */}
         {icon && <Icon icon={icon.link} size={icon.size} />}
         {label}
       </NavLink>

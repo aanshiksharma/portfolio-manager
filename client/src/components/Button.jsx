@@ -1,6 +1,13 @@
 import Icon from "./Icon";
 
-function Button({ label, icon, type, className, variant, onClick }) {
+function Button({
+  label,
+  icon,
+  type,
+  className,
+  variant = "secondary",
+  onClick,
+}) {
   const styles = {
     base: `py-2 rounded-lg text-xs font-semibold transition ease-out cursor-pointer ${
       icon
@@ -27,6 +34,7 @@ function Button({ label, icon, type, className, variant, onClick }) {
         ${className}
       `}
       onClick={onClick}
+      disabled={variant === "disabled"}
     >
       {icon && <Icon icon={icon.icon} size={icon.size} />}
       {label && label}

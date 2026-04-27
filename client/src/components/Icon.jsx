@@ -29,6 +29,7 @@ import {
   ExclamationCircle,
   InfoCircle,
   CheckCircle,
+  List,
 } from "react-bootstrap-icons";
 
 function Icon({ icon, size }) {
@@ -88,6 +89,8 @@ function Icon({ icon, size }) {
       return <CheckCircle size={size} />;
     case "exclamation-circle":
       return <ExclamationCircle size={size} />;
+    case "list":
+      return <List size={size} />;
     default:
       return <ExclamationCircle size={size} />;
   }
