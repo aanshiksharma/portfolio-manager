@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import { useToast } from "../contexts/ToastContext";
+import useToast from "./useToast";
 
-import Icon from "./Icon";
-import Button from "./Button";
+import Icon from "../components/ui/Icon";
+import Button from "../components/ui/Button";
 
 function Toast({ toast }) {
   const [seconds, setSeconds] = useState(10);
@@ -38,10 +38,10 @@ function Toast({ toast }) {
     toast.type === "info"
       ? "info-circle"
       : toast.type === "success"
-      ? "check-circle"
-      : toast.type === "error"
-      ? "exclamation-circle"
-      : "";
+        ? "check-circle"
+        : toast.type === "error"
+          ? "exclamation-circle"
+          : "";
 
   return (
     <motion.div

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useImageViewer } from "../../contexts/ImageViewerContext";
-import { useToast } from "../../contexts/ToastContext";
+
+import useImageViewer from "../../shared/image-viewer/useImageViewer";
+import useToast from "../../shared/toast/useToast";
 
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";

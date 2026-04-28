@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useToast } from "../../contexts/ToastContext";
+import useToast from "../../shared/toast/useToast";
 
 import Button from "../../components/Button";
 import Pill from "../../components/Pill";

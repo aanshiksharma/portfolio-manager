@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import Pill from "../../ui/Pill";
 
-import links from "../../../constants/links.data.json";
+import links from "./links.data.json";
 
 function MobileMenu({ sidebarVisible, toggleSidebar }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);

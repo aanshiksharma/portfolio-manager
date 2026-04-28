@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-const ImageViewerContext = createContext();
+export const ImageViewerContext = createContext();
 
-function ImageViewerProvider({ children }) {
+const ImageViewerProvider = ({ children }) => {
   const [imageViewData, setImageViewData] = useState({
     visible: false,
     imageUrl: null,
@@ -21,10 +21,6 @@ function ImageViewerProvider({ children }) {
       {children}
     </ImageViewerContext.Provider>
   );
-}
+};
 
-function useImageViewer() {
-  return useContext(ImageViewerContext);
-}
-
-export { ImageViewerProvider, useImageViewer };
+export default ImageViewerProvider;

@@ -1,11 +1,11 @@
-import { createContext, useContext, useCallback, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
-import Toast from "../components/Toast";
+import Toast from "./Toast";
 
-const ToastContext = createContext();
+export const ToastContext = createContext();
 
-export const ToastProvider = ({ children }) => {
+const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = useCallback((heading, message, type = "info") => {
@@ -35,4 +35,4 @@ export const ToastProvider = ({ children }) => {
   );
 };
 
-export const useToast = () => useContext(ToastContext);
+export default ToastProvider;

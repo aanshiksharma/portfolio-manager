@@ -1,5 +1,5 @@
-import Button from "../Button";
-import { useImageViewer } from "../../contexts/ImageViewerContext";
+import Button from "../components/ui/Button";
+import useImageViewer from "./useImageViewer";
 
 function ImageViewer() {
   const { visible, imageUrl, close } = useImageViewer();

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useImageViewer } from "../../contexts/ImageViewerContext";
+
+import useImageViewer from "../../shared/image-viewer/useImageViewer";
 
 import Button from "../../components/Button";
 import TableRow from "../../components/TableRow";

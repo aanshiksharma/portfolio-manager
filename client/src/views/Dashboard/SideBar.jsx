@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Icon from "../../components/Icon";
 
-import { useImageViewer } from "../../contexts/ImageViewerContext";
+import useImageViewer from "../../shared/image-viewer/useImageViewer";
 
 function SideBar({ admin }) {
   const navigate = useNavigate();

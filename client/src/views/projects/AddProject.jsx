@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
-import { useToast } from "../../contexts/ToastContext";
+import useToast from "../../shared/toast/useToast";
 
 function AddProject() {
   const [loading, setLoading] = useState(false);
