@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useImageViewer from "../../shared/image-viewer/useImageViewer";
 import useToast from "../../shared/toast/useToast";
 
-import Button from "../../components/Button";
+import Button from "../../shared/components/ui/Button";
 
 import LoadingPage from "../LoadingPage";
 import Overlay from "../../components/Overlay";

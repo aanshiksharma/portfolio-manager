@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../components/Button";
-import Icon from "../../components/Icon";
+import Button from "../../shared/components/ui/Button";
+import Icon from "../../shared/components/ui/Icon";
 
 import useImageViewer from "../../shared/image-viewer/useImageViewer";
 

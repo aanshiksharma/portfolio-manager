@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import Button from "../../components/Button";
+import Button from "../../shared/components/ui/Button";
+
 import LoadingPage from "../LoadingPage";
 
 import useToast from "../../shared/toast/useToast";

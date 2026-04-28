@@ -5,7 +5,8 @@ import { useForm, useFieldArray } from "react-hook-form";
 import useImageViewer from "../../shared/image-viewer/useImageViewer";
 import useToast from "../../shared/toast/useToast";
 
-import Button from "../../components/Button";
+import Button from "../../shared/components/ui/Button";
+
 import LoadingPage from "../LoadingPage";
 
 function EditProject() {

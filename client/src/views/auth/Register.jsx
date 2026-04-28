@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../components/Button";
+import Button from "../../shared/components/ui/Button";
+
 import LoadingPage from "../LoadingPage";
 import Overlay from "../../components/Overlay";
 

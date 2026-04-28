@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../components/Button";
-import TableRow from "../../components/TableRow";
+import Button from "../../shared/components/ui/Button";
+import TableRow from "../../shared/components/ui/TableRow";
 
 import LoadingPage from "../LoadingPage";
 

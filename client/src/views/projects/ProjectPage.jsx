@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import useImageViewer from "../../shared/image-viewer/useImageViewer";
 
-import Button from "../../components/Button";
-import TableRow from "../../components/TableRow";
+import Button from "../../shared/components/ui/Button";
+import TableRow from "../../shared/components/ui/TableRow";
+
 import LoadingPage from "../LoadingPage";
 
 function ProjectPage() {

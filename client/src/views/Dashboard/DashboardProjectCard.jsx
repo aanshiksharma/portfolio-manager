@@ -1,4 +1,4 @@
-import Pill from "../../components/Pill";
+import Pill from "../../shared/components/ui/Pill";
 
 function DashboardProjectCard({ project, onDoubleClick }) {
   return (

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import Button from "../Button";
-import Icon from "../Icon";
+import Button from "../../shared/components/ui/Button";
+import Icon from "../../shared/components/ui/Icon";
 
 function ProjectCard({ id, title, projectLink, imageUrl }) {
   const navigate = useNavigate();

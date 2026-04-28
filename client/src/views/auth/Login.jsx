@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useToast from "../../shared/toast/useToast";
 
-import Button from "../../components/Button";
-import Pill from "../../components/Pill";
+import Button from "../../shared/components/ui/Button";
+import Pill from "../../shared/components/ui/Pill";
 
 function Login({ role = "admin" }) {
   const {

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Button from "../../components/Button";
+import Button from "../../shared/components/ui/Button";
+
 import LoadingPage from "../LoadingPage";
 
 import useToast from "../../shared/toast/useToast";
