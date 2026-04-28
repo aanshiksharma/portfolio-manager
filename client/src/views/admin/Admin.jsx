@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import TableRow from "../../components/TableRow";
 
@@ -33,17 +32,10 @@ function Admin() {
     loadPersonalData();
   }, []);
 
-  if (loading)
-    return (
-      <>
-        <Navbar />
-        <LoadingPage />
-      </>
-    );
+  if (loading) return <LoadingPage />;
 
   return (
     <>
-      <Navbar />
       <div className="container">
         <div className="flex flex-col gap-4 px-4 py-8 w-full">
           <section className="flex items-center justify-between">

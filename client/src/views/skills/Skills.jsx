@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
@@ -46,7 +45,7 @@ function Skills() {
         addToast(
           "Access Denied!",
           "You need to be logged in as admin to delete a skill.",
-          "error"
+          "error",
         );
         return navigate("/auth/login");
       }
@@ -62,7 +61,7 @@ function Skills() {
           addToast(
             "Access unauthorized!",
             "The token provided is either invalid or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -78,24 +77,17 @@ function Skills() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading)
-    return (
-      <>
-        <Navbar />
-        <LoadingPage />;
-      </>
-    );
+  if (loading) return <LoadingPage />;
 
   return (
     <>
-      <Navbar />
       <div className="container">
         <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-200 mx-auto">
           <section className="flex items-center justify-between">

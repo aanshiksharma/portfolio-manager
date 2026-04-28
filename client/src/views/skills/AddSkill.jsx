@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
@@ -29,7 +28,7 @@ function AddSkill() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -54,7 +53,7 @@ function AddSkill() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -72,7 +71,7 @@ function AddSkill() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading(false);
@@ -80,17 +79,11 @@ function AddSkill() {
   };
 
   if (loading) {
-    return (
-      <>
-        <Navbar />
-        <LoadingPage text="Adding Skill..." />
-      </>
-    );
+    return <LoadingPage text="Adding Skill..." />;
   }
 
   return (
     <>
-      <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <section className="p-4">
           <h1 className="form-heading">Add a new skill</h1>

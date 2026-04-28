@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 import { useToast } from "../../contexts/ToastContext";
@@ -39,7 +38,7 @@ function EditSkill() {
         const skill = await res.json();
 
         const categoryRes = await fetch(
-          `${BACKEND_URL}/api/categories/${skill.category}`
+          `${BACKEND_URL}/api/categories/${skill.category}`,
         );
         const category = await categoryRes.json();
 
@@ -60,7 +59,7 @@ function EditSkill() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -85,7 +84,7 @@ function EditSkill() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -102,7 +101,7 @@ function EditSkill() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading({ value: false, message: "" });
@@ -114,7 +113,7 @@ function EditSkill() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -134,7 +133,7 @@ function EditSkill() {
           addToast(
             "Access unauthorized!",
             "The token provided is either invalid or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -151,7 +150,7 @@ function EditSkill() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading({ value: false, message: "" });
@@ -159,17 +158,11 @@ function EditSkill() {
   };
 
   if (loading.value) {
-    return (
-      <>
-        <Navbar />
-        <LoadingPage text={loading.message} />
-      </>
-    );
+    return <LoadingPage text={loading.message} />;
   }
 
   return (
     <>
-      <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <section className="p-4 w-full flex items-center justify-between">
           <h1 className="form-heading">Edit "{skill.name}"</h1>

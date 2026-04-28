@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
 import LoadingPage from "./LoadingPage";
 
 function ViewHandler() {
@@ -24,7 +23,7 @@ function ViewHandler() {
         else navigate("/auth/login");
       } catch (err) {
         setLoadingText(
-          `An error occurred on our side. Please try again later!`
+          `An error occurred on our side. Please try again later!`,
         );
       }
     };
@@ -33,12 +32,7 @@ function ViewHandler() {
     else verifyTokenAndNavigate(token);
   }, []);
 
-  return (
-    <>
-      <Navbar />
-      <LoadingPage text={loadingText} />
-    </>
-  );
+  return <LoadingPage text={loadingText} />;
 }
 
 export default ViewHandler;

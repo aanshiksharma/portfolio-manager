@@ -1,7 +1,7 @@
 export const fetchData = async (endpoint, errorMessage) => {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/${endpoint}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/${endpoint}`,
     );
 
     if (!res.ok && res.status !== 404) {

@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-import HeaderNavigation from "./navigation/HeaderNavigation";
-import MobileMenu from "./navigation/MobileMenu";
-import Button from "./Button";
+import HeaderNavigation from "./HeaderNavigation";
+import MobileMenu from "./MobileMenu";
+
+import Button from "../../ui/Button";
 
 function Navbar({ text }) {
   const [sidebarVisible, setSidebarVisible] = useState(false);

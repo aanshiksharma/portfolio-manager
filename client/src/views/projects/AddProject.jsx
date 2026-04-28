@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
@@ -44,7 +43,7 @@ function AddProject() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -79,7 +78,7 @@ function AddProject() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -96,24 +95,17 @@ function AddProject() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading)
-    return (
-      <>
-        <Navbar />
-        <LoadingPage text="Adding Project..." />
-      </>
-    );
+  if (loading) return <LoadingPage text="Adding Project..." />;
 
   return (
     <>
-      <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4">
           <h1 className="form-heading">Add a new project</h1>

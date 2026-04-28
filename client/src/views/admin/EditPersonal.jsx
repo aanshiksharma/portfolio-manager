@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useImageViewer } from "../../contexts/ImageViewerContext";
 import { useToast } from "../../contexts/ToastContext";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 
 import LoadingPage from "../LoadingPage";
@@ -85,7 +84,7 @@ function EditPersonal() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -126,7 +125,7 @@ function EditPersonal() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -143,25 +142,17 @@ function EditPersonal() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading)
-    return (
-      <>
-        <Navbar />
-        <LoadingPage />
-      </>
-    );
+  if (loading) return <LoadingPage />;
 
   return (
     <>
-      <Navbar />
-
       {showOverlay && (
         <ChangePasswordOverlay
           onClose={() => {
@@ -323,7 +314,7 @@ function EditPersonal() {
                     className={"self-start"}
                     onClick={() => {
                       const hasEmpty = socialFields.some(
-                        (field) => !field.platform.trim() || !field.link.trim()
+                        (field) => !field.platform.trim() || !field.link.trim(),
                       );
                       if (!hasEmpty) addSocial({ platform: "", link: "" });
                     }}

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import Icon from "../components/Icon";
 
@@ -9,7 +8,6 @@ function NotFound() {
   const navigate = useNavigate();
   return (
     <>
-      <Navbar />
       <div className="container">
         <section className="flex flex-col items-start gap-4 px-4 py-6">
           <Icon icon="not-found" size={48} />

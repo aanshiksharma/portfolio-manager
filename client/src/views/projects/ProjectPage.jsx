@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useImageViewer } from "../../contexts/ImageViewerContext";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import TableRow from "../../components/TableRow";
 import LoadingPage from "../LoadingPage";
@@ -42,17 +41,11 @@ function ProjectPage() {
   }, []);
 
   if (loading) {
-    return (
-      <>
-        <Navbar />
-        <LoadingPage />
-      </>
-    );
+    return <LoadingPage />;
   }
 
   return (
     <>
-      <Navbar />
       <div className="container">
         <div className="flex flex-col gap-4 px-4 py-8 w-full">
           <section className="flex items-center justify-between">

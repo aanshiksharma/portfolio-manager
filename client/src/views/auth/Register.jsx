@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 import Overlay from "../../components/Overlay";
@@ -62,7 +61,7 @@ function Register() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -103,7 +102,7 @@ function Register() {
           return addToast(
             "Unmatched credentials!",
             "The secret password is incorrect.",
-            "error"
+            "error",
           );
         }
 
@@ -113,7 +112,7 @@ function Register() {
       addToast(
         "New admin registered!",
         response.message + " Please login with the password",
-        "success"
+        "success",
       );
       navigate("/auth/login");
     } catch (err) {
@@ -122,25 +121,17 @@ function Register() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading)
-    return (
-      <>
-        <Navbar text={"Register an admin"} />
-        <LoadingPage />
-      </>
-    );
+  if (loading) return <LoadingPage />;
 
   return (
     <>
-      <Navbar text={"Register an admin"} />
-
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         {showOverlay && (
           <MainPasswordOverlay

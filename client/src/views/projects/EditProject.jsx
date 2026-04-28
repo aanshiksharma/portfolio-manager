@@ -4,7 +4,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useImageViewer } from "../../contexts/ImageViewerContext";
 import { useToast } from "../../contexts/ToastContext";
 
-import Navbar from "../../components/Navbar";
 import Button from "../../components/Button";
 import LoadingPage from "../LoadingPage";
 
@@ -65,7 +64,7 @@ function EditProject() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -101,7 +100,7 @@ function EditProject() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -118,7 +117,7 @@ function EditProject() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading({
@@ -133,7 +132,7 @@ function EditProject() {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
-        "error"
+        "error",
       );
 
       return navigate("/auth/login");
@@ -156,7 +155,7 @@ function EditProject() {
           addToast(
             "Unauthorized access!",
             "The token provided is either unauthorized or expired. Please login again.",
-            "error"
+            "error",
           );
 
           return navigate("/auth/login");
@@ -173,7 +172,7 @@ function EditProject() {
       addToast(
         "INTERNAL SERVER ERROR!",
         "There was an error on our side. Please try again.",
-        "error"
+        "error",
       );
     } finally {
       setLoading({ value: false, message: "" });
@@ -191,17 +190,10 @@ function EditProject() {
 
   const projectData = watch();
 
-  if (loading.value)
-    return (
-      <>
-        <Navbar />
-        <LoadingPage text={loading.message} />
-      </>
-    );
+  if (loading.value) return <LoadingPage text={loading.message} />;
 
   return (
     <>
-      <Navbar />
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className="p-4 flex items-center justify-between w-full">
           <h1 className="form-heading">

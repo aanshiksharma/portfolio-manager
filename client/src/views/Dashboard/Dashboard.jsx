@@ -4,7 +4,6 @@ import { useSkills } from "../../hooks/useSkills";
 import { useAdmin } from "../../hooks/useAdmin";
 
 import LoadingPage from "../LoadingPage";
-import Navbar from "../../components/Navbar";
 import SideBar from "./SideBar";
 import DashboardHeader from "./DashboardHeader";
 import DashboardAbout from "./DashboardAbout";
@@ -43,19 +42,13 @@ function Dashboard() {
     "Loading...";
 
   if (isLoading) {
-    return (
-      <>
-        <Navbar />
-        <LoadingPage text={loadingText} />
-      </>
-    );
+    return <LoadingPage text={loadingText} />;
   }
 
   if (!valid) return null; // redirected by hook
 
   return (
     <>
-      <Navbar />
       <div className="container !max-w-300">
         <div className="px-4 py-8 flex gap-4 w-full">
           <SideBar admin={admin} />
