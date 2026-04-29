@@ -1,33 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import useProjects from "../hooks/useProjects";
+
+import ProjectCard from "../components/ProjectCard";
 import Button from "../../../shared/components/ui/Button";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
-import ProjectCard from "../components/ProjectCard";
-
 function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-    const loadProjects = async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/projects`);
-        const projects = res.ok ? await res.json() : [];
-        setProjects(projects);
-      } catch (err) {
-        console.error("Error loading projects", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProjects();
-  }, []);
+  const { projects, loading, error } = useProjects();
 
   if (loading) return <LoadingScreen />;
 

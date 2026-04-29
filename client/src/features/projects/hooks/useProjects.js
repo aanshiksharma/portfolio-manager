@@ -6,10 +6,6 @@ function useProjects() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    refreshProjects();
-  }, []);
-
   const refreshProjects = async () => {
     try {
       const data = await fetchProjects();
@@ -20,6 +16,10 @@ function useProjects() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    refreshProjects();
+  }, []);
 
   return { projects, loading, error };
 }
