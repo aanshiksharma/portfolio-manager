@@ -1,30 +1,30 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import ViewHandler from "./views/ViewHandler";
+import ViewHandler from "./ViewHandler";
 import MainLayout from "./shared/components/layout/MainLayout";
 
 // Auth Routes
-import Login from "./views/auth/Login";
-import Register from "./views/auth/Register";
+import Login from "./features/auth/pages/Login";
+import Register from "./features/auth/pages/Register";
 
 // App Routes
-import NotFound from "./views/NotFound";
-import Dashboard from "./views/Dashboard/Dashboard";
+import NotFound from "./NotFound";
+import Dashboard from "./features/dashboard/pages/Dashboard";
 
 // Projects Routes
-import Projects from "./views/projects/Projects";
-import ProjectPage from "./views/projects/ProjectPage";
-import AddProject from "./views/projects/AddProject";
-import EditProject from "./views/projects/EditProject";
+import Projects from "./features/projects/pages/Projects";
+import ProjectPage from "./features/projects/pages/ProjectPage";
+import AddProject from "./features/projects/pages/AddProject";
+import EditProject from "./features/projects/pages/EditProject";
 
 // Skills Routes
-import Skills from "./views/skills/Skills";
-import AddSkill from "./views/skills/AddSkill";
-import EditSkill from "./views/skills/EditSkill";
+import Skills from "./features/skills/pages/Skills";
+import AddSkill from "./features/skills/pages/AddSkill";
+import EditSkill from "./features/skills/pages/EditSkill";
 
 // Admin Routes
-import Admin from "./views/admin/Admin";
-import EditPersonal from "./views/admin/EditPersonal";
+import Admin from "./features/admin/pages/Admin";
+import EditPersonal from "./features/admin/pages/EditPersonal";
 
 function AppRoutes() {
   return (
