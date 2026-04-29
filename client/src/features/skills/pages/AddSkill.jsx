@@ -2,11 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import Button from "../../shared/components/ui/Button";
-
-import LoadingPage from "../LoadingPage";
-
-import useToast from "../../shared/toast/useToast";
+import Button from "../../../shared/components/ui/Button";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import useToast from "../../../shared/toast/useToast";
 
 function AddSkill() {
   const [loading, setLoading] = useState(false);
@@ -80,7 +78,7 @@ function AddSkill() {
   };
 
   if (loading) {
-    return <LoadingPage text="Adding Skill..." />;
+    return <LoadingScreen text="Adding Skill..." />;
   }
 
   return (

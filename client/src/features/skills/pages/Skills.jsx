@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Button from "../../shared/components/ui/Button";
+import Button from "../../../shared/components/ui/Button";
 
-import LoadingPage from "../LoadingPage";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
-import useToast from "../../shared/toast/useToast";
+import useToast from "../../../shared/toast/useToast";
 
 function Skills() {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ function Skills() {
     }
   };
 
-  if (loading) return <LoadingPage />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>

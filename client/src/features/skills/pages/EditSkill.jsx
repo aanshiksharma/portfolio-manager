@@ -2,10 +2,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-import Button from "../../shared/components/ui/Button";
-
-import LoadingPage from "../LoadingPage";
-import useToast from "../../shared/toast/useToast";
+import Button from "../../../shared/components/ui/Button";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import useToast from "../../../shared/toast/useToast";
 
 function EditSkill() {
   const [loading, setLoading] = useState({
@@ -159,7 +158,7 @@ function EditSkill() {
   };
 
   if (loading.value) {
-    return <LoadingPage text={loading.message} />;
+    return <LoadingScreen text={loading.message} />;
   }
 
   return (

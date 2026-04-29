@@ -8,7 +8,7 @@ import Login from "./features/auth/pages/Login";
 import Register from "./features/auth/pages/Register";
 
 // App Routes
-import NotFound from "./views/NotFound";
+import NotFound from "./NotFound";
 import Dashboard from "./features/dashboard/pages/Dashboard";
 
 // Projects Routes
@@ -18,9 +18,9 @@ import AddProject from "./features/projects/pages/AddProject";
 import EditProject from "./features/projects/pages/EditProject";
 
 // Skills Routes
-import Skills from "./views/skills/Skills";
-import AddSkill from "./views/skills/AddSkill";
-import EditSkill from "./views/skills/EditSkill";
+import Skills from "./features/skills/pages/Skills";
+import AddSkill from "./features/skills/pages/AddSkill";
+import EditSkill from "./features/skills/pages/EditSkill";
 
 // Admin Routes
 import Admin from "./features/admin/pages/Admin";
