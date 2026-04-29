@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../shared/components/ui/Button";
+import Button from "../../../shared/components/ui/Button";
 
-import DashboardProjectCard from "./DashboardProjectCard";
+import DashboardProjectCard from "../components/DashboardProjectCard";
 
 function FeaturedProjects({ projects }) {
   const navigate = useNavigate();

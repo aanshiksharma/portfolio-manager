@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFetchData } from "../../../shared/hooks/useFetchData";
 import { verifyToken } from "../utils/verifyToken";
 
 export const useVerifyToken = () => {

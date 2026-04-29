@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import ViewHandler from "./views/ViewHandler";
+import ViewHandler from "./ViewHandler";
 import MainLayout from "./shared/components/layout/MainLayout";
 
 // Auth Routes
-import Login from "./views/auth/Login";
-import Register from "./views/auth/Register";
+import Login from "./features/auth/pages/Login";
+import Register from "./features/auth/pages/Register";
 
 // App Routes
 import NotFound from "./views/NotFound";
-import Dashboard from "./views/Dashboard/Dashboard";
+import Dashboard from "./features/dashboard/pages/Dashboard";
 
 // Projects Routes
 import Projects from "./views/projects/Projects";

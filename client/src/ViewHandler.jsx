@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import LoadingPage from "./LoadingPage";
+import LoadingScreen from "./shared/components/ui/LoadingScreen";
 
 function ViewHandler() {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function ViewHandler() {
     else verifyTokenAndNavigate(token);
   }, []);
 
-  return <LoadingPage text={loadingText} />;
+  return <LoadingScreen text={loadingText} />;
 }
 
 export default ViewHandler;

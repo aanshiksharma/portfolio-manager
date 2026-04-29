@@ -1,14 +1,14 @@
-import { useVerifyToken } from "../../hooks/useVerifyToken";
-import { useProjects } from "../../hooks/useProjects";
-import { useSkills } from "../../hooks/useSkills";
-import { useAdmin } from "../../hooks/useAdmin";
+import { useVerifyToken } from "../../auth/hooks/useVerifyToken";
+import { useProjects } from "../../projects/hooks/useProjects";
+import { useSkills } from "../../skills/hooks/useSkills";
+import { useAdmin } from "../../admin/hooks/useAdmin";
 
-import LoadingPage from "../LoadingPage";
-import SideBar from "./SideBar";
-import DashboardHeader from "./DashboardHeader";
-import DashboardAbout from "./DashboardAbout";
-import FeaturedProjects from "./FeaturedProjects";
-import SkillsPreview from "./SkillsPreview";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import SideBar from "../components/SideBar";
+import DashboardHeader from "../components/DashboardHeader";
+import DashboardAbout from "../components/DashboardAbout";
+import FeaturedProjects from "../components/FeaturedProjects";
+import SkillsPreview from "../components/SkillsPreview";
 
 function Dashboard() {
   const { loading: verifying, valid } = useVerifyToken();
@@ -42,7 +42,7 @@ function Dashboard() {
     "Loading...";
 
   if (isLoading) {
-    return <LoadingPage text={loadingText} />;
+    return <LoadingScreen text={loadingText} />;
   }
 
   if (!valid) return null; // redirected by hook

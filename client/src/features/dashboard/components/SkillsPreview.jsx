@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../shared/components/ui/Button";
-import SkillListItem from "../../components/SkillListItem";
+import Button from "../../../shared/components/ui/Button";
+import SkillListItem from "./SkillListItem";
 
 function SkillsPreview({ skills }) {
   const navigate = useNavigate();
