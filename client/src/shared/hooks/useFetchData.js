@@ -3,12 +3,11 @@ import { fetchData } from "../utils/fetchData";
 
 export const useFetchData = (endpoint, errorMessage) => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
-      setLoading(true);
       setLoadingText("Fetching Data...");
 
       try {

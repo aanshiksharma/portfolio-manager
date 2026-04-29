@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import useImageViewer from "../../shared/image-viewer/useImageViewer";
-import useToast from "../../shared/toast/useToast";
-
-import Button from "../../shared/components/ui/Button";
-
-import LoadingPage from "../LoadingPage";
-import Overlay from "../../components/Overlay";
+import useImageViewer from "../../../shared/image-viewer/useImageViewer";
+import useToast from "../../../shared/toast/useToast";
+import Button from "../../../shared/components/ui/Button";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import Overlay from "../../../shared/components/layout/Overlay";
 
 function EditPersonal() {
   const [loading, setLoading] = useState(true);
@@ -149,7 +147,7 @@ function EditPersonal() {
     }
   };
 
-  if (loading) return <LoadingPage />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>

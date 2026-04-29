@@ -1,38 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../shared/components/ui/Button";
-import TableRow from "../../shared/components/ui/TableRow";
+import Button from "../../../shared/components/ui/Button";
+import TableRow from "../../../shared/components/ui/TableRow";
 
-import LoadingPage from "../LoadingPage";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import { useAdmin } from "../hooks/useAdmin";
 
 function Admin() {
-  const [adminDetails, setAdminDetails] = useState({});
-  const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  useEffect(() => {
-    const loadPersonalData = async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/admin`);
-        const response = await res.json();
+  const { data: adminDetails, loading, loadingText } = useAdmin();
 
-        if (!res.ok) return alert(response.message);
-
-        setAdminDetails(response);
-      } catch (err) {
-        alert("Something went wrong at our end.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPersonalData();
-  }, []);
-
-  if (loading) return <LoadingPage />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>

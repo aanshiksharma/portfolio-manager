@@ -23,8 +23,8 @@ import AddSkill from "./views/skills/AddSkill";
 import EditSkill from "./views/skills/EditSkill";
 
 // Admin Routes
-import Admin from "./views/admin/Admin";
-import EditPersonal from "./views/admin/EditPersonal";
+import Admin from "./features/admin/pages/Admin";
+import EditPersonal from "./features/admin/pages/EditPersonal";
 
 function AppRoutes() {
   return (
