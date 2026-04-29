@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../shared/components/ui/Button";
+import Button from "../../../shared/components/ui/Button";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
-import ProjectCard from "../../components/ui/ProjectCard";
-
-import LoadingPage from "../LoadingPage";
+import ProjectCard from "../components/ProjectCard";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -30,7 +29,7 @@ function Projects() {
     loadProjects();
   }, []);
 
-  if (loading) return <LoadingPage />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>

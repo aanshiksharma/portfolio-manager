@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import Button from "../../shared/components/ui/Button";
+import Button from "../../../shared/components/ui/Button";
 
-import LoadingPage from "../LoadingPage";
+import useToast from "../../../shared/toast/useToast";
 
-import useToast from "../../shared/toast/useToast";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function AddProject() {
   const [loading, setLoading] = useState(false);
@@ -103,7 +103,7 @@ function AddProject() {
     }
   };
 
-  if (loading) return <LoadingPage text="Adding Project..." />;
+  if (loading) return <LoadingScreen text="Adding Project..." />;
 
   return (
     <>

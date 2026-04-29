@@ -12,10 +12,10 @@ import NotFound from "./views/NotFound";
 import Dashboard from "./features/dashboard/pages/Dashboard";
 
 // Projects Routes
-import Projects from "./views/projects/Projects";
-import ProjectPage from "./views/projects/ProjectPage";
-import AddProject from "./views/projects/AddProject";
-import EditProject from "./views/projects/EditProject";
+import Projects from "./features/projects/pages/Projects";
+import ProjectPage from "./features/projects/pages/ProjectPage";
+import AddProject from "./features/projects/pages/AddProject";
+import EditProject from "./features/projects/pages/EditProject";
 
 // Skills Routes
 import Skills from "./views/skills/Skills";

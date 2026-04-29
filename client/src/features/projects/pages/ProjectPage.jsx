@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import useImageViewer from "../../shared/image-viewer/useImageViewer";
+import useImageViewer from "../../../shared/image-viewer/useImageViewer";
 
-import Button from "../../shared/components/ui/Button";
-import TableRow from "../../shared/components/ui/TableRow";
+import Button from "../../../shared/components/ui/Button";
+import TableRow from "../../../shared/components/ui/TableRow";
 
-import LoadingPage from "../LoadingPage";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function ProjectPage() {
   const [project, setProject] = useState({});
@@ -43,7 +43,7 @@ function ProjectPage() {
   }, []);
 
   if (loading) {
-    return <LoadingPage />;
+    return <LoadingScreen />;
   }
 
   return (

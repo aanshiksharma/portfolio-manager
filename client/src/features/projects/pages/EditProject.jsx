@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import useImageViewer from "../../shared/image-viewer/useImageViewer";
-import useToast from "../../shared/toast/useToast";
+import useImageViewer from "../../../shared/image-viewer/useImageViewer";
+import useToast from "../../../shared/toast/useToast";
 
-import Button from "../../shared/components/ui/Button";
+import Button from "../../../shared/components/ui/Button";
 
-import LoadingPage from "../LoadingPage";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function EditProject() {
   const [loading, setLoading] = useState({
@@ -192,7 +192,7 @@ function EditProject() {
 
   const projectData = watch();
 
-  if (loading.value) return <LoadingPage text={loading.message} />;
+  if (loading.value) return <LoadingScreen text={loading.message} />;
 
   return (
     <>
