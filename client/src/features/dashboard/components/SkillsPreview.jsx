@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
+import useSkills from "../../skills/hooks/useSkills";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+
 import Button from "../../../shared/components/ui/Button";
 import SkillListItem from "./SkillListItem";
 
-function SkillsPreview({ skills }) {
+function SkillsPreview() {
   const navigate = useNavigate();
+
+  const { data: skills, loading, loadingText } = useSkills();
+
+  if (loading) return <LoadingScreen text={loadingText} />;
 
   return (
     <section className="flex flex-col gap-4">

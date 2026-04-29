@@ -1,13 +1,21 @@
 import { useNavigate } from "react-router-dom";
 
+import useAdmin from "../../admin/hooks/useAdmin";
+import useImageViewer from "../../../shared/image-viewer/useImageViewer";
+
 import Button from "../../../shared/components/ui/Button";
 import Icon from "../../../shared/components/ui/Icon";
 
-import useImageViewer from "../../../shared/image-viewer/useImageViewer";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
-function SideBar({ admin }) {
+function SideBar() {
   const navigate = useNavigate();
   const { open } = useImageViewer();
+
+  const { data: admin, loading, loadingText } = useAdmin();
+
+  if (loading || admin === null) return <LoadingScreen text={loadingText} />;
+
   return (
     <aside
       className={`

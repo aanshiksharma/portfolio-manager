@@ -1,8 +1,8 @@
 export const fetchData = async (endpoint, errorMessage) => {
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/${endpoint}`,
-    );
+    const res = await fetch(`${BASE_URL}/api/${endpoint}`);
 
     if (!res.ok && res.status !== 404) {
       throw new Error(errorMessage || `Could not fetch ${endpoint}`);

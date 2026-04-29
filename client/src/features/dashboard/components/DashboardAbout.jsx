@@ -1,4 +1,12 @@
-function DashboardAbout({ about }) {
+import useAdmin from "../../admin/hooks/useAdmin";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+
+function DashboardAbout() {
+  const { data: admin, loading, loadingText } = useAdmin();
+  const about = admin?.about || [];
+
+  if (loading) return <LoadingScreen text={loadingText} />;
+
   return (
     <section className="flex flex-col gap-4">
       <h4 className="font-semibold text-xl">About</h4>

@@ -43,7 +43,7 @@ function AddProject() {
     if (sessionStorage.getItem("login-mode")) {
       addToast(
         "Access Denied!",
-        "You need to be logged in as admin to delete a skill.",
+        "You need to be logged in as admin to add a project.",
         "error",
       );
 

@@ -1,11 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../../shared/components/ui/Button";
+import useProjects from "../../projects/hooks/useProjects";
 
+import Button from "../../../shared/components/ui/Button";
 import DashboardProjectCard from "../components/DashboardProjectCard";
 
-function FeaturedProjects({ projects }) {
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+
+function FeaturedProjects() {
   const navigate = useNavigate();
+  const { projects, loading, error } = useProjects();
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <section className="flex flex-col gap-4">
@@ -18,7 +24,7 @@ function FeaturedProjects({ projects }) {
         />
       </div>
 
-      {projects?.length ? (
+      {projects?.length > 0 ? (
         <div className="flex flex-wrap gap-4">
           {projects
             .filter((project) => project.featured)
