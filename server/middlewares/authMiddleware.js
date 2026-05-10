@@ -6,7 +6,7 @@ function authenticateToken(req, res, next) {
 
   if (!token) {
     return res.status(401).json({
-      message: "Access Denied! No token provided",
+      message: "Unauthorized Access! No token provided.",
     });
   }
 
@@ -14,7 +14,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(token, tokenKey, (err) => {
     if (err)
       return res.status(403).json({
-        message: "Invalid or expired token.",
+        message: "Unauthorized Access! Invalid or expired token",
       });
 
     next();

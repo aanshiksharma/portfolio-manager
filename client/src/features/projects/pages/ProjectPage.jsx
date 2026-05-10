@@ -1,50 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import useImageViewer from "../../../shared/image-viewer/useImageViewer";
+import useProject from "../hooks/useProject";
 
 import Button from "../../../shared/components/ui/Button";
-import TableRow from "../../../shared/components/ui/TableRow";
-
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
+import ProjectDetails from "../components/ProjectDetails";
+import ProjectGallery from "../components/ProjectGallery";
+
 function ProjectPage() {
-  const [project, setProject] = useState({});
   const [activeTab, setActiveTab] = useState("general");
-  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname.split("/");
   const projectId = pathname[pathname.length - 1];
 
-  const { open } = useImageViewer();
+  const { project, loading } = useProject({ projectId });
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  useEffect(() => {
-    const loadProjectData = async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/projects/${projectId}`);
-        if (!res.ok) {
-          console.log("Could not fetch data.");
-          return;
-        }
-
-        const result = await res.json();
-        setProject(result);
-      } catch (err) {
-        console.error("There was an error from our side :", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProjectData();
-  }, []);
-
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  if (loading && !project) return <LoadingScreen />;
 
   return (
     <>
@@ -86,93 +61,10 @@ function ProjectPage() {
           </section>
 
           {/* General Details Section */}
-          {activeTab === "general" && (
-            <section>
-              <TableRow
-                heading={"Title"}
-                value={project.title}
-                background={true}
-              />
-              <TableRow
-                heading={"Skills"}
-                value={
-                  project.skills.length === 0
-                    ? ["Skills not set."]
-                    : project.skills
-                }
-                type="pills"
-              />
-              <TableRow
-                heading={"Description"}
-                value={
-                  project.description
-                    ? project.description
-                    : "Description not set."
-                }
-                background={true}
-              />
-              <TableRow
-                heading={"Project Link"}
-                value={project.projectLink}
-                type="link"
-              />
-              <TableRow
-                heading={"GitHub Link"}
-                value={
-                  project.githubLink
-                    ? project.githubLink
-                    : "Github Link not set"
-                }
-                type={project.githubLink ? "link" : "text"}
-                background={true}
-                last={true}
-              />
-            </section>
-          )}
+          {activeTab === "general" && <ProjectDetails project={project} />}
 
           {/* Gallery Section */}
-          {activeTab === "gallery" && (
-            <section className="flex flex-col gap-4">
-              <div
-                className="cover-image-container shadow-md shadow-text-secondary/25 border border-border rounded-lg overflow-hidden cursor-pointer flex items-center justify-center"
-                onClick={() => {
-                  open(project.coverImage.url);
-                }}
-              >
-                <img
-                  src={project.coverImage.url}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="other-images-container flex flex-col gap-4 py-4">
-                <h4 className="font-semibold text-text-primary">Other Image</h4>
-
-                <hr className="border-border" />
-
-                <div className="flex flex-wrap gap-4 py-2 items-center justify-center min-h-40">
-                  {project.otherImages.length === 0 && (
-                    <p>No more images found!</p>
-                  )}
-
-                  {project.otherImages.length !== 0 &&
-                    project.otherImages.map((image) => {
-                      return (
-                        <div
-                          className="border border-border rounded-lg overflow-hidden shadow-md shadow-bg-surface-light max-w-xs"
-                          onClick={() => {
-                            open(image.url);
-                          }}
-                        >
-                          <img src={image.url} alt="" />
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            </section>
-          )}
+          {activeTab === "gallery" && <ProjectGallery project={project} />}
         </div>
       </div>
     </>
