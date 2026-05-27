@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import useProjects from "../../projects/hooks/useProjects";
+import useProject from "../../projects/hooks/useProject";
 
 import Button from "../../../shared/components/ui/Button";
 import DashboardProjectCard from "../components/DashboardProjectCard";
@@ -9,7 +9,7 @@ import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function FeaturedProjects() {
   const navigate = useNavigate();
-  const { projects, loading, error } = useProjects();
+  const { projects, loading, error } = useProject();
 
   if (loading) return <LoadingScreen />;
 

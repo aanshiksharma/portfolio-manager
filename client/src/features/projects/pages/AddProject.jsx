@@ -5,6 +5,7 @@ import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import Button from "../../../shared/components/ui/Button";
 
 import useToast from "../../../shared/toast/useToast";
+import useProject from "../hooks/useProject";
 
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 import ProjectDetailsSection from "../components/form/ProjectDetailsSection";
@@ -12,7 +13,6 @@ import PreviewLinksSection from "../components/form/PreviewLinksSection";
 import FilesSection from "../components/form/FilesSection";
 
 function AddProject() {
-  const [loading, setLoading] = useState(false);
   const [currentSkill, setCurrentSkill] = useState("");
 
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ function AddProject() {
   const methods = useForm();
   const { handleSubmit, watch } = methods;
 
+  const { loading, error, addProject } = useProject("");
   const { addToast } = useToast();
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -46,46 +47,19 @@ function AddProject() {
     formData.append("githubLink", data.githubLink);
     formData.append("coverImage", data.coverImage[0]);
 
-    try {
-      setLoading(true);
+    const response = await addProject(formData);
 
-      const res = await fetch(`${BACKEND_URL}/api/projects/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        body: formData,
-      });
-
-      const response = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          addToast(
-            "Unauthorized access!",
-            "The token provided is either unauthorized or expired. Please login again.",
-            "error",
-          );
-
-          return navigate("/auth/login");
-        }
-
-        return addToast("Error!", response.message, "error");
+    if (!response.success) {
+      if (response.unauthorized) {
+        addToast("Unauthorized access!", response.message, "error");
+        return navigate("/auth/login");
       }
 
-      addToast("New project added!", response.message, "success");
-      navigate(-1);
-    } catch (err) {
-      console.log("INTERNAL SERVER ERROR", err);
-
-      addToast(
-        "INTERNAL SERVER ERROR!",
-        "There was an error on our side. Please try again.",
-        "error",
-      );
-    } finally {
-      setLoading(false);
+      return addToast("Error!", response.message, "error");
     }
+
+    addToast("New project added!", response.message, "success");
+    navigate(-1);
   };
 
   if (loading) return <LoadingScreen text="Adding Project..." />;

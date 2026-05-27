@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useProjects from "../hooks/useProjects";
+import useProject from "../hooks/useProject";
 
 import ProjectCard from "../components/ProjectCard";
 import Button from "../../../shared/components/ui/Button";
@@ -10,7 +10,7 @@ import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 function Projects() {
   const navigate = useNavigate();
 
-  const { projects, loading, error } = useProjects();
+  const { projects, loading, error } = useProject();
 
   if (loading) return <LoadingScreen />;
 
@@ -36,10 +36,10 @@ function Projects() {
             </div>
           </section>
 
-          <section className="flex flex-wrap justify-center gap-4">
+          <section className="flex flex-wrap gap-4">
             {projects.length === 0 ? (
               <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
-                <h2 className="text-text-primary text-2xl text-center">
+                <h2 className="text-text-primary text-2xl text-center w-full">
                   No projects found.
                 </h2>
                 <Button
