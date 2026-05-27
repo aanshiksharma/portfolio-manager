@@ -37,6 +37,46 @@ export const removeSkill = async (skillId) => {
   }
 };
 
-export const updateSkill = async (skillId, formData) => {};
+export const updateSkill = async (skillId, data) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-export const createSkill = async (formData) => {};
+    if (!response.ok) {
+      if (response.status === 404) throw new Error("Could not find skill");
+      if (response.status === 401 || response.status === 403)
+        throw new Error((await response.json).message);
+
+      throw new Error((await response.json()).message);
+    }
+
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message || "Server error while updating skill.");
+  }
+};
+
+export const createSkill = async (data) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/skills/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error((await response.json()).message);
+
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message || "Server error while creating skill.");
+  }
+};

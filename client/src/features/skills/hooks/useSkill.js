@@ -73,13 +73,65 @@ function useSkill({ skillId } = {}) {
     }
   };
 
-  const editSkill = async (skillId, formData) => {};
+  const editSkill = async (skillId, data) => {
+    setLoading(true);
+    setError(null);
 
-  const addSkill = async (formData) => {};
+    try {
+      const response = await updateSkill(skillId, data);
+
+      return {
+        success: true,
+        unauthorized: false,
+        message: response.message,
+      };
+    } catch (err) {
+      const message = err.message;
+      const unauthorized = message.toLowerCase().includes("unauthorized");
+
+      setError(message);
+
+      return {
+        sucess: false,
+        unauthorized,
+        message,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addSkill = async (data) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await createSkill(data);
+
+      return {
+        success: true,
+        unauthorized: false,
+        message: response.message,
+      };
+    } catch (err) {
+      const message = err.message;
+      const unauthorized = message.toLowerCase().includes("unauthorized");
+
+      setError(message);
+
+      return {
+        success: false,
+        unauthorized,
+        message,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchSkill();
-  }, [skillId]);
+  }, [fetchSkill]);
 
   useEffect(() => {
     refreshSkills();
@@ -92,6 +144,7 @@ function useSkill({ skillId } = {}) {
     skill,
     categories,
     editSkill,
+    addSkill,
     deleteSkill,
   };
 }
