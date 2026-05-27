@@ -19,7 +19,7 @@ function ProjectPage() {
 
   const { project, loading } = useProject({ projectId });
 
-  if (loading && !project) return <LoadingScreen />;
+  if (loading || !project) return <LoadingScreen />;
 
   return (
     <>
