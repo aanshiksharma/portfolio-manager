@@ -28,7 +28,7 @@ function HeaderNavigation({ text }) {
   };
 
   return (
-    <header className="border-b-1 border-border px-4 py-3 fixed inset-0 bottom-auto bg-bg-base/25 backdrop-blur-3xl hidden sm:flex items-center justify-between">
+    <header className="border-b-1 border-border px-4 py-3 sticky top-0 bg-bg-base/25 backdrop-blur-3xl hidden sm:flex items-center justify-between">
       {text ? (
         <span>{text}</span>
       ) : (

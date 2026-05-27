@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import useSkills from "../../skills/hooks/useSkills";
+import useSkill from "../../skills/hooks/useSkill";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 import Button from "../../../shared/components/ui/Button";
@@ -9,7 +9,7 @@ import SkillListItem from "./SkillListItem";
 function SkillsPreview() {
   const navigate = useNavigate();
 
-  const { data: skills, loading, loadingText } = useSkills();
+  const { data: skills, loading, loadingText } = useSkill();
 
   if (loading) return <LoadingScreen text={loadingText} />;
 

@@ -1,4 +1,3 @@
-import { Trophy } from "react-bootstrap-icons";
 import { fetchData } from "../../../shared/utils/fetchData";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -69,7 +68,7 @@ export const createProject = async (formData) => {
       body: formData,
     });
 
-    if (!response.ok) throw new Error(response.message);
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {

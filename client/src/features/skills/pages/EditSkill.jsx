@@ -5,14 +5,16 @@ import { useEffect, useState } from "react";
 import Button from "../../../shared/components/ui/Button";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 import useToast from "../../../shared/toast/useToast";
+import useSkill from "../hooks/useSkill";
 
 function EditSkill() {
-  const [loading, setLoading] = useState({
-    value: false,
-    message: "Loading...",
-  });
-  const [skill, setSkill] = useState({});
+  const location = useLocation();
+  const pathname = location.pathname.split("/");
+  const skillId = pathname[pathname.length - 1];
 
+  const { loading, getSkill, skill, editSkill, deleteSkill } = useSkill({
+    skillId,
+  });
   const { addToast } = useToast();
 
   const {
@@ -25,156 +27,83 @@ function EditSkill() {
 
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const pathname = location.pathname.split("/");
-  const skillId = pathname[pathname.length - 1];
-
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  useEffect(() => {
-    const loadSkillData = async () => {
-      try {
-        setLoading({ value: true, message: "Loading..." });
-        const res = await fetch(`${BACKEND_URL}/api/skills/${skillId}`);
-        const skill = await res.json();
-
-        const categoryRes = await fetch(
-          `${BACKEND_URL}/api/categories/${skill.category}`,
-        );
-        const category = await categoryRes.json();
-
-        setSkill({ id: skill._id, name: skill.name, category: category.name });
-        reset({ skillName: skill.name, categoryName: category.name });
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading({ value: false, message: "" });
-      }
-    };
-
-    loadSkillData();
-  }, []);
-
   const onSubmit = async (data) => {
     if (sessionStorage.getItem("login-mode")) {
       addToast(
         "Access Denied!",
-        "You need to be logged in as admin to delete a skill.",
+        "You need to be logged in as admin to edit a skill.",
         "error",
       );
 
       return navigate("/auth/login");
     }
 
-    try {
-      setLoading({ value: true, message: "Saving changes..." });
+    const response = await editSkill(data);
 
-      const res = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    if (!response.success) {
+      if (response.unauthorized) {
+        addToast(
+          "Unauthorized access!",
+          "The token provided is either unauthorized or expired. Please login again.",
+          "error",
+        );
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          addToast(
-            "Unauthorized access!",
-            "The token provided is either unauthorized or expired. Please login again.",
-            "error",
-          );
-
-          return navigate("/auth/login");
-        }
-
-        return addToast("Error!", result.message, "error");
+        return navigate("/auth/login");
       }
 
-      addToast("Changes saved!", result.message, "success");
-      return navigate(-1);
-    } catch (err) {
-      console.log("INTERNAL SERVER ERROR", err);
-
-      addToast(
-        "INTERNAL SERVER ERROR!",
-        "There was an error on our side. Please try again.",
-        "error",
-      );
-    } finally {
-      setLoading({ value: false, message: "" });
+      return addToast("Error!", response.message, "error");
     }
+
+    addToast("Changes saved!", response.message, "success");
+    return navigate(-1);
   };
 
-  const onDelete = async () => {
-    if (sessionStorage.getItem("login-mode")) {
+  const handleDeleteSkill = async (skillId) => {
+    if (localStorage.getItem("login-mode")) {
       addToast(
         "Access Denied!",
         "You need to be logged in as admin to delete a skill.",
         "error",
       );
-
       return navigate("/auth/login");
     }
 
-    try {
-      setLoading({ value: true, message: "Deleting..." });
+    const response = await deleteSkill(skillId);
 
-      const res = await fetch(`${BACKEND_URL}/api/skills/${skill.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-      });
-      const response = await res.json();
+    if (!response.success) {
+      if (response.unauthorized) {
+        addToast(
+          "Access unauthorized!",
+          "The token provided is either invalid or expired. Please login again.",
+          "error",
+        );
 
-      if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          addToast(
-            "Access unauthorized!",
-            "The token provided is either invalid or expired. Please login again.",
-            "error",
-          );
-
-          return navigate("/auth/login");
-        }
-
-        return addToast("Some error occurred!", response.message, "error");
+        return navigate("/auth/login");
       }
 
-      addToast("Skill deleted!", response.message, "success");
-      return navigate(-1);
-    } catch (err) {
-      console.log("INTERNAL SERVER ERROR", err);
-
-      addToast(
-        "INTERNAL SERVER ERROR!",
-        "There was an error on our side. Please try again.",
-        "error",
-      );
-    } finally {
-      setLoading({ value: false, message: "" });
+      return addToast("Some error occurred!", response.message, "error");
     }
+
+    addToast("Skill deleted!", response.message, "success");
+    return navigate(-1);
   };
 
-  if (loading.value) {
-    return <LoadingScreen text={loading.message} />;
-  }
+  if (loading || !skill) return <LoadingScreen />;
 
   return (
     <>
+      <section className="p-4 w-full flex items-center justify-between">
+        <h1 className="form-heading">Edit "{skill.name}"</h1>
+
+        <Button
+          type={"button"}
+          variant={"delete"}
+          label={"Delete Skill"}
+          onClick={() => handleDeleteSkill(skillId)}
+        />
+      </section>
+
       <form className="container" onSubmit={handleSubmit(onSubmit)}>
-        <section className="p-4 w-full flex items-center justify-between">
-          <h1 className="form-heading">Edit "{skill.name}"</h1>
-
-          <Button
-            type={"button"}
-            variant={"delete"}
-            label={"Delete Skill"}
-            onClick={() => onDelete()}
-          />
-        </section>
-
         <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
           <div className="left text-text-primary">Skill</div>
 

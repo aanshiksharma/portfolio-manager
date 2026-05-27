@@ -1,179 +1,114 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import useToast from "../../../shared/toast/useToast";
 import Button from "../../../shared/components/ui/Button";
-
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
-import useToast from "../../../shared/toast/useToast";
+import SkillCard from "../components/SkillCard";
+import useSkill from "../hooks/useSkill";
 
 function Skills() {
   const navigate = useNavigate();
 
-  const [skills, setSkills] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const { loading, skills, categories, deleteSkill } = useSkill();
   const { addToast } = useToast();
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const handleDeleteSkill = async (skillId) => {
+    if (localStorage.getItem("login-mode")) {
+      addToast(
+        "Access Denied!",
+        "You need to be logged in as admin to delete a skill.",
+        "error",
+      );
+      return navigate("/auth/login");
+    }
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const categoriesRes = await fetch(`${BACKEND_URL}/api/categories`);
-        const categories = categoriesRes.ok ? await categoriesRes.json() : [];
-        setCategories(categories);
+    const response = await deleteSkill(skillId);
 
-        const skillsRes = await fetch(`${BACKEND_URL}/api/skills`);
-        const skills = skillsRes.ok ? await skillsRes.json() : [];
-        setSkills(skills);
-      } catch (err) {
-        console.error("Error fetching data.", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, [loading]);
-
-  const onDelete = async (skillId) => {
-    try {
-      setLoading(true);
-
-      if (localStorage.getItem("login-mode")) {
+    if (!response.success) {
+      if (response.unauthorized) {
         addToast(
-          "Access Denied!",
-          "You need to be logged in as admin to delete a skill.",
+          "Access unauthorized!",
+          "The token provided is either invalid or expired. Please login again.",
           "error",
         );
+
         return navigate("/auth/login");
       }
 
-      const res = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      const response = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          addToast(
-            "Access unauthorized!",
-            "The token provided is either invalid or expired. Please login again.",
-            "error",
-          );
-
-          return navigate("/auth/login");
-        }
-
-        return addToast("Some error occurred!", response.message, "error");
-      }
-
-      addToast("Skill deleted!", response.message, "success");
-    } catch (err) {
-      console.log("INTERNAL SERVER ERROR", err);
-
-      addToast(
-        "INTERNAL SERVER ERROR!",
-        "There was an error on our side. Please try again.",
-        "error",
-      );
-    } finally {
-      setLoading(false);
+      return addToast("Some error occurred!", response.message, "error");
     }
+
+    addToast("Skill deleted!", response.message, "success");
   };
 
   if (loading) return <LoadingScreen />;
 
   return (
     <>
-      <div className="container">
-        <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-200 mx-auto">
-          <section className="flex items-center justify-between">
-            <h1 className="text-[2rem] text-text-primary font-medium">
-              Skills
-            </h1>
+      <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-4xl mx-auto">
+        <section className="flex items-center justify-between">
+          <h1 className="text-[2rem] text-text-primary font-medium">Skills</h1>
 
-            <div className="flex items-center gap-2">
-              <Button icon={{ icon: "search", size: 16 }} variant={"primary"} />
+          <div className="flex items-center gap-2">
+            <Button icon={{ icon: "search", size: 16 }} variant={"primary"} />
 
-              <Button
-                label={"Add a skill"}
-                icon={{ icon: "plus", size: 16 }}
-                variant={"accent"}
-                onClick={() => {
-                  navigate("/skills/add");
-                }}
-              />
-            </div>
+            <Button
+              label={"Add a skill"}
+              icon={{ icon: "plus", size: 16 }}
+              variant={"accent"}
+              onClick={() => {
+                navigate("/skills/add");
+              }}
+            />
+          </div>
+        </section>
+
+        {categories.length === 0 ? (
+          <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
+            <h2 className="text-text-primary text-2xl text-center">
+              No skills found.
+            </h2>
+            <Button
+              variant={"accent"}
+              label={"Add one right now"}
+              icon={{ icon: "plus", size: 20 }}
+              onClick={() => {
+                navigate("/skills/add");
+              }}
+            />
           </section>
+        ) : (
+          categories.map((category) => {
+            return (
+              <section key={category._id} className="flex flex-col gap-4 py-3">
+                <h3 className="font-semibold text-2xl pb-3 border-b-1 border-border text-text-primary">
+                  {category.name}
+                </h3>
 
-          {categories.length === 0 ? (
-            <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
-              <h2 className="text-text-primary text-2xl text-center">
-                No skills found.
-              </h2>
-              <Button
-                variant={"accent"}
-                label={"Add one right now"}
-                icon={{ icon: "plus", size: 20 }}
-                onClick={() => {
-                  navigate("/skills/add");
-                }}
-              />
-            </section>
-          ) : (
-            categories.map((category) => {
-              return (
-                <section
-                  key={category._id}
-                  className="flex flex-col gap-4 py-3"
-                >
-                  <h3 className="font-semibold text-2xl pb-3 border-b-1 border-border text-text-primary">
-                    {category.name}
-                  </h3>
-
-                  <ul className="flex flex-col gap-1 list-inside">
-                    {skills.map((skill) => {
-                      if (skill.category === category._id)
-                        return (
-                          <li
-                            key={skill._id}
-                            className="text-text-muted px-2 py-1 rounded-sm hover:bg-bg-surface-dark transition ease-out duration-200 cursor-default flex items-center justify-between"
-                            onDoubleClick={() =>
-                              navigate(`/skills/edit/${skill._id}`)
-                            }
-                          >
-                            <span>{skill.name}</span>
-
-                            <div className="flex items-center gap-2">
-                              <Button
-                                className="!p-0 bg-transparent border-none hover:bg-transparent !text-text-muted hover:!text-text-primary rounded-xs"
-                                icon={{ icon: "edit", size: 14 }}
-                                variant={"primary"}
-                                onClick={() =>
-                                  navigate(`/skills/edit/${skill._id}`)
-                                }
-                              />
-
-                              <Button
-                                className="!p-0 bg-transparent border-none hover:bg-transparent rounded-xs"
-                                icon={{ icon: "trash", size: 14 }}
-                                variant={"delete"}
-                                onClick={() => onDelete(skill._id)}
-                              />
-                            </div>
-                          </li>
-                        );
-                    })}
-                  </ul>
-                </section>
-              );
-            })
-          )}
-        </div>
+                <ul className="grid grid-cols-4 gap-4 list-inside">
+                  {skills.map((skill) => {
+                    if (skill.category === category._id)
+                      return (
+                        <li
+                          key={skill._id}
+                          onDoubleClick={() =>
+                            navigate(`/skills/edit/${skill._id}`)
+                          }
+                        >
+                          <SkillCard
+                            skill={skill}
+                            handleDeleteSkill={handleDeleteSkill}
+                          />
+                        </li>
+                      );
+                  })}
+                </ul>
+              </section>
+            );
+          })
+        )}
       </div>
     </>
   );

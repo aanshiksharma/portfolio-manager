@@ -29,7 +29,7 @@
   }
 
   .container {
-    @apply min-h-screen max-w-270 mx-auto pt-[58.8px] flex flex-col items-start;
+    @apply min-h-screen max-w-270 mx-auto flex flex-col items-start;
   }
 
   .form-heading {
