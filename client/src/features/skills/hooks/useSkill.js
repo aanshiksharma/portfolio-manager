@@ -52,6 +52,7 @@ function useSkill({ skillId } = {}) {
     try {
       const response = await removeSkill(skillId);
 
+      refreshSkills();
       return {
         success: true,
         unauthorized: false,

@@ -9,14 +9,8 @@ import useSkill from "../hooks/useSkill";
 import SkillForm from "../components/SkillForm";
 
 function AddSkill() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
   const navigate = useNavigate();
+  const { reset } = useForm();
   const { loading, addSkill } = useSkill();
   const { addToast } = useToast();
 
