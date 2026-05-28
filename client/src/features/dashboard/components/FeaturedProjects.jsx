@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import useProjects from "../../projects/hooks/useProjects";
+import useProject from "../../projects/hooks/useProject";
 
 import Button from "../../../shared/components/ui/Button";
 import DashboardProjectCard from "../components/DashboardProjectCard";
@@ -9,7 +9,7 @@ import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function FeaturedProjects() {
   const navigate = useNavigate();
-  const { projects, loading, error } = useProjects();
+  const { projects, loading } = useProject();
 
   if (loading) return <LoadingScreen />;
 
@@ -25,7 +25,7 @@ function FeaturedProjects() {
       </div>
 
       {projects?.length > 0 ? (
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {projects
             .filter((project) => project.featured)
             .map((project) => (

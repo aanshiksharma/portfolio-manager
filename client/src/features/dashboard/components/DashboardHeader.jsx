@@ -2,14 +2,14 @@ import useAdmin from "../../admin/hooks/useAdmin";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function DashboardHeader() {
-  const { data: admin, loading, loadingText } = useAdmin();
+  const { admin, loading } = useAdmin();
 
-  if (loading) return <LoadingScreen text={loadingText} />;
+  if (loading || !admin) return <LoadingScreen />;
 
   return (
     <section className="flex flex-col gap-3">
       <h1 className="text-[2rem] font-medium text-text-primary">
-        Hi, {admin?.name?.split(" ")[0]}!
+        Hi, {admin?.name.split(" ")[0]}!
       </h1>
 
       <p>

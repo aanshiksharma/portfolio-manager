@@ -1,10 +1,8 @@
-function LoadingScreen({ text }) {
+function LoadingScreen() {
   return (
     <>
       <div className="container justify-center">
-        <p className="w-full text-text-primary text-center">
-          {text ? text : "Loading..."}
-        </p>
+        <p className="w-full text-text-primary text-center">Loading...</p>
       </div>
     </>
   );

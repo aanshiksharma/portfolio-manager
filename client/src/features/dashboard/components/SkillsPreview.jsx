@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
-import useSkills from "../../skills/hooks/useSkills";
+import useSkill from "../../skills/hooks/useSkill";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 import Button from "../../../shared/components/ui/Button";
-import SkillListItem from "./SkillListItem";
+import DashboardSkillCard from "./DashboardSkillCard";
 
 function SkillsPreview() {
   const navigate = useNavigate();
 
-  const { data: skills, loading, loadingText } = useSkills();
+  const { skills, loading } = useSkill();
 
-  if (loading) return <LoadingScreen text={loadingText} />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <section className="flex flex-col gap-4">
@@ -24,19 +24,10 @@ function SkillsPreview() {
         />
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="grid grid-cols-3 gap-4">
         {skills?.map(
           (skill, index) =>
-            index < 5 && (
-              <SkillListItem
-                key={skill._id}
-                id={skill._id}
-                name={skill.name}
-                categoryName={skill.categoryName}
-                disableDelete
-                onDoubleClick={() => navigate(`/skills/edit/${skill._id}`)}
-              />
-            ),
+            index < 5 && <DashboardSkillCard key={skill._id} skill={skill} />,
         )}
       </div>
     </section>

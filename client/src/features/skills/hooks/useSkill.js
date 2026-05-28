@@ -1,22 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
 import {
-  fetchProjects,
-  fetchProjectById,
-  removeProject,
-  updateProject,
-  createProject,
-} from "../services/projectServices";
+  fetchSkills,
+  fetchCategories,
+  fetchSkillById,
+  removeSkill,
+  updateSkill,
+  createSkill,
+} from "../services/skillServices";
 
-function useProject({ projectId } = {}) {
-  const [project, setProject] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+function useSkill({ skillId } = {}) {
+  const [skills, setSkills] = useState([]);
+  const [skill, setSkill] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const refreshProjects = async () => {
+  const refreshSkills = async () => {
+    setLoading(true);
+    setError(null);
+
     try {
-      const data = await fetchProjects();
-      setProjects(data);
+      const categoriesData = await fetchCategories();
+      const skillsData = await fetchSkills();
+      setCategories(categoriesData);
+      setSkills(skillsData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -24,27 +31,28 @@ function useProject({ projectId } = {}) {
     }
   };
 
-  const fetchProject = useCallback(async () => {
+  const fetchSkill = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const data = await fetchProjectById(projectId);
-      setProject(data);
+      const data = await fetchSkillById(skillId);
+      setSkill(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [projectId]);
+  }, [skillId]);
 
-  const deleteProject = async () => {
+  const deleteSkill = async (skillId) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await removeProject(projectId);
+      const response = await removeSkill(skillId);
 
+      refreshSkills();
       return {
         success: true,
         unauthorized: false,
@@ -66,12 +74,12 @@ function useProject({ projectId } = {}) {
     }
   };
 
-  const updateProjectData = async (formData) => {
+  const editSkill = async (skillId, data) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await updateProject(projectId, formData);
+      const response = await updateSkill(skillId, data);
 
       return {
         success: true,
@@ -85,21 +93,21 @@ function useProject({ projectId } = {}) {
       setError(message);
 
       return {
-        success: false,
-        message,
+        sucess: false,
         unauthorized,
+        message,
       };
     } finally {
       setLoading(false);
     }
   };
 
-  const addProject = async (formData) => {
+  const addSkill = async (data) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await createProject(formData);
+      const response = await createSkill(data);
 
       return {
         success: true,
@@ -114,8 +122,8 @@ function useProject({ projectId } = {}) {
 
       return {
         success: false,
-        message,
         unauthorized,
+        message,
       };
     } finally {
       setLoading(false);
@@ -123,22 +131,23 @@ function useProject({ projectId } = {}) {
   };
 
   useEffect(() => {
-    fetchProject();
-  }, [fetchProject]);
+    fetchSkill();
+  }, [fetchSkill]);
 
   useEffect(() => {
-    refreshProjects();
+    refreshSkills();
   }, []);
 
   return {
-    project,
-    projects,
     loading,
     error,
-    deleteProject,
-    updateProject: updateProjectData,
-    addProject,
+    skills,
+    skill,
+    categories,
+    editSkill,
+    addSkill,
+    deleteSkill,
   };
 }
 
-export default useProject;
+export default useSkill;

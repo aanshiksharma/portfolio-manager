@@ -3,7 +3,8 @@ import Pill from "../../../shared/components/ui/Pill";
 function DashboardProjectCard({ project, onDoubleClick }) {
   return (
     <div
-      className="flex flex-col gap-4 p-4 rounded-lg border-1 border-border basis-100"
+      className="flex flex-col gap-4 p-4 rounded-lg border-1 border-border/30 hover:border-border transition ease-out duration-200"
+      role="button"
       onDoubleClick={onDoubleClick}
     >
       <div className="flex items-center gap-4">

@@ -1,4 +1,3 @@
-import { Trophy } from "react-bootstrap-icons";
 import { fetchData } from "../../../shared/utils/fetchData";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -57,6 +56,22 @@ export const updateProject = async (projectId, formData) => {
 
     return await response.json();
   } catch (err) {
-    throw new Error(err.message || "Server error while deleting project.");
+    throw new Error(err.message || "Server error while updating project.");
+  }
+};
+
+export const createProject = async (formData) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/projects/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error((await response.json()).message);
+
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message || "Server error while creating project.");
   }
 };

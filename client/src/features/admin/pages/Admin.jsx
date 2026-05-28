@@ -5,14 +5,14 @@ import Button from "../../../shared/components/ui/Button";
 import TableRow from "../../../shared/components/ui/TableRow";
 
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-import { useAdmin } from "../hooks/useAdmin";
+import useAdmin from "../hooks/useAdmin";
 
 function Admin() {
   const navigate = useNavigate();
 
-  const { data: adminDetails, loading, loadingText } = useAdmin();
+  const { admin, loading } = useAdmin();
 
-  if (loading) return <LoadingScreen />;
+  if (loading || !admin) return <LoadingScreen />;
 
   return (
     <>
@@ -35,60 +35,50 @@ function Admin() {
           </section>
 
           <section>
-            <TableRow
-              heading={"Name"}
-              value={adminDetails.name}
-              background={true}
-            />
+            <TableRow heading={"Name"} value={admin.name} background={true} />
 
-            <TableRow heading={"Email address"} value={adminDetails.email} />
+            <TableRow heading={"Email address"} value={admin.email} />
 
             <TableRow
               heading={"Mobile number"}
-              value={adminDetails.mobile || "Mobile number not set."}
+              value={admin.mobile || "Mobile number not set."}
               background={true}
             />
 
             <TableRow
               heading={"Portfolio link"}
-              value={adminDetails.portfolioLink}
+              value={admin.portfolioLink}
               type="link"
             />
 
             <TableRow
               heading={"About"}
               value={
-                adminDetails.about[0] === ""
-                  ? "About text not set."
-                  : adminDetails.about
+                admin.about[0] === "" ? "About text not set." : admin.about
               }
               background={true}
-              type={adminDetails.about[0] === "" ? "text" : "textArray"}
+              type={admin.about[0] === "" ? "text" : "textArray"}
             />
 
             <TableRow
               heading={"Resume link"}
               value={
-                adminDetails.resumeLink
-                  ? [{ platform: "link", link: adminDetails.resumeLink }]
+                admin.resumeLink
+                  ? [{ platform: "link", link: admin.resumeLink }]
                   : "Resume link not set."
               }
-              type={adminDetails.resumeLink ? "linkArray" : "text"}
+              type={admin.resumeLink ? "linkArray" : "text"}
             />
 
             <TableRow
               heading={"Social media links"}
               value={
-                adminDetails.socialMediaLinks.length === 0
+                admin.socialMediaLinks.length === 0
                   ? "Social media links not set"
-                  : adminDetails.socialMediaLinks
+                  : admin.socialMediaLinks
               }
               background={true}
-              type={
-                adminDetails.socialMediaLinks.length === 0
-                  ? "text"
-                  : "linkArray"
-              }
+              type={admin.socialMediaLinks.length === 0 ? "text" : "linkArray"}
               last={true}
             />
           </section>
