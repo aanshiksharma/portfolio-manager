@@ -1,93 +1,49 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 import useToast from "../../../shared/toast/useToast";
+import useAuth from "../hooks/useAuth";
 
 import Button from "../../../shared/components/ui/Button";
 import Pill from "../../../shared/components/ui/Pill";
+import LoginForm from "../components/LoginForm";
 
 function Login({ role = "admin" }) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors },
-  } = useForm();
-
-  const { addToast } = useToast();
-
-  useEffect(() => {
-    reset();
-  }, [role]);
-
   const navigate = useNavigate();
+  const methods = useForm();
+  const { setError } = methods;
+  const { addToast } = useToast();
+  const { user, loading, login } = useAuth();
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const onSubmit = async (data) => {
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/auth/${role}-login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data[`${role}Name`] || undefined,
-          password: data.password || undefined,
-          role: role,
-        }),
-      });
+    const response = await login(role, data);
 
-      if (!res.ok) {
-        if (res.status === 401)
-          setError("password", {
-            type: 401,
-            message: "Incorrect Password",
-          });
+    if (!response.success) {
+      if (response.unauthorized)
+        return setError("password", {
+          type: 401,
+          message: "Incorrect Password",
+        });
 
-        if (res.status === 404) {
-          addToast(
-            "Admin not found!",
-            "Please register the admin first",
-            "info",
-          );
-          navigate("/auth/register");
-        }
-        return;
-      }
+      return addToast("Admin not found!", response.message, "info");
+    }
 
-      const response = await res.json();
-      const user = response.user;
-
-      if (role === "admin") {
-        const token = response.token;
-        sessionStorage.removeItem("login-mode");
-        sessionStorage.setItem("token", token);
-
-        addToast(
-          "Logged in!",
-          `You are now logged in as ${user.name.split(" ")[0]}`,
-          "success",
-        );
-      } else {
-        sessionStorage.removeItem("token");
-        sessionStorage.setItem("login-mode", role);
-
-        addToast(
-          `Welcome${user.noOfVisits > 1 ? " back" : ""}, ${data[`${role}Name`]}!`,
-          `You are now logged in as a ${role}.`,
-          "success",
-        );
-      }
-
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("INTERNAL SERVER ERROR");
-
+    if (role === "admin") {
       addToast(
-        "INTERNAL SERVER ERROR!",
-        "An error occurred on our side. Please try again.",
-        "error",
+        "Logged in!",
+        `You are now logged in as ${user?.name.split(" ")[0]}`,
+        "success",
+      );
+    } else {
+      addToast(
+        `Welcome${user?.noOfVisits > 1 ? " back" : ""}, ${data[`${role}Name`]}!`,
+        `You are now logged in as a ${role}.`,
+        "success",
       );
     }
+
+    navigate("/dashboard");
   };
 
   const welcomeText = [
@@ -123,7 +79,6 @@ function Login({ role = "admin" }) {
 
         <div
           className={`
-            right
             p-4 min-w-sm
             font-medium text-text-primary
             flex-1 flex flex-col gap-6 align-center justify-center
@@ -133,6 +88,7 @@ function Login({ role = "admin" }) {
             <h2 className="w-full text-2xl font-semibold">
               Login to continue!
             </h2>
+
             <div className="flex gap-4 align-center">
               <Pill to="/auth/login" label="Admin" />
               <Pill to="/auth/recruiter-login" label="Recruiter" />
@@ -140,65 +96,7 @@ function Login({ role = "admin" }) {
             </div>
           </div>
 
-          {/* LOGIN FORM */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="max-w-md mx-auto w-full flex flex-col gap-4"
-          >
-            <>
-              <div className="input-group">
-                <span className="label">
-                  {role === "admin"
-                    ? "Enter your password"
-                    : "Please enter your name"}
-                </span>
-
-                {role === "admin" ? (
-                  <input
-                    type="password"
-                    placeholder="********"
-                    autoComplete="password"
-                    {...register("password", {
-                      required: {
-                        value: true,
-                        message: "This field is required.",
-                      },
-                    })}
-                  />
-                ) : (
-                  <input
-                    placeholder="John Doe"
-                    autoComplete="name"
-                    {...register(`${role}Name`, {
-                      required: {
-                        value: true,
-                        message: "This field is required.",
-                      },
-                    })}
-                  />
-                )}
-
-                <span className="error-message">
-                  {errors.password && errors.password.message}
-                  {errors[`${role}Name`] && errors[`${role}Name`].message}
-                </span>
-              </div>
-
-              <div className="flex gap-4 align-center">
-                <Button type="submit" variant="accent" label="Log in" />
-
-                {role === "admin" && (
-                  <Button
-                    variant="secondary"
-                    label="Register admin"
-                    onClick={() => {
-                      navigate("/auth/register");
-                    }}
-                  />
-                )}
-              </div>
-            </>
-          </form>
+          <LoginForm onSubmit={onSubmit} role={role} {...methods} />
         </div>
       </div>
     </>

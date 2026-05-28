@@ -11,10 +11,9 @@ import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 function SideBar() {
   const navigate = useNavigate();
   const { open } = useImageViewer();
+  const { admin, loading } = useAdmin();
 
-  const { data: admin, loading, loadingText } = useAdmin();
-
-  if (loading || admin === null) return <LoadingScreen text={loadingText} />;
+  if (loading || !admin) return <LoadingScreen />;
 
   return (
     <aside

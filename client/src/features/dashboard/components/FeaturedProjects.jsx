@@ -9,7 +9,7 @@ import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 
 function FeaturedProjects() {
   const navigate = useNavigate();
-  const { projects, loading, error } = useProject();
+  const { projects, loading } = useProject();
 
   if (loading) return <LoadingScreen />;
 
@@ -25,7 +25,7 @@ function FeaturedProjects() {
       </div>
 
       {projects?.length > 0 ? (
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {projects
             .filter((project) => project.featured)
             .map((project) => (

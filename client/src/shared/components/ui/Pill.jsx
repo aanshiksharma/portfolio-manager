@@ -6,9 +6,10 @@ function Pill({ label, icon, to, className }) {
     base: `p-2 rounded-lg text-xs font-semibold transition ease-out whitespace-nowrap
     ${icon && "flex align-center justify-center gap-2"}
     ${to && "cursor-pointer"}`,
-    selected: "bg-bg-surface-dark text-text-primary text-semibold",
+    selected:
+      "bg-bg-surface-dark/50 hover:bg-bg-surface-dark text-text-primary text-semibold",
     unSelected: "bg-transparent text-text-muted hover:bg-bg-surface-dark/50",
-    hover: "hover:bg-bg-surface-dark/50",
+    hover: "",
   };
 
   if (to) {
@@ -26,7 +27,11 @@ function Pill({ label, icon, to, className }) {
       </NavLink>
     );
   } else {
-    return <span className={`${styles.base} ${styles.selected}`}>{label}</span>;
+    return (
+      <span className={`cursor-default ${styles.base} ${styles.selected}`}>
+        {label}
+      </span>
+    );
   }
 }
 
