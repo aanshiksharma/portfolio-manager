@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import ViewHandler from "./ViewHandler";
-import MainLayout from "./shared/components/layout/MainLayout";
+// Layouts
+import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
 
 // Auth Routes
 import Login from "./features/auth/pages/Login";
@@ -32,21 +33,13 @@ function AppRoutes() {
       <Router>
         <Routes>
           {/* AUTH ROUTES */}
-          <Route path="/auth/register" element={<Register />} />
-          <Route path="/auth/login" element={<Login role="admin" />} />
-          <Route
-            path="/auth/recruiter-login"
-            element={<Login role="recruiter" />}
-          />
-          <Route
-            path="/auth/visitor-login"
-            element={<Login role="visitor" />}
-          />
+          <Route element={<AuthLayout />}>
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/login" element={<Login />} />
+          </Route>
 
           <Route element={<MainLayout />}>
-            {/* DASHBOARD ROUTES */}
-            <Route path="/" element={<ViewHandler />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
 
             {/* PROJECTS ROUTES */}
             <Route path="/projects" element={<Projects />} />

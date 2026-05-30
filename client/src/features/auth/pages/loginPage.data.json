@@ -1,0 +1,27 @@
+[
+  {
+    "text": "This is the internal CMS powering my portfolio and project content."
+  },
+  {
+    "text": "Feel free to explore the dashboard, edit entries, and test the interface."
+  },
+  {
+    "text": "Guest mode operates in protected mode, so changes won't affect my production data."
+  },
+  {
+    "text": "Features include:",
+    "list": [
+      "Role-based authentication",
+      "Project and content management",
+      "Media uploads",
+      "Dynamic forms",
+      "Dashboard workflow"
+    ]
+  },
+  {
+    "text": "Built with MERN and shadcn/ui."
+  },
+  {
+    "text": "~ Aanshik"
+  }
+]

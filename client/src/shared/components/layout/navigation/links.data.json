@@ -1,6 +1,6 @@
 [
-  { "path": "/dashboard", "label": "Overview", "icon": "book" },
-  { "path": "/projects", "label": "Projects", "icon": "layout" },
-  { "path": "/skills", "label": "Skills", "icon": "cpu" },
-  { "path": "/personal", "label": "Personal", "icon": "person" }
+  { "url": "/", "title": "Overview" },
+  { "url": "/projects", "title": "Projects" },
+  { "url": "/skills", "title": "Skills" },
+  { "url": "/personal", "title": "Personal" }
 ]
