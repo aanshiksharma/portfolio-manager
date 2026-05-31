@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import useAuth from "../hooks/useAuth";
+import useToast from "@/shared/toast/useToast";
 
 function LoginForm() {
   const {
@@ -16,6 +17,7 @@ function LoginForm() {
   } = useForm();
 
   const { login } = useAuth();
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {

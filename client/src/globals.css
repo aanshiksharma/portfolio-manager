@@ -95,6 +95,10 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-badge-1: var(--badge-1);
+  --color-badge-2: var(--badge-2);
+  --color-badge-1-foreground: var(--badge-1-foreground);
+  --color-badge-2-foreground: var(--badge-2-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -134,6 +138,10 @@
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
+  --badge-1: var(--color-cyan-100);
+  --badge-2: var(--color-teal-100);
+  --badge-1-foreground: var(--color-cyan-700);
+  --badge-2-foreground: var(--color-teal-700);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
@@ -169,6 +177,10 @@
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --badge-1: var(--color-cyan-950);
+  --badge-2: var(--color-teal-950);
+  --badge-1-foreground: var(--color-cyan-200);
+  --badge-2-foreground: var(--color-teal-200);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);

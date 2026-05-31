@@ -1,29 +1,33 @@
-import SideBar from "../components/SideBar";
+import { useState, useEffect } from "react";
+
+import useProject from "@/features/projects/hooks/useProject";
+import useSkill from "@/features/skills/hooks/useSkill";
+import { getRecentActivity } from "@/shared/utils/getRecentActivity";
+
 import DashboardHeader from "../components/DashboardHeader";
-import DashboardAbout from "../components/DashboardAbout";
-import FeaturedProjects from "../components/FeaturedProjects";
-import SkillsPreview from "../components/SkillsPreview";
+import RecentActivity from "../components/RecentActivity";
 
 function Dashboard() {
+  const [recentActivities, setRecentActivities] = useState(null);
+  const { projects, loading: projectLoading } = useProject();
+  const { skills, loading: skillLoading } = useSkill();
+
+  useEffect(() => {
+    if (!projectLoading && !skillLoading) {
+      const response = getRecentActivity({ projects, skills });
+      setRecentActivities(response);
+    }
+  }, [projects, skills]);
+
   return (
     <>
-      <div className="">
-        <div className="px-4 py-8 flex gap-4 w-full">
-          <SideBar />
-
-          <main className="px-2 flex-1 flex flex-col gap-8">
-            <DashboardHeader />
-
-            <DashboardAbout />
-            <hr className="border-border/50" />
-
-            <FeaturedProjects />
-            <hr className="border-border/50" />
-
-            <SkillsPreview />
-          </main>
-        </div>
-      </div>
+      <DashboardHeader />
+      <RecentActivity
+        recentActivities={
+          recentActivities &&
+          recentActivities.slice(0, Math.min(recentActivities.length, 10))
+        }
+      />
     </>
   );
 }
