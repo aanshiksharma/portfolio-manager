@@ -1,18 +1,32 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import useToast from "../../../shared/toast/useToast";
-import Button from "../../../shared/components/ui/Button";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-
-import SkillCard from "../components/SkillCard";
 import useSkill from "../hooks/useSkill";
 
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, LayoutGrid, List, Plus } from "lucide-react";
+
+import Searchbar from "@/shared/components/ui/Searchbar";
+
+import { SkillCardSkeleton, SkillCard } from "../components/SkillCard";
+import SkillsHeader from "../components/SkillsHeader";
+
 function Skills() {
+  const [searchInput, setSearchInput] = useState("");
+  const [layout, setLayout] = useState("grid");
   const navigate = useNavigate();
 
-  const { loading, skills, categories, deleteSkill } = useSkill();
+  const { loading, skills, deleteSkill } = useSkill();
   const { addToast } = useToast();
+
+  const toggleLayout = () => {
+    setLayout((prev) => {
+      if (prev === "list") return "grid";
+      else return "list";
+    });
+  };
 
   const handleDeleteSkill = async (skillId) => {
     if (localStorage.getItem("login-mode")) {
@@ -43,73 +57,99 @@ function Skills() {
     addToast("Skill deleted!", response.message, "success");
   };
 
-  if (loading) return <LoadingScreen />;
+  const filteredSkills =
+    skills?.filter((skill) => {
+      const titleMatch = skill.name
+        .toLowerCase()
+        .includes(searchInput.toLowerCase());
+
+      const categoryMatch = skill.categoryName
+        .toLowerCase()
+        .includes(searchInput.toLowerCase());
+
+      return titleMatch || categoryMatch;
+    }) || [];
 
   return (
     <>
-      <div className="flex flex-col gap-8 px-4 py-8 w-full max-w-4xl mx-auto">
-        <section className="flex items-center justify-between">
-          <h1 className="text-[2rem] text-text-primary font-medium">Skills</h1>
+      <SkillsHeader skills={skills} />
+      <Separator />
+
+      <section className="px-4 py-6 grid gap-6">
+        <div className="flex items-center justify-between gap-2">
+          <Searchbar
+            placeholder="Search Skills by name..."
+            className={"max-w-xs bg-transparent"}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+          />
 
           <div className="flex items-center gap-2">
-            <Button icon={{ icon: "search", size: 16 }} variant={"primary"} />
-
-            <Button
-              label={"Add a skill"}
-              icon={{ icon: "plus", size: 16 }}
-              variant={"accent"}
-              onClick={() => {
-                navigate("/skills/add");
-              }}
-            />
+            <Button variant="outline">
+              <ArrowUpDown />
+              Sort
+            </Button>
+            <Button variant="outline" size="icon" onClick={toggleLayout}>
+              {layout === "grid" ? <List /> : <LayoutGrid />}
+            </Button>
           </div>
-        </section>
+        </div>
 
-        {categories.length === 0 ? (
-          <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
-            <h2 className="text-text-primary text-2xl text-center">
-              No skills found.
-            </h2>
-            <Button
-              variant={"accent"}
-              label={"Add one right now"}
-              icon={{ icon: "plus", size: 20 }}
-              onClick={() => {
-                navigate("/skills/add");
-              }}
-            />
-          </section>
-        ) : (
-          categories.map((category) => {
-            return (
-              <section key={category._id} className="flex flex-col gap-4 py-3">
-                <h3 className="font-semibold text-2xl pb-3 border-b-1 border-border text-text-primary">
-                  {category.name}
-                </h3>
-
-                <ul className="grid grid-cols-4 gap-4 list-inside">
-                  {skills.map((skill) => {
-                    if (skill.category === category._id)
-                      return (
-                        <li
-                          key={skill._id}
-                          onDoubleClick={() =>
-                            navigate(`/skills/edit/${skill._id}`)
-                          }
-                        >
-                          <SkillCard
-                            skill={skill}
-                            handleDeleteSkill={handleDeleteSkill}
-                          />
-                        </li>
-                      );
-                  })}
-                </ul>
+        <div
+          className={`
+            grid gap-4
+            ${layout === "grid" && "lg:grid-cols-2 2xl:grid-cols-3 min-[116rem]:grid-cols-4"}
+          `}
+        >
+          {loading || !skills ? (
+            Array.from(new Array(3)).map((_, index) => (
+              <SkillCardSkeleton key={index} />
+            ))
+          ) : skills.length === 0 ? (
+            <section
+              className={`
+                ${layout === "grid" && "lg:col-span-2 2xl:col-span-3 min-[116rem]:col-span-4"}
+                flex flex-col min-h-70 items-center justify-center gap-4 py-3
+              `}
+            >
+              <h2>No skills found!</h2>
+              <Button asChild>
+                <Link to={"/skills/add"}>
+                  <Plus />
+                  <span>Add a Skill</span>
+                </Link>
+              </Button>
+            </section>
+          ) : searchInput.trim() ? (
+            filteredSkills.length === 0 ? (
+              <section
+                className={`
+                ${layout === "grid" && "lg:col-span-2 2xl:col-span-3 min-[116rem]:col-span-4"}
+                flex flex-col min-h-70 items-center justify-center gap-4 py-3
+              `}
+              >
+                <h2>No skills found based on search!</h2>
               </section>
-            );
-          })
-        )}
-      </div>
+            ) : (
+              filteredSkills.map((skill) => (
+                <SkillCard
+                  key={skill._id}
+                  skill={skill}
+                  handleDeleteSkill={handleDeleteSkill}
+                />
+              ))
+            )
+          ) : (
+            skills.map((skill) => (
+              <SkillCard
+                key={skill._id}
+                skill={skill}
+                handleDeleteSkill={handleDeleteSkill}
+              />
+            ))
+          )}
+        </div>
+      </section>
     </>
   );
 }

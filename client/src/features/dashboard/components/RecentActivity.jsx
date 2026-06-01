@@ -8,24 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const timeDiffFormatter = (timestamp) => {
-  const diffInSeconds = (new Date() - new Date(timestamp)) / 1000;
-  if (diffInSeconds > 60 * 60 * 24 * 365)
-    return `${Math.floor(diffInSeconds / (60 * 60 * 24 * 365))}y ago`; // years
-
-  if (diffInSeconds > 60 * 60 * 24 * 30)
-    return `${Math.floor(diffInSeconds / (60 * 60 * 24 * 30))}m ago`; // months
-
-  if (diffInSeconds > 60 * 60 * 24)
-    return `${Math.floor(diffInSeconds / (60 * 60 * 24))}d ago`; // days
-
-  if (diffInSeconds > 60 * 60)
-    return `${Math.floor(diffInSeconds / (60 * 60))}h ago`; // hours
-
-  if (diffInSeconds > 60)
-    return `${Math.floor(diffInSeconds / 60)}min ago`; // minutes
-  else return `${Math.floor(diffInSeconds)}s ago`; // seconds
-};
+import { timeDiffFormatter } from "@/shared/utils/timeDiffFormatter";
 
 function RecentActivity({ recentActivities }) {
   return (
@@ -69,8 +52,8 @@ function RecentActivity({ recentActivities }) {
           </TableBody>
         ) : (
           <TableBody>
-            {Array.from(new Array(10)).map((_) => (
-              <TableRow>
+            {Array.from(new Array(10)).map((_, index) => (
+              <TableRow key={index}>
                 <TableCell>-</TableCell>
                 <TableCell className="text-center">-</TableCell>
                 <TableCell className="text-center">-</TableCell>

@@ -33,7 +33,10 @@ function DashboardHeader() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl">Workspace</h1>
 
-        <Searchbar />
+        <Searchbar
+          placeholder="Search projects, skills, etc..."
+          className="max-w-2xs"
+        />
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">

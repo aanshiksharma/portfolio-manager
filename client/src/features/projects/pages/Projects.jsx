@@ -1,72 +1,84 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import useProject from "../hooks/useProject";
 
-import ProjectCard from "../components/ProjectCard";
-import Button from "../../../shared/components/ui/Button";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import { ProjectCard, ProjectCardSkeleton } from "../components/ProjectCard";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ArrowUpDown, Plus } from "lucide-react";
+
+import Searchbar from "@/shared/components/ui/Searchbar";
+import ProjectsHeader from "../components/ProjectHeader";
 
 function Projects() {
-  const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState("");
+  const { projects, loading } = useProject();
 
-  const { projects, loading, error } = useProject();
+  const filteredProjects =
+    projects?.filter((project) => {
+      const titleMatch = project.title
+        .toLowerCase()
+        .includes(searchInput.toLowerCase());
 
-  if (loading) return <LoadingScreen />;
+      const skillMatch = project.skills.some((skill) =>
+        skill.toLowerCase().includes(searchInput.toLowerCase()),
+      );
+
+      return titleMatch || skillMatch;
+    }) || [];
 
   return (
     <>
-      <div className="container">
-        <div className="flex flex-col gap-8 px-4 py-8 w-full">
-          <section className="flex items-center justify-between">
-            <h1 className="text-[2rem] text-text-primary font-medium">
-              Projects
-            </h1>
-            <div className="flex gap-2 items-center">
-              <Button icon={{ icon: "search", size: 16 }} variant={"primary"} />
+      <ProjectsHeader projects={projects} />
+      <Separator />
 
-              <Button
-                label={"Add a Project"}
-                icon={{ icon: "plus", size: 16 }}
-                variant={"accent"}
-                onClick={() => {
-                  navigate("/projects/add");
-                }}
-              />
-            </div>
-          </section>
-
-          <section className="flex flex-wrap gap-4">
-            {projects.length === 0 ? (
-              <section className="flex flex-col min-h-70 items-center justify-center gap-4 py-3">
-                <h2 className="text-text-primary text-2xl text-center w-full">
-                  No projects found.
-                </h2>
-                <Button
-                  variant={"accent"}
-                  label={"Add one right now"}
-                  icon={{ icon: "plus", size: 20 }}
-                  onClick={() => {
-                    navigate("/projects/add");
-                  }}
-                />
-              </section>
-            ) : (
-              projects.map((project) => {
-                return (
-                  <ProjectCard
-                    key={project._id}
-                    id={project._id}
-                    title={project.title}
-                    projectLink={project.projectLink}
-                    imageUrl={project.coverImage.url}
-                  />
-                );
-              })
-            )}
-          </section>
+      <section className="px-4 py-6 grid gap-6">
+        <div className="flex items-center justify-between gap-2">
+          <Searchbar
+            placeholder="Search Projects by name or technologies..."
+            className={"max-w-xs bg-transparent"}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+          />
+          <Button variant="outline">
+            <ArrowUpDown />
+            Sort
+          </Button>
         </div>
-      </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {loading || !projects ? (
+            Array.from(new Array(2)).map((_, index) => (
+              <ProjectCardSkeleton key={index} />
+            ))
+          ) : projects.length === 0 ? (
+            <section className="md:col-span-2 lg:col-span-3 2xl:col-span-4 flex flex-col min-h-70 items-center justify-center gap-4 py-3">
+              <h2>No projects found.</h2>
+              <Button asChild>
+                <Link to={"/projects/add"}>
+                  <Plus />
+                  <span>Add a Project</span>
+                </Link>
+              </Button>
+            </section>
+          ) : searchInput.trim() ? (
+            filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => {
+                return <ProjectCard key={project._id} project={project} />;
+              })
+            ) : (
+              <section className="md:col-span-2 lg:col-span-3 2xl:col-span-4 flex flex-col min-h-70 items-center justify-center gap-4 py-3">
+                <h2>No projects found based on search!</h2>
+              </section>
+            )
+          ) : (
+            projects.map((project) => {
+              return <ProjectCard key={project._id} project={project} />;
+            })
+          )}
+        </div>
+      </section>
     </>
   );
 }

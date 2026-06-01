@@ -1,33 +1,58 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import Button from "../../../shared/components/ui/Button";
+import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from "@/components/ui/item";
+import { Edit, Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-function SkillCard({ skill, handleDeleteSkill }) {
+export const SkillCardSkeleton = () => {
+  return (
+    <Item variant="outline">
+      <ItemContent>
+        <Skeleton className={"w-15 h-4"} />
+        <Skeleton className={"w-40 h-4 mt-1"} />
+      </ItemContent>
+    </Item>
+  );
+};
+
+export const SkillCard = ({ skill, handleDeleteSkill }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="border border-border/30 hover:border-border rounded-lg p-4 flex flex-col h-full gap-4">
-      <span className="flex-1 text-text-primary">{skill.name}</span>
+    <div className="flex flex-wrap gap-4">
+      <Item variant="outline" className={"group overflow-hidden "}>
+        <ItemContent>
+          <ItemTitle>{skill.name}</ItemTitle>
+          <ItemDescription>{skill.categoryName}</ItemDescription>
+        </ItemContent>
 
-      <div className="flex items-center gap-2">
-        <Button
-          label="Edit"
-          icon={{ icon: "edit", size: 14 }}
-          variant={"primary"}
-          className="bg-transparent flex-1"
-          onClick={() => navigate(`/skills/edit/${skill._id}`)}
-        />
+        <ItemActions
+          className={
+            "group-hover:translate-x-0 translate-x-[125%] transition-transform "
+          }
+        >
+          <Button variant="outline" size="icon" asChild>
+            <Link to={`/skills/edit/${skill._id}`}>
+              <Edit />
+            </Link>
+          </Button>
 
-        <Button
-          label="Delete"
-          icon={{ icon: "trash", size: 14 }}
-          variant={"delete"}
-          className="bg-transparent flex-1"
-          onClick={() => handleDeleteSkill(skill._id)}
-        />
-      </div>
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => handleDeleteSkill(skill._id)}
+          >
+            <Trash2 />
+          </Button>
+        </ItemActions>
+      </Item>
     </div>
   );
-}
-
-export default SkillCard;
+};

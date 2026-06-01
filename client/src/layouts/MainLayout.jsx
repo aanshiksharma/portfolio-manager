@@ -22,7 +22,7 @@ function MainLayout() {
       <Sidebar />
 
       <main className="flex-1">
-        <header className="sticky top-0 bg-background flex h-16 shrink-0 items-center gap-2 px-4 border-b">
+        <header className="sticky top-0 z-100 bg-background flex h-16 shrink-0 items-center gap-2 px-4 border-b">
           <SidebarTrigger className="-ml-1" />
 
           <Separator

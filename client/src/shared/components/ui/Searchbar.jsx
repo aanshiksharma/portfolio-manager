@@ -6,10 +6,21 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-export function Searchbar() {
+export function Searchbar({
+  placeholder = "Search...",
+  className,
+  searchInput,
+  setSearchInput,
+}) {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
+    <InputGroup className={`${className}`}>
+      <InputGroupInput
+        placeholder={placeholder}
+        value={searchInput}
+        onChange={(e) => {
+          setSearchInput(e.target.value);
+        }}
+      />
       <InputGroupAddon>
         <Search />
       </InputGroupAddon>
