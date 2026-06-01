@@ -28,10 +28,6 @@
     @apply flex flex-col items-start;
   }
 
-  .form-heading {
-    @apply leading-10 text-[2rem] text-text-primary font-medium;
-  }
-
   .input-group {
     @apply flex flex-col gap-2;
 
@@ -205,6 +201,10 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    h1 {
+      @apply text-2xl;
+    }
   }
   html {
     @apply font-sans;

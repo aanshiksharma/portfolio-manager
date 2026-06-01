@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,36 +23,32 @@ export const SkillCardSkeleton = () => {
 };
 
 export const SkillCard = ({ skill, handleDeleteSkill }) => {
-  const navigate = useNavigate();
+  const isVertical = document.body.offsetHeight > document.body.offsetWidth;
 
   return (
-    <div className="flex flex-wrap gap-4">
-      <Item variant="outline" className={"group overflow-hidden "}>
-        <ItemContent>
-          <ItemTitle>{skill.name}</ItemTitle>
-          <ItemDescription>{skill.categoryName}</ItemDescription>
-        </ItemContent>
+    <Item variant="outline" className={"group overflow-hidden"}>
+      <ItemContent>
+        <ItemTitle>{skill.name}</ItemTitle>
+        <ItemDescription>{skill.categoryName}</ItemDescription>
+      </ItemContent>
 
-        <ItemActions
-          className={
-            "group-hover:translate-x-0 translate-x-[125%] transition-transform "
-          }
+      <ItemActions
+        className={`group-hover:translate-x-0 ${!isVertical && "md:translate-x-[125%]"} transition-transform`}
+      >
+        <Button variant="outline" size="icon" asChild>
+          <Link to={`/skills/edit/${skill._id}`}>
+            <Edit />
+          </Link>
+        </Button>
+
+        <Button
+          variant="destructive"
+          size="icon"
+          onClick={() => handleDeleteSkill(skill._id)}
         >
-          <Button variant="outline" size="icon" asChild>
-            <Link to={`/skills/edit/${skill._id}`}>
-              <Edit />
-            </Link>
-          </Button>
-
-          <Button
-            variant="destructive"
-            size="icon"
-            onClick={() => handleDeleteSkill(skill._id)}
-          >
-            <Trash2 />
-          </Button>
-        </ItemActions>
-      </Item>
-    </div>
+          <Trash2 />
+        </Button>
+      </ItemActions>
+    </Item>
   );
 };

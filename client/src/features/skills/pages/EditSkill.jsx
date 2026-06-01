@@ -1,19 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-import Button from "../../../shared/components/ui/Button";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-import useToast from "../../../shared/toast/useToast";
+import useToast from "@/shared/toast/useToast";
 import useSkill from "../hooks/useSkill";
 
 import SkillForm from "../components/SkillForm";
+
+import { Button } from "@/components/ui/button";
 
 function EditSkill() {
   const location = useLocation();
   const pathname = location.pathname.split("/");
   const skillId = pathname[pathname.length - 1];
 
-  const { loading, skill, editSkill, deleteSkill } = useSkill({
+  const { skill, editSkill, deleteSkill } = useSkill({
     skillId,
   });
   const { addToast } = useToast();
@@ -80,24 +79,17 @@ function EditSkill() {
     return navigate(-1);
   };
 
-  if (loading || !skill) return <LoadingScreen />;
-
   return (
     <>
-      <div className="container">
-        <section className="p-4 w-full flex items-center justify-between">
-          <h1 className="form-heading">Edit "{skill.name}"</h1>
+      <section className="px-4 py-6 grid gap-4 max-w-1/2">
+        <h1>Edit {skill?.name}</h1>
+      </section>
 
-          <Button
-            type={"button"}
-            variant={"delete"}
-            label={"Delete Skill"}
-            onClick={() => handleDeleteSkill(skillId)}
-          />
-        </section>
-
-        <SkillForm skill={skill} onSubmit={onSubmit} />
-      </div>
+      <SkillForm
+        skill={skill}
+        onSubmit={onSubmit}
+        handleDelete={handleDeleteSkill}
+      />
     </>
   );
 }

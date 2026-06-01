@@ -17,10 +17,11 @@ function ProjectsHeader({ projects }) {
 
       <div className="text-muted-foreground text-xs space-x-2">
         <span>
-          {projects.length} Project{projects.length > 1 && "s"}
+          {projects ? projects.length : "-"} Project
+          {projects?.length > 1 && "s"}
         </span>
         <span>&bull;</span>
-        <span>{projects.length} Live</span>
+        <span>{projects ? projects.length : "-"} Live</span>
         <span>&bull;</span>
         <span>Updated 7d ago</span>
       </div>

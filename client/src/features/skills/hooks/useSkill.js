@@ -9,7 +9,7 @@ import {
 } from "../services/skillServices";
 
 function useSkill({ skillId } = {}) {
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(null);
   const [skill, setSkill] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);

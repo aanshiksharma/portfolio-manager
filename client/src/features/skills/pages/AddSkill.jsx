@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import Button from "../../../shared/components/ui/Button";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-import useToast from "../../../shared/toast/useToast";
+import useToast from "@/shared/toast/useToast";
 import useSkill from "../hooks/useSkill";
 import SkillForm from "../components/SkillForm";
 
@@ -46,17 +43,13 @@ function AddSkill() {
     return navigate(-1);
   };
 
-  if (loading) return <LoadingScreen />;
-
   return (
     <>
-      <div className="container">
-        <section className="p-4">
-          <h1 className="form-heading">Add a new skill</h1>
-        </section>
+      <section className="px-4 py-6 grid gap-4">
+        <h1>Add Skill</h1>
+      </section>
 
-        <SkillForm onSubmit={onSubmit} />
-      </div>
+      <SkillForm onSubmit={onSubmit} />
     </>
   );
 }

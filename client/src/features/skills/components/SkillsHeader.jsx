@@ -18,7 +18,7 @@ function SkillsHeader({ skills }) {
 
       <div className="text-muted-foreground text-xs space-x-2">
         <span>
-          {skills.length} Skill{skills.length > 1 && "s"}
+          {skills ? skills.length : "-"} Skill{skills?.length > 1 && "s"}
         </span>
         <span>&bull;</span>
         <span>Updated 7d ago</span>
