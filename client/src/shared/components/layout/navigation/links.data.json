@@ -2,5 +2,5 @@
   { "url": "/", "title": "Overview" },
   { "url": "/projects", "title": "Projects" },
   { "url": "/skills", "title": "Skills" },
-  { "url": "/personal", "title": "Personal" }
+  { "url": "/profile", "title": "Profile" }
 ]

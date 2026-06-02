@@ -16,7 +16,7 @@ const actions = [
     label: "Add a Skill",
   },
   {
-    href: "/personal/edit",
+    href: "/profile/edit",
     icon: <UserPen />,
     label: "Edit Personal Info",
   },

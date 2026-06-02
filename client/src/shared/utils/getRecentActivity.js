@@ -1,7 +1,7 @@
 export function getRecentActivity({ projects, skills, categories, admin }) {
   const activities = [];
 
-  projects.forEach((project) => {
+  projects?.forEach((project) => {
     activities.push({
       id: project._id,
       title: project.title,
@@ -19,7 +19,7 @@ export function getRecentActivity({ projects, skills, categories, admin }) {
     });
   });
 
-  skills.forEach((skill) => {
+  skills?.forEach((skill) => {
     activities.push({
       id: skill._id,
       title: skill.name,

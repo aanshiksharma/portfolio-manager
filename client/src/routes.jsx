@@ -53,8 +53,8 @@ function AppRoutes() {
             <Route path="/skills/edit/*" element={<EditSkill />} />
 
             {/* ADMIN ROUTES */}
-            <Route path="/personal" element={<Admin />} />
-            <Route path="/personal/edit" element={<EditPersonal />} />
+            <Route path="/profile" element={<Admin />} />
+            <Route path="/profile/edit" element={<EditPersonal />} />
 
             {/* NOT FOUND PAGE ROUTE */}
             <Route path="/*" element={<NotFound />} />
