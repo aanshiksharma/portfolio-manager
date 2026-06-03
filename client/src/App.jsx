@@ -1,5 +1,3 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import ImageViewerProvider from "./shared/image-viewer/ImageViewerProvider";
 import ToastProvider from "./shared/toast/ToastProvider";
 import { TooltipProvider } from "./components/ui/tooltip";

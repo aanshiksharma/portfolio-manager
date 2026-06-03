@@ -202,7 +202,8 @@
   body {
     @apply bg-background text-foreground;
 
-    h1 {
+    h1,
+    h2 {
       @apply text-2xl;
     }
   }
