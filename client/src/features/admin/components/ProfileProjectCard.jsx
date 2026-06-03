@@ -12,9 +12,28 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { timeDiffFormatter } from "@/shared/utils/timeDiffFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProfileProjectCardSkeleton = () => {
-  return <Item></Item>;
+  return (
+    <div>
+      <Skeleton className="w-full aspect-video" />
+
+      <div>
+        <Skeleton className="w-40 h-4 mt-3" />
+        <Skeleton className="w-full h-3 mt-2" />
+        <Skeleton className="w-full h-3 mt-1" />
+      </div>
+
+      <div className="flex items-center justify-between mt-3">
+        <Skeleton className="w-17 h-2" />
+        <div className="flex gap-2">
+          <Button variant="outline" size="icon"></Button>
+          <Button variant="secondary" size="icon"></Button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const ProfileProjectCard = ({ project }) => {

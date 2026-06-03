@@ -8,17 +8,69 @@ import {
   ItemTitle,
   ItemActions,
 } from "@/components/ui/item";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Mail, Phone } from "lucide-react";
-import Icon from "@/shared/components/ui/Icon";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
-function ProfileSidebar({ admin, className }) {
+import { Mail, Phone } from "lucide-react";
+
+import Icon from "@/shared/components/ui/Icon";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export const ProfileSidebarSkeleton = () => {
+  return (
+    <aside>
+      <ItemGroup>
+        <Item>
+          <ItemHeader>
+            <Skeleton className="max-w-2xs w-full aspect-square" />
+          </ItemHeader>
+          <ItemContent>
+            <Skeleton className="w-30 h-3" />
+            <Skeleton className="w-10 h-2 mt-1" />
+          </ItemContent>
+        </Item>
+
+        <Separator />
+
+        <Item>
+          <ItemContent>
+            <ItemTitle>Contact</ItemTitle>
+
+            <ul className="grid gap-2 mt-3">
+              <li>
+                <Skeleton className="w-full h-3" />
+              </li>
+              <li>
+                <Skeleton className="w-3/4 h-3" />
+              </li>
+            </ul>
+          </ItemContent>
+        </Item>
+
+        <Item>
+          <ItemContent>
+            <ItemTitle>Social Media</ItemTitle>
+
+            <ItemActions className={"mt-3"}>
+              {Array.from(new Array(3)).map((social) => (
+                <Button variant="ghost" size="icon" asChild>
+                  <Skeleton className="w-8 h-8" />
+                </Button>
+              ))}
+            </ItemActions>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
+    </aside>
+  );
+};
+
+export const ProfileSidebar = ({ admin, className }) => {
   return (
     <aside className={`${className}`}>
       <ItemGroup>
@@ -88,6 +140,6 @@ function ProfileSidebar({ admin, className }) {
       </ItemGroup>
     </aside>
   );
-}
+};
 
 export default ProfileSidebar;
