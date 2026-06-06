@@ -1,5 +1,3 @@
-import LoadingScreen from "@/shared/components/ui/LoadingScreen";
-
 import useAdmin from "../hooks/useAdmin";
 import useSkill from "@/features/skills/hooks/useSkill";
 import useProject from "@/features/projects/hooks/useProject";
@@ -34,7 +32,10 @@ function Admin() {
         {adminLoading || !admin ? (
           <ProfileSidebarSkeleton />
         ) : (
-          <ProfileSidebar admin={admin} />
+          <ProfileSidebar
+            admin={admin}
+            className="min-[1200px]:sticky top-22"
+          />
         )}
 
         <section className="p-4 col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">

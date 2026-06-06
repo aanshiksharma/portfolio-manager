@@ -76,7 +76,10 @@ export const ProfileSidebar = ({ admin, className }) => {
       <ItemGroup>
         <Item>
           <ItemHeader>
-            <ItemMedia variant="image" className="size-full max-w-2xs">
+            <ItemMedia
+              variant="image"
+              className="size-full max-w-2xs aspect-square"
+            >
               <img src={admin.profileImage.url} alt="" />
             </ItemMedia>
           </ItemHeader>
