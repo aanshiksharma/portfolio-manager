@@ -1,51 +1,56 @@
+import { useState, useEffect } from "react";
+
 import LoginForm from "../components/LoginForm";
 
-import welcomeText from "./loginPage.data.json";
-
 function Login() {
-  const isVertical = document.body.offsetHeight > document.body.offsetWidth;
+  const [isVertical, setIsVertical] = useState(false);
+
+  useEffect(() => {
+    if (document.body.clientHeight > document.body.clientWidth)
+      setIsVertical(true);
+  }, []);
 
   return (
     <>
-      <div
-        className={`grid grid-cols-1 ${!isVertical ? "md:grid-cols-2" : ""} min-h-screen`}
+      <section
+        className={`
+          px-6 py-8 min-w-sm min-h-screen
+          font-medium
+          grid ${!isVertical && "md:grid-cols-5 lg:grid-cols-6"}
+          gap-4 items-center justify-items-center
+        `}
       >
-        <section
-          className="px-6 py-8 min-w-sm bg-foreground text-background
-            flex-1 flex items-center justify-center"
-        >
-          <article className="flex flex-col gap-6 align-center justify-center max-w-lg w-full">
-            <p className="text-2xl font-semibold">Welcome!</p>
+        <div className="md:col-span-3 lg:col-span-4 p-2 inset-shadow-xs inset-shadow-accent shadow-lg shadow-primary/15 rounded-4xl h-full">
+          <div className="relative h-full">
+            <img
+              src="/dashboard.png"
+              alt=""
+              className="rounded-2xl h-full object-cover object-left opacity-85"
+            />
 
-            <div className="flex flex-col gap-2.5">
-              {welcomeText.map((item, index) => (
-                <div key={index} className="flex flex-col gap-1">
-                  <p>{item.text}</p>
-
-                  {item.list && (
-                    <ul className="list-disc list-inside text-sm grid gap-0.5 text text-muted">
-                      {item.list.map((listItem) => (
-                        <li>{listItem}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
+            <div
+              className={`
+                absolute inset-0 px-6
+                flex flex-col justify-end
+                ${
+                  !isVertical &&
+                  "md:bg-linear-to-tl md:text-right md:items-end md:py-10"
+                } 
+                bg-linear-to-t text-center items-center py-4
+                from-background from-20% to-90% to-transparent
+              `}
+            >
+              <h2 className="text-base">Portfolio CMS</h2>
+              <p className="text-muted-foreground text-balance max-w-md">
+                Manage projects, skills, profile and other portfolio content
+                without code from one place.
+              </p>
             </div>
-          </article>
-        </section>
-
-        <section
-          className="px-6 py-8 min-w-sm bg-background text-foreground
-            font-medium flex-1 flex flex-col gap-6 align-center justify-center"
-        >
-          <div className="max-w-sm mx-auto w-full grid gap-6">
-            <h1 className="text-2xl font-semibold">Login to continue!</h1>
-
-            <LoginForm />
           </div>
-        </section>
-      </div>
+        </div>
+
+        <LoginForm className="md:col-span-2" />
+      </section>
     </>
   );
 }

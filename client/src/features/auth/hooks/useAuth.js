@@ -19,7 +19,7 @@ function useAuth() {
         success: true,
         unauthorized: false,
         message: response.message,
-        user,
+        user: response.user,
       };
     } catch (err) {
       const message = err.message;

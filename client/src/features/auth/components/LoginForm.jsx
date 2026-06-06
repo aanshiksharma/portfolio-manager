@@ -1,14 +1,27 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldLabel,
+  FieldError,
+  FieldGroup,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import useAuth from "../hooks/useAuth";
 import useToast from "@/shared/toast/useToast";
+import {
+  Item,
+  ItemHeader,
+  ItemTitle,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+} from "@/components/ui/item";
 
-function LoginForm() {
+function LoginForm({ className }) {
   const {
     register,
     handleSubmit,
@@ -44,15 +57,27 @@ function LoginForm() {
 
   const handleGuestLogin = () => {
     sessionStorage.setItem("login-mode", "guest");
+    addToast("Logged in!", `You are now logged in as Guest`, "success");
     navigate("/");
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md mx-auto w-full flex flex-col gap-6"
-    >
-      <>
+    <Item size="" className={`w-full max-w-sm ${className}`}>
+      <ItemHeader>
+        <h1>Welcome Back!</h1>
+      </ItemHeader>
+
+      <ItemContent>
+        <ItemTitle>Login to continue!</ItemTitle>
+        <ItemDescription>
+          Enter your password below to login and make changes to your portfolio.
+        </ItemDescription>
+      </ItemContent>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-w-md mx-auto w-full flex flex-col gap-6"
+      >
         <Field>
           <FieldLabel htmlFor="password">Enter your password</FieldLabel>
 
@@ -70,20 +95,22 @@ function LoginForm() {
             })}
           />
 
-          <FieldDescription className="text-destructive text-xs">
+          <FieldError className="text-xs">
             {errors.password && errors.password.message}
-          </FieldDescription>
+          </FieldError>
+        </Field>
 
+        <ItemFooter className="flex-col items-stretch gap-1.5">
           <Button type="submit" variant="default">
             Log in
           </Button>
 
-          <Button type="button" variant="secondary" onClick={handleGuestLogin}>
-            Log in as Guest
+          <Button type="button" variant="outline" onClick={handleGuestLogin}>
+            Continue as Guest
           </Button>
-        </Field>
-      </>
-    </form>
+        </ItemFooter>
+      </form>
+    </Item>
   );
 }
 
