@@ -107,7 +107,7 @@ function EditProject() {
 
   return (
     <>
-      <section className="px-4 py-6 grid gap-4">
+      <section className="grid gap-4">
         <h1>Edit {project ? project.title : "Project"}</h1>
       </section>
 

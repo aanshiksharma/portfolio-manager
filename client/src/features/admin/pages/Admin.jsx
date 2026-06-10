@@ -25,7 +25,6 @@ function Admin() {
     <>
       <section
         className={`
-        px-4 py-6
         grid items-start gap-4
         ${isVertical ? "grid-cols-1" : "min-[1200px]:grid-cols-4 2xl:grid-cols-5"} `}
       >
@@ -38,7 +37,7 @@ function Admin() {
           />
         )}
 
-        <section className="p-4 col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">
+        <section className="col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">
           <section className="space-y-6">
             <h2>About</h2>
 

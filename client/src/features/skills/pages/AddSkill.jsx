@@ -45,7 +45,7 @@ function AddSkill() {
 
   return (
     <>
-      <section className="px-4 py-6 grid gap-4">
+      <section>
         <h1>Add Skill</h1>
       </section>
 

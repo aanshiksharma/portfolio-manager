@@ -9,7 +9,7 @@ import {
 
 function useProject({ projectId } = {}) {
   const [project, setProject] = useState(null);
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

@@ -12,7 +12,7 @@ import { timeDiffFormatter } from "@/shared/utils/timeDiffFormatter";
 
 function RecentActivity({ recentActivities }) {
   return (
-    <section className="px-4 py-6 grid gap-6">
+    <section className="grid gap-6">
       <div className="space-y-2">
         <h2 className="text-xl">Recent Activity</h2>
         <p className="text-muted-foreground">

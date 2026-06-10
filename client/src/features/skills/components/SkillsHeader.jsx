@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 function SkillsHeader({ skills }) {
   return (
-    <section className="px-4 py-6 grid gap-4">
+    <section className="grid gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl">Skills Library</h1>
         <Button asChild>

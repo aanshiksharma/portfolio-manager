@@ -81,7 +81,7 @@ function EditSkill() {
 
   return (
     <>
-      <section className="px-4 py-6 grid gap-4 max-w-1/2">
+      <section className="max-w-1/2">
         <h1>Edit {skill?.name}</h1>
       </section>
 

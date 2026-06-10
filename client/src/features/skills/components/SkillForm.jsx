@@ -32,7 +32,7 @@ function SkillForm({ skill, onSubmit, handleDelete }) {
 
   return (
     <>
-      <form className="px-4 xl:max-w-3/4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="xl:max-w-3/4" onSubmit={handleSubmit(onSubmit)}>
         <FieldSet>
           <FieldLegend>Skill Information</FieldLegend>
           <FieldDescription>
@@ -86,6 +86,7 @@ function SkillForm({ skill, onSubmit, handleDelete }) {
                     {skill ? "Save" : "Add Skill"}
                   </Button>
                   <Button
+                    type="button"
                     variant="outline"
                     onClick={() => {
                       navigate(-1);

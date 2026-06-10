@@ -20,7 +20,7 @@ function ProjectForm({ methods, project, onSubmit, handleDelete }) {
 
   return (
     <FormProvider {...methods}>
-      <form className="px-4 xl:max-w-3/4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="xl:max-w-3/4" onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
           <ProjectDetailsSection />
           <FieldSeparator />

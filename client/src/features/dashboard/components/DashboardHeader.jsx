@@ -29,7 +29,7 @@ const actions = [
 
 function DashboardHeader() {
   return (
-    <section className="px-4 py-6 grid gap-4">
+    <section className="grid gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl">Workspace</h1>
 

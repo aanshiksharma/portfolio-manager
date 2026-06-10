@@ -75,7 +75,7 @@ function Skills() {
       <SkillsHeader skills={skills} />
       <Separator />
 
-      <section className="px-4 py-6 grid gap-6">
+      <section className="grid gap-6">
         <div className="flex items-center justify-between gap-2">
           <Searchbar
             placeholder="Search Skills by name..."
