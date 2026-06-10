@@ -37,7 +37,7 @@ function Admin() {
           />
         )}
 
-        <section className="col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">
+        <section className="px-4 py-6 col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">
           <section className="space-y-6">
             <h2>About</h2>
 
