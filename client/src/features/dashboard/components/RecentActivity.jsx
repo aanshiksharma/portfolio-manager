@@ -1,0 +1,70 @@
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import { timeDiffFormatter } from "@/shared/utils/timeDiffFormatter";
+
+function RecentActivity({ recentActivities }) {
+  return (
+    <section className="grid gap-6">
+      <div className="space-y-2">
+        <h2 className="text-xl">Recent Activity</h2>
+        <p className="text-muted-foreground">
+          Recent changes across your portfolio content.
+        </p>
+      </div>
+
+      <Table className="">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead className="text-center">Action</TableHead>
+            <TableHead className="text-center">Type</TableHead>
+            <TableHead className="text-right">Time</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        {recentActivities ? (
+          <TableBody>
+            {recentActivities.map((activity) => (
+              <TableRow key={activity.timestamp}>
+                <TableCell>{activity.title}</TableCell>
+                <TableCell className="text-center">
+                  <Badge
+                    variant="secondary"
+                    className={`${activity.action === "created" ? "bg-badge-1 text-badge-1-foreground" : "bg-badge-2 text-badge-2-foreground"}`}
+                  >
+                    {activity.action}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-center">{activity.type}</TableCell>
+                <TableCell className="text-right">
+                  {timeDiffFormatter(activity.timestamp)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody>
+            {Array.from(new Array(10)).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>-</TableCell>
+                <TableCell className="text-center">-</TableCell>
+                <TableCell className="text-center">-</TableCell>
+                <TableCell className="text-right">-</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
+      </Table>
+    </section>
+  );
+}
+
+export default RecentActivity;

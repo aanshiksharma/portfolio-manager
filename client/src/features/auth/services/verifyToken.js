@@ -1,31 +1,17 @@
-export const verifyToken = async (navigate) => {
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+export const verifyToken = async () => {
   try {
-    const guest = sessionStorage.getItem("login-mode");
-    if (guest) return true;
+    const response = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
 
-    const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-token`,
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      }
-    );
+    if (!response.ok) throw new Error((await response.json()).message);
 
-    // Token invalid or expired
-    if (!res.ok) {
-      const response = await res.json().catch(() => ({}));
-      alert(response.message || "Session expired. Please log in again.");
-      if (navigate) navigate("/auth/login");
-      return false;
-    }
-
-    // Token valid
-    return true;
+    return await response.json();
   } catch (err) {
-    console.error("[verifyToken]", err);
-    alert("An error occurred while verifying your session.");
-    if (navigate) navigate("/auth/login");
-    return false;
+    throw new Error(err.message || "Error occurred while verifying user");
   }
 };

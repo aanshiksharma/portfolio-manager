@@ -19,7 +19,7 @@ function useAuth() {
         success: true,
         unauthorized: false,
         message: response.message,
-        user,
+        user: response.user,
       };
     } catch (err) {
       const message = err.message;
@@ -38,7 +38,13 @@ function useAuth() {
     }
   };
 
-  return { user, login };
+  const logout = () => {
+    if (sessionStorage.getItem("token")) sessionStorage.removeItem("token");
+    if (sessionStorage.getItem("login-mode"))
+      sessionStorage.removeItem("login-mode");
+  };
+
+  return { user, loading, error, login, logout };
 }
 
 export default useAuth;

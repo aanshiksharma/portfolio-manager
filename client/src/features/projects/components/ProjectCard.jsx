@@ -1,52 +1,99 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import Button from "../../../shared/components/ui/Button";
-import Icon from "../../../shared/components/ui/Icon";
+import { Edit, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import {
+  Item,
+  ItemHeader,
+  ItemTitle,
+  ItemContent,
+  ItemFooter,
+} from "@/components/ui/item";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-function ProjectCard({ id, title, projectLink, imageUrl }) {
-  const navigate = useNavigate();
+import { timeDiffFormatter } from "@/shared/utils/timeDiffFormatter";
 
+export const ProjectCardSkeleton = () => {
+  return (
+    <Item variant="outline">
+      <ItemHeader>
+        <Skeleton className={"w-full aspect-video"} />
+      </ItemHeader>
+      <ItemContent>
+        <Skeleton className={"w-25 h-4"} />
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+          <Skeleton className={"w-25 h-3"} />
+          <Separator orientation="vertical" />
+          <Skeleton className={"w-25 h-3"} />
+        </div>
+      </ItemContent>
+      <ItemFooter className={"flex items-center gap-2"}>
+        <Skeleton className={"flex-1 h-7.5"} />
+        <Skeleton className={"h-7.5 aspect-square"} />
+        <Skeleton className={"h-7.5 aspect-square"} />
+      </ItemFooter>
+    </Item>
+  );
+};
+
+export const ProjectCard = ({ project }) => {
   return (
     <>
-      <div className="flex-1 flex flex-col gap-4 border-1 py-3 px-4 min-w-70 max-w-85 bg-bg-surface-dark/20 border-border rounded-lg justify-between">
-        <div className="flex items-center justify-center overflow-hidden rounded-sm shadow-md shadow-bg-base">
-          <img src={imageUrl} alt="" />
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <h4 className="font-semibold text-text-primary">{title}</h4>
-            <a
-              href={projectLink}
-              target="_blank"
-              className="text-xs flex items-center gap-1 hover:text-text-secondary transition ease-out"
-            >
-              <Icon size={12} icon={"link"} />
-              {projectLink}
-            </a>
-          </div>
-
-          <div className="flex items-center gap-2 w-full">
-            <Button
-              type={"button"}
-              label={"View"}
-              variant={"primary"}
-              className={"w-full"}
-              onClick={() => navigate(`/projects/${id}`)}
-            />
-
-            <Button
-              type={"button"}
-              label={"Edit"}
-              variant={"accent"}
-              className={"w-full"}
-              onClick={() => navigate(`/projects/edit/${id}`)}
+      <Item variant="outline">
+        <ItemHeader>
+          <div className="overflow-hidden rounded-xl aspect-video">
+            <img
+              src={project.coverImage.url}
+              alt=""
+              className="w-full h-full"
             />
           </div>
-        </div>
-      </div>
+        </ItemHeader>
+
+        <ItemContent>
+          <ItemTitle>{project.title}</ItemTitle>
+
+          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+            <p>Added {timeDiffFormatter(project.createdAt)}</p>
+            <Separator orientation="vertical" />
+            <p>Updated {timeDiffFormatter(project.updatedAt)}</p>
+          </div>
+        </ItemContent>
+
+        <ItemFooter className={"flex items-center gap-2"}>
+          <Button variant="secondary" asChild className={"flex-1"}>
+            <Link to={`/projects/${project._id}`}>Open</Link>
+          </Button>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="outline" size="icon" asChild>
+                <Link to={`/projects/edit/${project._id}`}>
+                  <Edit />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Edit {project.title}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="outline" size="icon" asChild>
+                <a href={project.projectLink} target="_blank">
+                  <ExternalLink />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>View Live</TooltipContent>
+          </Tooltip>
+        </ItemFooter>
+      </Item>
     </>
   );
-}
-
-export default ProjectCard;
+};

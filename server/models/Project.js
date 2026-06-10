@@ -7,31 +7,32 @@ const imageSchema = new mongoose.Schema(
     url: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
   },
-  { _id: false }
+  { _id: false },
 );
 
-const projectSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  skills: { type: [String], required: true },
-  featured: { type: Boolean, default: false },
-  description: { type: String },
+const projectSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    skills: { type: [String], required: true },
+    featured: { type: Boolean, default: false },
+    description: { type: String },
 
-  projectLink: { type: String },
-  githubLink: { type: String },
+    projectLink: { type: String },
+    githubLink: { type: String },
 
-  coverImage: { type: imageSchema, required: true },
-  otherImages: { type: [imageSchema] },
+    coverImage: { type: imageSchema, required: true },
+    otherImages: { type: [imageSchema] },
 
-  meta: {
-    status: {
-      type: String,
-      enum: ["draft", "published"],
-      default: "published",
+    meta: {
+      status: {
+        type: String,
+        enum: ["draft", "published"],
+        default: "published",
+      },
     },
   },
-
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true },
+);
 
 const Project = mongoose.model("Project", projectSchema);
 export default Project;

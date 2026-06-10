@@ -1,16 +1,12 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import useToast from "../../../shared/toast/useToast";
 import useProject from "../hooks/useProject";
 
-import Button from "../../../shared/components/ui/Button";
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-
-import ProjectDetailsSection from "../components/form/ProjectDetailsSection";
-import PreviewLinksSection from "../components/form/PreviewLinksSection";
-import FilesSection from "../components/form/FilesSection";
+import ProjectForm from "../components/form/ProjectForm";
 
 function EditProject() {
   const navigate = useNavigate();
@@ -24,10 +20,18 @@ function EditProject() {
   const { addToast } = useToast();
 
   const methods = useForm();
-  const { handleSubmit, watch, reset } = methods;
+  const { reset } = methods;
 
   useEffect(() => {
-    if (project) reset(project);
+    if (project) {
+      const values = {
+        ...project,
+        coverImage: project.coverImage ? [project.coverImage] : [],
+        otherImages: project.otherImages || [],
+      };
+
+      reset(values);
+    }
   }, [project, reset]);
 
   const onSubmit = async (data) => {
@@ -41,11 +45,9 @@ function EditProject() {
       return navigate("/auth/login");
     }
 
-    const skills = data.skills[0] !== "" ? data.skills : [];
-
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("skills", JSON.stringify(skills));
+    formData.append("skills", JSON.stringify(data.skills));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
     formData.append("projectLink", data.projectLink);
@@ -101,37 +103,20 @@ function EditProject() {
     navigate("/projects");
   };
 
-  const projectData = watch();
-
-  if (loading || !project) return <LoadingScreen />;
+  // if (loading || !project) return <LoadingScreen />;
 
   return (
     <>
-      <FormProvider {...methods}>
-        <form className="container" onSubmit={handleSubmit(onSubmit)}>
-          <header className="p-4 flex items-center justify-between w-full">
-            <h1 className="form-heading">
-              Edit {projectData.title || "Project"}
-            </h1>
+      <section className="grid gap-4">
+        <h1>Edit {project ? project.title : "Project"}</h1>
+      </section>
 
-            <Button
-              type={"button"}
-              variant={"delete"}
-              label={"Delete Project"}
-              onClick={handleDeleteProject}
-            />
-          </header>
-
-          <ProjectDetailsSection />
-          <PreviewLinksSection />
-          <FilesSection />
-
-          <div className="p-4 w-full flex gap-4 items-center justify-end">
-            <Button type={"button"} label={"Cancel"} variant={"secondary"} />
-            <Button type={"submit"} label={"Save Changes"} variant={"accent"} />
-          </div>
-        </form>
-      </FormProvider>
+      <ProjectForm
+        methods={methods}
+        project={project}
+        onSubmit={onSubmit}
+        handleDelete={handleDeleteProject}
+      />
     </>
   );
 }

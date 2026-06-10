@@ -1,89 +1,98 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import Button from "../../../shared/components/ui/Button";
-import TableRow from "../../../shared/components/ui/TableRow";
-
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 import useAdmin from "../hooks/useAdmin";
+import useSkill from "@/features/skills/hooks/useSkill";
+import useProject from "@/features/projects/hooks/useProject";
+
+import {
+  ProfileSidebarSkeleton,
+  ProfileSidebar,
+} from "../components/ProfileSidebar";
+import {
+  ProfileProjectCardSkeleton,
+  ProfileProjectCard,
+} from "../components/ProfileProjectCard";
+import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Admin() {
-  const navigate = useNavigate();
+  const { admin, loading: adminLoading } = useAdmin();
+  const { skills, loading: skillsLoading } = useSkill();
+  const { projects, loading: projectsLoading } = useProject();
 
-  const { admin, loading } = useAdmin();
-
-  if (loading || !admin) return <LoadingScreen />;
+  const isVertical = document.body.offsetHeight > document.body.offsetWidth;
 
   return (
     <>
-      <div className="container">
-        <div className="flex flex-col gap-4 px-4 py-8 w-full">
-          <section className="flex items-center justify-between">
-            <h1 className="text-[2rem] text-text-primary font-medium">
-              Personal Information
-            </h1>
+      <section
+        className={`
+        grid items-start gap-4
+        ${isVertical ? "grid-cols-1" : "min-[1200px]:grid-cols-4 2xl:grid-cols-5"} `}
+      >
+        {adminLoading || !admin ? (
+          <ProfileSidebarSkeleton />
+        ) : (
+          <ProfileSidebar
+            admin={admin}
+            className="min-[1200px]:sticky top-22"
+          />
+        )}
 
-            <div className="flex gap-2 items-center">
-              <Button
-                label={"Edit Details"}
-                variant={"primary"}
-                onClick={() => {
-                  navigate("/personal/edit");
-                }}
-              />
+        <section className="col-span-2 min-[1200px]:col-span-3 2xl:col-span-4 grid gap-8">
+          <section className="space-y-6">
+            <h2>About</h2>
+
+            <div className="grid gap-3 text-secondary-foreground">
+              {adminLoading || !admin ? (
+                <>
+                  <Skeleton className="w-full h-4" />
+                  <Skeleton className="w-3/4 h-4" />
+                  <Skeleton className="w-full h-4 mt-3" />
+                  <Skeleton className="w-3/5 h-4" />
+                </>
+              ) : (
+                admin.about.filter((text) => text).map((text) => <p>{text}</p>)
+              )}
             </div>
           </section>
 
-          <section>
-            <TableRow heading={"Name"} value={admin.name} background={true} />
+          <Separator />
 
-            <TableRow heading={"Email address"} value={admin.email} />
-
-            <TableRow
-              heading={"Mobile number"}
-              value={admin.mobile || "Mobile number not set."}
-              background={true}
-            />
-
-            <TableRow
-              heading={"Portfolio link"}
-              value={admin.portfolioLink}
-              type="link"
-            />
-
-            <TableRow
-              heading={"About"}
-              value={
-                admin.about[0] === "" ? "About text not set." : admin.about
-              }
-              background={true}
-              type={admin.about[0] === "" ? "text" : "textArray"}
-            />
-
-            <TableRow
-              heading={"Resume link"}
-              value={
-                admin.resumeLink
-                  ? [{ platform: "link", link: admin.resumeLink }]
-                  : "Resume link not set."
-              }
-              type={admin.resumeLink ? "linkArray" : "text"}
-            />
-
-            <TableRow
-              heading={"Social media links"}
-              value={
-                admin.socialMediaLinks.length === 0
-                  ? "Social media links not set"
-                  : admin.socialMediaLinks
-              }
-              background={true}
-              type={admin.socialMediaLinks.length === 0 ? "text" : "linkArray"}
-              last={true}
-            />
+          <section className="space-y-6">
+            <h2>Featured Projects</h2>
+            <div className="grid min-[1000px]:grid-cols-2 2xl:grid-cols-3 gap-3 text-secondary-foreground">
+              {projectsLoading || !projects
+                ? Array.from(new Array(2)).map((_, index) => (
+                    <ProfileProjectCardSkeleton key={index} />
+                  ))
+                : projects
+                    .filter((project) => project.featured)
+                    .map((project) => (
+                      <ProfileProjectCard key={project._id} project={project} />
+                    ))}
+            </div>
           </section>
-        </div>
-      </div>
+
+          <Separator />
+
+          <section className="space-y-6">
+            <h2>Skills</h2>
+
+            <div className="flex flex-wrap gap-3">
+              {skillsLoading || !skills
+                ? Array.from(new Array(5)).map((_, index) => (
+                    <Skeleton key={index} className="w-30 h-5" />
+                  ))
+                : skills.map((skill) => (
+                    <Item variant="muted" size="xs" className={"w-fit"}>
+                      <ItemContent>
+                        <ItemTitle>{skill.name}</ItemTitle>
+                      </ItemContent>
+                    </Item>
+                  ))}
+            </div>
+          </section>
+        </section>
+      </section>
     </>
   );
 }

@@ -5,7 +5,7 @@ const socialMediaLinkSchema = new mongoose.Schema(
     platform: { type: String, required: true },
     link: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const adminImageSchema = new mongoose.Schema(
@@ -15,23 +15,26 @@ const adminImageSchema = new mongoose.Schema(
     url: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
   },
-  { _id: false }
+  { _id: false },
 );
 
-const adminSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  mobile: { type: String },
-  portfolioLink: { type: String, required: true },
+const adminSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    mobile: { type: String },
+    portfolioLink: { type: String, required: true },
 
-  resumeLink: { type: String },
+    resumeLink: { type: String },
 
-  about: { type: [String], default: [] },
+    about: { type: [String], default: [] },
 
-  profileImage: { type: adminImageSchema },
-  socialMediaLinks: { type: [socialMediaLinkSchema], default: [] },
-});
+    profileImage: { type: adminImageSchema },
+    socialMediaLinks: { type: [socialMediaLinkSchema], default: [] },
+  },
+  { timestamps: true },
+);
 
 const Admin = mongoose.model("Admin", adminSchema);
 export default Admin;

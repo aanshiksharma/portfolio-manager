@@ -1,21 +1,31 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFetchData } from "../../../shared/hooks/useFetchData";
 import { verifyToken } from "../services/verifyToken";
 
 export const useVerifyToken = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [valid, setValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const run = async () => {
-      const isValid = await verifyToken(navigate);
-      setValid(isValid);
+  const verifyUser = async () => {
+    setLoading(true);
+    setError(null);
+
+    if (sessionStorage.getItem("login-mode")) {
+      setIsAuthenticated(true);
+      return setLoading(false);
+    }
+
+    try {
+      await verifyToken();
+      setIsAuthenticated(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    };
-    run();
-  }, [navigate]);
+    }
+  };
 
-  return { loading, valid };
+  useEffect(() => verifyUser, []);
+
+  return { loading, error, isAuthenticated, verifyUser };
 };
