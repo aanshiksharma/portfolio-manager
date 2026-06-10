@@ -1,29 +1,18 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useForm, useFieldArray, FormProvider } from "react-hook-form";
-
-import Button from "../../../shared/components/ui/Button";
 
 import useToast from "../../../shared/toast/useToast";
 import useProject from "../hooks/useProject";
 
 import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
-import ProjectDetailsSection from "../components/form/ProjectDetailsSection";
-import PreviewLinksSection from "../components/form/PreviewLinksSection";
-import FilesSection from "../components/form/FilesSection";
+import ProjectForm from "../components/form/ProjectForm";
 
 function AddProject() {
-  const [currentSkill, setCurrentSkill] = useState("");
-
   const navigate = useNavigate();
 
   const methods = useForm();
-  const { handleSubmit, watch } = methods;
-
-  const { loading, error, addProject } = useProject("");
+  const { loading, addProject } = useProject();
   const { addToast } = useToast();
-
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const onSubmit = async (data) => {
     if (sessionStorage.getItem("login-mode")) {
@@ -36,11 +25,9 @@ function AddProject() {
       return navigate("/auth/login");
     }
 
-    const skills = data.skills[0] !== "" ? data.skills : [];
-
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("skills", JSON.stringify(skills));
+    formData.append("skills", JSON.stringify(data.skills));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
     formData.append("projectLink", data.projectLink);
@@ -59,29 +46,18 @@ function AddProject() {
     }
 
     addToast("New project added!", response.message, "success");
-    navigate(-1);
+    navigate("/projects");
   };
 
-  if (loading) return <LoadingScreen text="Adding Project..." />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>
-      <FormProvider {...methods}>
-        <form className="container" onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-4">
-            <h1 className="form-heading">Add a new project</h1>
-          </div>
+      <section className="px-4 py-6 grid gap-4">
+        <h1>Add Project</h1>
+      </section>
 
-          <ProjectDetailsSection />
-          <PreviewLinksSection />
-          <FilesSection />
-
-          <div className="p-4 w-full flex gap-4 items-center justify-end">
-            <Button type={"button"} label={"Cancel"} variant={"secondary"} />
-            <Button type={"submit"} label={"Add Project"} variant={"accent"} />
-          </div>
-        </form>
-      </FormProvider>
+      <ProjectForm methods={methods} onSubmit={onSubmit} />
     </>
   );
 }

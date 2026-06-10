@@ -1,32 +1,44 @@
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { InputGroup } from "@/components/ui/input-group";
 import { useFormContext } from "react-hook-form";
 
 function PreviewLinksSection() {
   const { register } = useFormContext();
 
   return (
-    <section className="py-8 px-4 w-full flex items-start justify-between border-b-1 border-border">
-      <div className="left text-text-primary">Preview Links</div>
+    <FieldSet>
+      <FieldLegend>Preview Links</FieldLegend>
+      <FieldDescription>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
+        perferendis cupiditate eum!
+      </FieldDescription>
 
-      <div className="right max-w-200 w-full">
-        <div className="w-full flex flex-col gap-6">
-          <div className="input-group">
-            <span className="label">Project Link</span>
-            <input
-              placeholder="Project's live link"
-              {...register("projectLink")}
-            />
-          </div>
+      <FieldGroup>
+        <Field>
+          <FieldLabel>Project Link</FieldLabel>
+          <Input
+            placeholder="https://project-name.com"
+            {...register("projectLink")}
+          />
+        </Field>
 
-          <div className="input-group">
-            <span className="label">GitHub Link</span>
-            <input
-              placeholder="Project's github link"
-              {...register("githubLink")}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
+        <Field>
+          <FieldLabel>GitHub Link</FieldLabel>
+          <Input
+            placeholder="https://github.com/github-username/project-name"
+            {...register("githubLink")}
+          />
+        </Field>
+      </FieldGroup>
+    </FieldSet>
   );
 }
 

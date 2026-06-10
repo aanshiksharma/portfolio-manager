@@ -39,10 +39,6 @@
       @apply font-semibold text-xs text-text-muted;
     }
 
-    textarea {
-      @apply max-w-none min-h-[3lh] box-content;
-    }
-
     input[type="checkbox"] {
       @apply w-4 h-4 p-0 bg-transparent appearance-none cursor-pointer
       outline-0 border-2 border-text-primary focus:border-accent;
