@@ -12,6 +12,7 @@ const allowedOrigins = [
   "https://portfolio-manager-cms.vercel.app", // Production frontend URL
   "https://aanshik-dev-portfolio.vercel.app", // Production frontend URL for portfolio
   "http://localhost:5173", // React development server
+  "http://localhost:4173", // React build server
   "http://localhost:3000", // Next.js development server
 ];
 
