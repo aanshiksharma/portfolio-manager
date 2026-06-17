@@ -4,25 +4,27 @@ import { Button } from "@/components/ui/button";
 import { ListPlus, UserPen, Presentation, FolderPlus } from "lucide-react";
 import Searchbar from "@/shared/components/ui/Searchbar";
 
+const iconSize = "size-6";
+
 const actions = [
   {
     href: "/projects/add",
-    icon: <FolderPlus />,
+    icon: <FolderPlus className={iconSize} />,
     label: "Add a Project",
   },
   {
     href: "/skills/add",
-    icon: <ListPlus />,
+    icon: <ListPlus className={iconSize} />,
     label: "Add a Skill",
   },
   {
     href: "/profile/edit",
-    icon: <UserPen />,
-    label: "Edit Personal Info",
+    icon: <UserPen className={iconSize} />,
+    label: "Edit Profile",
   },
   {
     href: "#",
-    icon: <Presentation />,
+    icon: <Presentation className={iconSize} />,
     label: "View Portfolio",
   },
 ];
@@ -39,17 +41,15 @@ function DashboardHeader() {
         />
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
         {actions.map((action, index) => (
-          <Button
-            key={index}
-            variant="secondary"
-            className="h-10 justify-start"
-            asChild
-          >
-            <Link to={action.href} className="flex items-center gap-2">
+          <Button key={index} variant="outline" asChild>
+            <Link
+              to={action.href}
+              className="flex-col py-16 items-center gap-3"
+            >
               {action.icon}
-              {action.label}
+              <span>{action.label}</span>
             </Link>
           </Button>
         ))}
