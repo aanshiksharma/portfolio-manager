@@ -68,13 +68,13 @@ export const ProjectCard = ({ project }) => {
 
         <ItemFooter className={"flex items-center gap-2"}>
           <Button variant="secondary" asChild className={"flex-1"}>
-            <Link to={`/projects/${project._id}`}>Open</Link>
+            <Link to={`/projects/${project.slug}`}>Open</Link>
           </Button>
 
           <Tooltip>
             <TooltipTrigger>
               <Button variant="outline" size="icon" asChild>
-                <Link to={`/projects/edit/${project._id}`}>
+                <Link to={`/projects/edit/${project.slug}`}>
                   <Edit />
                 </Link>
               </Button>

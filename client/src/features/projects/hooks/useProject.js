@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   fetchProjects,
-  fetchProjectById,
+  fetchProjectBySlug,
   removeProject,
   updateProject,
   createProject,
 } from "../services/projectServices";
 
-function useProject({ projectId } = {}) {
+function useProject({ slug } = {}) {
   const [project, setProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,16 +29,16 @@ function useProject({ projectId } = {}) {
     setError(null);
 
     try {
-      const data = await fetchProjectById(projectId);
+      const data = await fetchProjectBySlug(slug);
       setProject(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [projectId]);
+  }, [slug]);
 
-  const deleteProject = async () => {
+  const deleteProject = async (projectId) => {
     setLoading(true);
     setError(null);
 
@@ -71,7 +71,9 @@ function useProject({ projectId } = {}) {
     setError(null);
 
     try {
-      const response = await updateProject(projectId, formData);
+      const response = await updateProject(slug, formData);
+
+      console.log(response);
 
       return {
         success: true,

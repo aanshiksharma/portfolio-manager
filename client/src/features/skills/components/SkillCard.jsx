@@ -36,7 +36,7 @@ export const SkillCard = ({ skill, handleDeleteSkill }) => {
         className={`group-hover:translate-x-0 ${!isVertical && "md:translate-x-[125%]"} transition-transform`}
       >
         <Button variant="outline" size="icon" asChild>
-          <Link to={`/skills/edit/${skill._id}`}>
+          <Link to={`/skills/edit/${skill.slug}`}>
             <Edit />
           </Link>
         </Button>

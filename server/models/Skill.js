@@ -2,7 +2,8 @@ import mongoose, { mongo } from "mongoose";
 
 const skillSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    slug: { type: String, unique: true, required: true },
     categoryName: { type: String, required: true },
     category: {
       type: mongoose.Schema.Types.ObjectId,

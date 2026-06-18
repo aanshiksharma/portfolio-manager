@@ -5,15 +5,13 @@ import useSkill from "../hooks/useSkill";
 
 import SkillForm from "../components/SkillForm";
 
-import { Button } from "@/components/ui/button";
-
 function EditSkill() {
   const location = useLocation();
   const pathname = location.pathname.split("/");
-  const skillId = pathname[pathname.length - 1];
+  const slug = pathname[pathname.length - 1];
 
   const { skill, editSkill, deleteSkill } = useSkill({
-    skillId,
+    slug,
   });
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -29,7 +27,7 @@ function EditSkill() {
       return navigate("/auth/login");
     }
 
-    const response = await editSkill(skillId, data);
+    const response = await editSkill(slug, data);
 
     if (!response.success) {
       if (response.unauthorized) {

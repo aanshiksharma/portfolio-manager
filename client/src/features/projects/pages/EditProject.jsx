@@ -12,10 +12,10 @@ function EditProject() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname.split("/");
-  const projectId = pathname[pathname.length - 1];
+  const slug = pathname[pathname.length - 1];
 
   const { project, loading, updateProject, deleteProject } = useProject({
-    projectId,
+    slug,
   });
   const { addToast } = useToast();
 
@@ -47,6 +47,7 @@ function EditProject() {
 
     const formData = new FormData();
     formData.append("title", data.title);
+    formData.append("slug", data.slug);
     formData.append("skills", JSON.stringify(data.skills));
     formData.append("featured", data.featured);
     formData.append("description", data.description);
@@ -83,7 +84,7 @@ function EditProject() {
       return navigate("/auth/login");
     }
 
-    const response = await deleteProject(projectId);
+    const response = await deleteProject(project._id);
 
     if (!response.success) {
       if (response.unauthorized) {

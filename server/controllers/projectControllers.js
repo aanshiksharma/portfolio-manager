@@ -1,6 +1,7 @@
 import Project from "../models/Project.js";
 import { uploadProjectImage, deleteImage } from "./imageControllers.js";
 import { parseProjectFormData } from "../middlewares/upload.js";
+import { generateSlug } from "../utils/generateSlug.js";
 
 // Get all projects
 const getProjects = async (req, res) => {
@@ -14,9 +15,9 @@ const getProjects = async (req, res) => {
 
 // Get a single project by ID
 const getSingleProject = async (req, res) => {
-  const id = req.params.id;
+  const slug = req.params.slug;
 
-  const project = await Project.findById(id);
+  const project = await Project.findOne({ slug });
   if (!project) return res.status(404).json({ message: "Project not found" });
 
   res.status(200).json(project);
@@ -30,9 +31,13 @@ const addProject = async (req, res) => {
   const { title, skills, featured, description, projectLink, githubLink } =
     req.body;
 
-  const existingProject = await Project.findOne({ projectLink });
+  const slug = generateSlug(title);
+
+  const existingProject = await Project.findOne({ slug });
   if (existingProject) {
-    return res.status(409).json({ message: "Project already exists." });
+    return res
+      .status(409)
+      .json({ message: "Slug already exists. Please choose a different one." });
   }
 
   if (!req.file) {
@@ -52,6 +57,7 @@ const addProject = async (req, res) => {
 
   const newProject = new Project({
     title,
+    slug,
     skills: JSON.parse(skills),
     featured,
     description,
@@ -70,15 +76,31 @@ const addProject = async (req, res) => {
 // Edit an existing project
 // Password protected route
 const editProject = async (req, res) => {
-  const id = req.params.id;
-
+  const originalSlug = req.params.slug;
   await parseProjectFormData(req, res);
 
-  const { title, skills, featured, description, projectLink, githubLink } =
-    req.body;
+  const {
+    title,
+    slug,
+    skills,
+    featured,
+    description,
+    projectLink,
+    githubLink,
+  } = req.body;
 
-  const project = await Project.findById(id);
+  const project = await Project.findOne({ slug: originalSlug });
   if (!project) return res.status(404).json({ message: "Project not found" });
+
+  const finalSlug = slug ? generateSlug(slug) : project.slug;
+  const existingSlug = await Project.findOne({
+    slug: finalSlug,
+    _id: { $ne: project._id },
+  });
+  if (existingSlug)
+    return res
+      .status(409)
+      .json({ message: "Slug already exists. Please choose a different one." });
 
   let coverImage;
 
@@ -100,6 +122,7 @@ const editProject = async (req, res) => {
   }
 
   project.title = title;
+  project.slug = finalSlug;
   project.skills = JSON.parse(skills);
   project.featured = featured !== undefined ? featured : project.featured;
   project.description = description;

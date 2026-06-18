@@ -20,9 +20,9 @@ import { ExternalLink } from "lucide-react";
 function ProjectPage() {
   const location = useLocation();
   const pathname = location.pathname.split("/");
-  const projectId = pathname[pathname.length - 1];
+  const slug = pathname[pathname.length - 1];
 
-  const { project, loading } = useProject({ projectId });
+  const { project, loading } = useProject({ slug });
   const canHover = window.matchMedia("(hover: hover)").matches;
   const { open } = useImageViewer();
 
