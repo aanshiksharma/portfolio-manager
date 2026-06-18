@@ -4,10 +4,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const fetchSkills = () => fetchData("skills", "Could not fetch skills");
 
-export const fetchSkillById = async (skillId) => {
+export const fetchSkillById = async (slug) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/skills/${skillId}`);
-    if (!response.ok) throw new Error("Could not find skill.");
+    const response = await fetch(`${BACKEND_URL}/api/skills/${slug}`);
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {
@@ -25,11 +25,7 @@ export const removeSkill = async (skillId) => {
       headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
     });
 
-    if (!response.ok) {
-      if (response.status === 404) throw new Error("Could not find skill");
-      if (response.status === 401 || response.status === 403)
-        throw new Error((await response.json()).message);
-    }
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {
@@ -37,9 +33,9 @@ export const removeSkill = async (skillId) => {
   }
 };
 
-export const updateSkill = async (skillId, data) => {
+export const updateSkill = async (slug, data) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/skills/${skillId}`, {
+    const response = await fetch(`${BACKEND_URL}/api/skills/${slug}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -48,13 +44,7 @@ export const updateSkill = async (skillId, data) => {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      if (response.status === 404) throw new Error("Could not find skill");
-      if (response.status === 401 || response.status === 403)
-        throw new Error((await response.json).message);
-
-      throw new Error((await response.json()).message);
-    }
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {

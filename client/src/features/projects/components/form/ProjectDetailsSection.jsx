@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import {
@@ -10,16 +9,25 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import SkillSelect from "./SkillSelect";
 import { Switch } from "@/components/ui/switch";
+import { Info } from "lucide-react";
 
-function ProjectDetailsSection() {
+import SkillSelect from "./SkillSelect";
+import { generateSlug } from "@/lib/generateSlug";
+
+function ProjectDetailsSection({ addingProject }) {
   const {
     register,
     control,
+    watch,
     formState: { errors },
   } = useFormContext();
 
@@ -32,20 +40,55 @@ function ProjectDetailsSection() {
       </FieldDescription>
 
       <FieldGroup>
-        <Field>
-          <FieldLabel>Title</FieldLabel>
-          <Input
-            placeholder="Title of your project."
-            autoFocus
-            {...register("title", {
-              required: {
-                value: true,
-                message: "Title cannot be empty.",
-              },
-            })}
-          />
-          <FieldError>{errors.title && errors.title.message}</FieldError>
-        </Field>
+        <FieldGroup className="flex-row flex-wrap">
+          <Field className="min-w-3xs flex-1">
+            <FieldLabel>Title</FieldLabel>
+            <Input
+              placeholder="Title of your project."
+              autoFocus
+              {...register("title", {
+                required: {
+                  value: true,
+                  message: "Title cannot be empty.",
+                },
+              })}
+            />
+            {addingProject && (
+              <FieldDescription>
+                <p className="overflow-x-clip">
+                  Generated Slug:{" "}
+                  <span className="text-foreground">
+                    {generateSlug(watch("title"))}
+                  </span>
+                </p>
+              </FieldDescription>
+            )}
+            <FieldError>{errors.title && errors.title.message}</FieldError>
+          </Field>
+
+          {!addingProject && (
+            <Field className="min-w-3xs flex-1">
+              <FieldLabel>
+                Slug
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button type="button" variant="outline" size="icon-xs">
+                      <Info />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    A human-readable, URL-safe unique identifier derived from a
+                    resource’s name or title
+                  </TooltipContent>
+                </Tooltip>
+              </FieldLabel>
+              <Input
+                placeholder="Choose custom slug for your project."
+                {...register("slug")}
+              />
+            </Field>
+          )}
+        </FieldGroup>
 
         <Field>
           <FieldLabel htmlFor="description">Description</FieldLabel>

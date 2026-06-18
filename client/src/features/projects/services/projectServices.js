@@ -5,12 +5,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const fetchProjects = () =>
   fetchData("projects", "Could not fetch projects");
 
-export const fetchProjectById = async (projectId) => {
+export const fetchProjectBySlug = async (slug) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/projects/${projectId}`);
-    if (!response.ok) {
-      throw new Error("Could not find project.");
-    }
+    const response = await fetch(`${BACKEND_URL}/api/projects/${slug}`);
+    if (!response.ok) throw new Error((await response.json()).message);
 
     const project = await response.json();
     return project ?? null;
@@ -28,11 +26,7 @@ export const removeProject = async (projectId) => {
       },
     });
 
-    if (!response.ok) {
-      if (response.status === 404) throw new Error("Could not find project");
-      if (response.status === 401 || response.status === 403)
-        throw new Error(response.message);
-    }
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {
@@ -40,19 +34,15 @@ export const removeProject = async (projectId) => {
   }
 };
 
-export const updateProject = async (projectId, formData) => {
+export const updateProject = async (slug, formData) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/projects/${projectId}`, {
+    const response = await fetch(`${BACKEND_URL}/api/projects/${slug}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       body: formData,
     });
 
-    if (!response.ok) {
-      if (response.status === 404) throw new Error("Could not find project");
-      if (response.status === 401 || response.status === 403)
-        throw new Error(response.message);
-    }
+    if (!response.ok) throw new Error((await response.json()).message);
 
     return await response.json();
   } catch (err) {

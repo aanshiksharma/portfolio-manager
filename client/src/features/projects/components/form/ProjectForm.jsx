@@ -22,7 +22,7 @@ function ProjectForm({ methods, project, onSubmit, handleDelete }) {
     <FormProvider {...methods}>
       <form className="xl:max-w-3/4" onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
-          <ProjectDetailsSection />
+          <ProjectDetailsSection addingProject={project ? false : true} />
           <FieldSeparator />
 
           <PreviewLinksSection />

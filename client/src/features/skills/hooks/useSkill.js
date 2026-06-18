@@ -8,7 +8,7 @@ import {
   createSkill,
 } from "../services/skillServices";
 
-function useSkill({ skillId } = {}) {
+function useSkill({ slug } = {}) {
   const [skills, setSkills] = useState([]);
   const [skill, setSkill] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -36,14 +36,14 @@ function useSkill({ skillId } = {}) {
     setError(null);
 
     try {
-      const data = await fetchSkillById(skillId);
+      const data = await fetchSkillById(slug);
       setSkill(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [skillId]);
+  }, [slug]);
 
   const deleteSkill = async (skillId) => {
     setLoading(true);
@@ -74,12 +74,12 @@ function useSkill({ skillId } = {}) {
     }
   };
 
-  const editSkill = async (skillId, data) => {
+  const editSkill = async (slug, data) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await updateSkill(skillId, data);
+      const response = await updateSkill(slug, data);
 
       return {
         success: true,
