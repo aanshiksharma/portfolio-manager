@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getSkills,
-  getSkillbyId,
+  getSingleSkill,
   addSkill,
   editSkill,
   deleteSkill,
@@ -12,9 +12,9 @@ import authenticateToken from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.get("/", getSkills);
-router.get("/:id", getSkillbyId);
+router.get("/:slug", getSingleSkill);
 router.post("/", authenticateToken, addSkill);
-router.put("/:id", authenticateToken, editSkill);
+router.put("/:slug", authenticateToken, editSkill);
 router.delete("/:id", authenticateToken, deleteSkill);
 
 export default router;

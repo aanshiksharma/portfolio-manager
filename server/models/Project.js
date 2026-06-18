@@ -13,6 +13,7 @@ const imageSchema = new mongoose.Schema(
 const projectSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
+    slug: { type: String, unique: true, required: true },
     skills: { type: [String], required: true },
     featured: { type: Boolean, default: false },
     description: { type: String },
