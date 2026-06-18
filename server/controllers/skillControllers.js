@@ -101,7 +101,15 @@ const deleteSkill = async (req, res) => {
       message: "Skill not found",
     });
 
+  const categoryId = skill.category;
+
   await skill.deleteOne();
+
+  const remainingSkills = await Skill.countDocuments({ category: categoryId });
+
+  if (remainingSkills === 0) {
+    await Category.findByIdAndDelete({ _id: categoryId });
+  }
 
   res.status(200).json({ message: "Skill Deleted!" });
 };
