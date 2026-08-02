@@ -71,7 +71,9 @@ function useAdmin() {
     }
   };
 
-  useEffect(() => getAdmin, []);
+  useEffect(() => {
+    getAdmin();
+  }, []);
 
   return { admin, loading, editAdmin, changePassword };
 }
