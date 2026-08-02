@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import useProject from "../hooks/useProject";
 
 import { Button } from "@/components/ui/button";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 import useImageViewer from "@/shared/image-viewer/useImageViewer";
 
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
@@ -16,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { Github } from "react-bootstrap-icons";
 import { ExternalLink } from "lucide-react";
+import ProjectPageSkeleton from "../components/ProjectPageSkeleton";
 
 function ProjectPage() {
   const location = useLocation();
@@ -26,13 +26,14 @@ function ProjectPage() {
   const canHover = window.matchMedia("(hover: hover)").matches;
   const { open } = useImageViewer();
 
-  if (loading || !project) return <LoadingScreen />;
+  if (loading || !project) return <ProjectPageSkeleton />;
 
   return (
     <>
       <section className="space-y-4">
         <div
-          className="relative -z-0 rounded-2xl h-[50vh] overflow-hidden"
+          role="button"
+          className="relative rounded-2xl h-[60vh] overflow-hidden"
           onClick={() => {
             open(project.coverImage.url);
           }}
@@ -40,7 +41,7 @@ function ProjectPage() {
           <img
             src={project.coverImage.url}
             alt={`${project.title} cover image`}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-top"
           />
 
           <div className="absolute inset-0 bg-linear-to-b from-background/10 from-50% to-95% to-background inset-shadow-2xs inset-shadow-accent-foreground/20 rounded-2xl" />
@@ -89,9 +90,9 @@ function ProjectPage() {
         </div>
       </section>
 
-      <p className="text-muted-foreground">{project.description}</p>
+      <p className="text-muted-foreground max-w-2xl">{project.description}</p>
 
-      <section className="space-y-6 border-l-3 border-muted">
+      <div className="border-l-3 border-muted">
         <Item>
           <ItemHeader>
             <ItemTitle>Tech Stack</ItemTitle>
@@ -107,21 +108,19 @@ function ProjectPage() {
             </div>
           </ItemContent>
         </Item>
-      </section>
+      </div>
 
-      <section className="grid gap-6">
-        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-3">
-          {project.otherImages.map((image, index) => (
-            <div
-              key={index}
-              className="aspect-video overflow-hidden rounded-2xl"
-              onClick={() => open(image.url)}
-            >
-              <img src={image.url} alt="" />
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-3">
+        {project.otherImages.map((image, index) => (
+          <div
+            key={index}
+            className="aspect-video overflow-hidden rounded-2xl"
+            onClick={() => open(image.url)}
+          >
+            <img src={image.url} alt="" />
+          </div>
+        ))}
+      </div>
     </>
   );
 }
