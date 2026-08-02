@@ -16,8 +16,8 @@ import { useTheme } from "@/shared/hooks/useTheme";
 import useAuth from "@/features/auth/hooks/useAuth";
 import useAdmin from "@/features/admin/hooks/useAdmin";
 
-import links from "./links.data.json";
-import { useNavigate } from "react-router-dom";
+import { links } from "./links.data";
+import { Link, useNavigate } from "react-router-dom";
 
 function SideBar({ ...props }) {
   const { toggleTheme } = useTheme();
@@ -40,7 +40,7 @@ function SideBar({ ...props }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               asChild
             >
-              <a href="/">
+              <Link to="/">
                 {loading || !admin ? (
                   <>
                     <Skeleton className="h-10 w-10 rounded-full" />
@@ -68,7 +68,7 @@ function SideBar({ ...props }) {
                     </div>
                   </>
                 )}
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -80,7 +80,7 @@ function SideBar({ ...props }) {
             {links.map((link) => (
               <SidebarMenuItem key={link.title}>
                 <SidebarMenuButton asChild>
-                  <a href={link.url}>{link.title}</a>
+                  <Link to={link.url}>{link.title}</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
