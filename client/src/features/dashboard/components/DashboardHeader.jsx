@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ListPlus, UserPen, Presentation, FolderPlus } from "lucide-react";
 import Searchbar from "@/shared/components/ui/Searchbar";
 
+import useAdmin from "@/features/admin/hooks/useAdmin";
+
 const iconSize = "size-6";
 
 const actions = [
@@ -22,14 +24,11 @@ const actions = [
     icon: <UserPen className={iconSize} />,
     label: "Edit Profile",
   },
-  {
-    href: "#",
-    icon: <Presentation className={iconSize} />,
-    label: "View Portfolio",
-  },
 ];
 
 function DashboardHeader() {
+  const { loading, admin } = useAdmin();
+
   return (
     <section className="grid gap-4">
       <div className="flex items-center justify-between">
@@ -53,6 +52,17 @@ function DashboardHeader() {
             </Link>
           </Button>
         ))}
+
+        <Button variant="outline" asChild>
+          <a
+            href={loading || !admin ? "/" : admin.portfolioLink}
+            target="_blank"
+            className="flex-col py-16 items-center gap-3"
+          >
+            <Presentation className={iconSize} />
+            <span>View Portfolio</span>
+          </a>
+        </Button>
       </div>
     </section>
   );

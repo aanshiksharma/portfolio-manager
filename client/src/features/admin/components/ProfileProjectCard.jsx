@@ -64,7 +64,7 @@ export const ProfileProjectCard = ({ project }) => {
             </a>
           </Button>
           <Button variant="secondary" size="icon" asChild>
-            <Link to={`/projects/${project._id}`}>
+            <Link to={`/projects/${project.slug}`}>
               <ArrowRight />
             </Link>
           </Button>
