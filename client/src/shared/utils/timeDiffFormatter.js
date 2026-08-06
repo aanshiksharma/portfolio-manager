@@ -4,7 +4,7 @@ export const timeDiffFormatter = (timestamp) => {
     return `${Math.floor(diffInSeconds / (60 * 60 * 24 * 365))}y ago`; // years
 
   if (diffInSeconds > 60 * 60 * 24 * 30)
-    return `${Math.floor(diffInSeconds / (60 * 60 * 24 * 30))}m ago`; // months
+    return `${Math.floor(diffInSeconds / (60 * 60 * 24 * 30))}mon ago`; // months
 
   if (diffInSeconds > 60 * 60 * 24)
     return `${Math.floor(diffInSeconds / (60 * 60 * 24))}d ago`; // days
@@ -13,6 +13,6 @@ export const timeDiffFormatter = (timestamp) => {
     return `${Math.floor(diffInSeconds / (60 * 60))}h ago`; // hours
 
   if (diffInSeconds > 60)
-    return `${Math.floor(diffInSeconds / 60)}min ago`; // minutes
+    return `${Math.floor(diffInSeconds / 60)}m ago`; // minutes
   else return `${Math.floor(diffInSeconds)}s ago`; // seconds
 };
