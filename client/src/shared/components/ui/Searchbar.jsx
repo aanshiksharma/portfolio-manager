@@ -11,6 +11,8 @@ export function Searchbar({
   className,
   searchInput,
   setSearchInput,
+  autoFocus = false,
+  onClick,
 }) {
   return (
     <InputGroup className={`${className}`}>
@@ -20,6 +22,8 @@ export function Searchbar({
         onChange={(e) => {
           setSearchInput(e.target.value);
         }}
+        autoFocus={autoFocus}
+        onClick={onClick}
       />
       <InputGroupAddon>
         <Search />
