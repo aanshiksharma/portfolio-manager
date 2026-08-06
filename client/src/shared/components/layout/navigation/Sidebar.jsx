@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+
 import {
   Sidebar,
   SidebarContent,
@@ -17,13 +20,18 @@ import useAuth from "@/features/auth/hooks/useAuth";
 import useAdmin from "@/features/admin/hooks/useAdmin";
 
 import { links } from "./links.data";
-import { Link, useNavigate } from "react-router-dom";
 
 function SideBar({ ...props }) {
+  const [activeLink, setActiveLink] = useState("/");
   const { toggleTheme } = useTheme();
   const { loading, admin } = useAdmin();
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location]);
 
   const handleLogout = () => {
     logout();
@@ -80,7 +88,12 @@ function SideBar({ ...props }) {
             {links.map((link) => (
               <SidebarMenuItem key={link.title}>
                 <SidebarMenuButton asChild>
-                  <Link to={link.url}>{link.title}</Link>
+                  <Link
+                    to={link.url}
+                    className={link.url === activeLink ? "bg-accent" : ""}
+                  >
+                    {link.title}
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
