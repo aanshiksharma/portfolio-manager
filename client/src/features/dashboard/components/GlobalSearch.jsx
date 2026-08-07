@@ -83,8 +83,11 @@ function GlobalSearch() {
 
         <div className="flex flex-col gap-1">
           {searchedSkills.map((skill) => (
-            <div key={skill._id} className="flex items-center justify-between">
-              <div className="rounded-xl hover:bg-accent px-2 py-1 flex flex-col gap-1">
+            <div
+              key={skill._id}
+              className="flex items-center justify-between rounded-xl hover:bg-accent px-2 py-1"
+            >
+              <div className="flex flex-col gap-1">
                 <h3>{skill.name}</h3>
                 <p className="text-xs text-muted-foreground">
                   {skill.categoryName}

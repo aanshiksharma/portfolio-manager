@@ -84,7 +84,7 @@ function SideBar({ ...props }) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu className="gap-2">
+          <SidebarMenu className="gap-1">
             {links.map((link) => (
               <SidebarMenuItem key={link.title}>
                 <SidebarMenuButton asChild>
